@@ -36,8 +36,9 @@ open class NFXProtocol: URLProtocol {
     
     private class func canServeRequest(_ request: URLRequest) -> Bool {
         // The mock server works independently from the logging switch, so the
-        // protocol has to stay in the loading chain even when logging is off.
-        guard NFX.sharedInstance().isEnabled() || NFX.swiftSharedInstance.mockServer.configuration.isEnabled else {
+        // protocol has to stay in the loading chain even when logging is off -
+        // but only for the requests it actually redirects.
+        guard NFX.sharedInstance().isEnabled() || NFX.swiftSharedInstance.mockServer.shouldRedirect(request) else {
             return false
         }
         

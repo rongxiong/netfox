@@ -161,6 +161,37 @@ NFX.sharedInstance().setMockServerEnabled(true)
 
 You can also configure it at runtime from the netfox settings view (iOS): turn on the "Mock Server" switch and type the server URL. The configuration is stored in `UserDefaults`, so it survives app restarts.
 
+### Mock only specific URLs
+
+Register a dictionary of mappings when you only want *some* requests to be mocked. Each key is matched as a **substring** (fuzzy match) of the request URL, and the matching value is just the **path** served by the mock server - it is resolved against the mock server URL, so you never repeat the host.
+
+#### Swift
+```swift
+NFX.sharedInstance().setMockServerURL("http://localhost:3000")
+NFX.sharedInstance().setMockServerMappings([
+    "api.github.com/users": "/users.json",
+    "/v2/orders":           "/orders.json?state=empty"
+])
+// https://api.github.com/users?page=2  ->  http://localhost:3000/users.json
+```
+
+#### Objective-C
+```objective-c
+[NFX.sharedInstance setMockServerURL:@"http://localhost:3000"];
+[NFX.sharedInstance setMockServerMappings:@{
+    @"api.github.com/users": @"/users.json",
+    @"/v2/orders":           @"/orders.json?state=empty"
+}];
+```
+
+- The original path and query are discarded for a mapped request - the value fully decides what is called.
+- While at least one mapping is set, **only** the requests whose URL contains one of the keys are mocked - every other request goes to the real server.
+- When several keys match, the **longest** one wins, so you can combine a broad key with a more specific override.
+- A value may also be an absolute `http(s)://…` URL when a single mapping has to point somewhere else entirely; relative paths need `setMockServerURL` to be set first, otherwise the entry is reported in the console and dropped.
+- Pass an empty dictionary to go back to mocking every request with the mock server URL.
+- Mappings are code-only - they are not exposed in the settings view and are not persisted.
+- Requests that are not mocked are left completely untouched (netfox does not even join their loading chain).
+
 Notes:
 - Mocked requests are logged with their **original** URL and get a `MOCK` badge in the request list. The session log contains an extra `[Mocked] redirected to ...` line.
 - The mock server works independently from the logging switch, so you can keep logging turned off.

@@ -209,6 +209,25 @@ open class NFX: NSObject {
         return mockServer.configuration.urlString
     }
     
+    /// Per-URL mock mappings. Each key is matched as a substring of the request
+    /// URL (fuzzy match); the matching value is the path served by the mock
+    /// server, resolved against the mock server URL - e.g. after
+    /// `setMockServerURL("http://localhost:3000")` the mapping
+    /// ["api.github.com/users": "/users.json"] calls
+    /// "http://localhost:3000/users.json". A value may also be an absolute URL
+    /// when a mapping has to point somewhere else entirely.
+    ///
+    /// While at least one mapping is set, only the requests whose URL contains
+    /// one of the keys are mocked. Pass an empty dictionary to fall back to
+    /// mocking every request with the mock server URL.
+    @objc open func setMockServerMappings(_ mappings: [String: String]) {
+        mockServer.setMappings(mappings)
+    }
+    
+    @objc open func getMockServerMappings() -> [String: String] {
+        return mockServer.configuration.mappings
+    }
+    
     @objc open func ignoreURLs(_ urls: [String]) {
         ignoredURLs.append(contentsOf: urls)
     }
