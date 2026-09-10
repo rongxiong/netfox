@@ -52,6 +52,9 @@ open class NFX: NSObject {
     
     internal var cacheStoragePolicy = URLCache.StoragePolicy.notAllowed
     
+    /// Handles the "redirect requests to a mock server" feature.
+    internal let mockServer = NFXMockServer()
+    
     // swiftSharedInstance is not accessible from ObjC
     class var swiftSharedInstance: NFX {
         struct Singleton {
@@ -182,6 +185,28 @@ open class NFX: NSObject {
     
     @objc open func getSessionLog() -> Data? {
         return try? Data(contentsOf: NFXPath.sessionLogURL)
+    }
+    
+    /// Redirects every intercepted request to the given mock server.
+    /// The path and the query of the original request are preserved, only the
+    /// scheme, host and port are replaced - e.g. "http://localhost:3000".
+    /// Pass nil (or an empty string) to remove the mock server.
+    @objc open func setMockServerURL(_ urlString: String?) {
+        mockServer.setURLString(urlString)
+    }
+    
+    /// Enables / disables the redirection to the mock server.
+    /// Works independently from the logging switch.
+    @objc open func setMockServerEnabled(_ enabled: Bool) {
+        mockServer.setEnabled(enabled)
+    }
+    
+    @objc open func isMockServerEnabled() -> Bool {
+        return mockServer.configuration.isEnabled
+    }
+    
+    @objc open func getMockServerURLString() -> String? {
+        return mockServer.configuration.urlString
     }
     
     @objc open func ignoreURLs(_ urls: [String]) {

@@ -47,6 +47,11 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     
     @objc public var noResponse = true
     
+    /// True when the request has been redirected to the mock server.
+    @objc public var isMocked = false
+    /// The URL actually called when the request has been mocked.
+    @objc public var mockTargetURL: String?
+    
     func saveRequest(_ request: URLRequest) {
         requestDate = Date()
         requestTime = getTimeFromDate(requestDate!)
@@ -221,6 +226,10 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         if let requestURL = self.requestURL {
             log.append("-------START REQUEST -  \(requestURL) -------\n")
+        }
+        
+        if isMocked, let mockTargetURL = self.mockTargetURL {
+            log.append("[Mocked] redirected to \(mockTargetURL)\n")
         }
 
         if let requestMethod = self.requestMethod {

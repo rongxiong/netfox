@@ -46,6 +46,8 @@
 		B3F8BA991C833ABC00F9FBEA /* NFXListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7C1C833ABC00F9FBEA /* NFXListController.swift */; };
 		B3F8BA9A1C833ABC00F9FBEA /* NFXProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7D1C833ABC00F9FBEA /* NFXProtocol.swift */; };
 		B3F8BA9B1C833ABC00F9FBEA /* NFXProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7D1C833ABC00F9FBEA /* NFXProtocol.swift */; };
+		B3F8BAE11C833ABC00F9FBEA /* NFXMockServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BAE01C833ABC00F9FBEA /* NFXMockServer.swift */; };
+		B3F8BAE21C833ABC00F9FBEA /* NFXMockServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BAE01C833ABC00F9FBEA /* NFXMockServer.swift */; };
 		B3F8BA9C1C833ABC00F9FBEA /* NFXRawBodyDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7E1C833ABC00F9FBEA /* NFXRawBodyDetailsController.swift */; };
 		B3F8BA9E1C833ABC00F9FBEA /* NFXSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7F1C833ABC00F9FBEA /* NFXSettingsController.swift */; };
 		B3F8BA9F1C833ABC00F9FBEA /* NFXSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F8BA7F1C833ABC00F9FBEA /* NFXSettingsController.swift */; };
@@ -123,6 +125,7 @@
 		B3F8BA7B1C833ABC00F9FBEA /* NFXInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXInfoController.swift; sourceTree = "<group>"; };
 		B3F8BA7C1C833ABC00F9FBEA /* NFXListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXListController.swift; sourceTree = "<group>"; };
 		B3F8BA7D1C833ABC00F9FBEA /* NFXProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXProtocol.swift; sourceTree = "<group>"; };
+		B3F8BAE01C833ABC00F9FBEA /* NFXMockServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMockServer.swift; sourceTree = "<group>"; };
 		B3F8BA7E1C833ABC00F9FBEA /* NFXRawBodyDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXRawBodyDetailsController.swift; sourceTree = "<group>"; };
 		B3F8BA7F1C833ABC00F9FBEA /* NFXSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSettingsController.swift; sourceTree = "<group>"; };
 		B3F8BA801C833ABC00F9FBEA /* NFXStatisticsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXStatisticsController.swift; sourceTree = "<group>"; };
@@ -232,6 +235,7 @@
 				B3F8BA7A1C833ABC00F9FBEA /* NFXImageBodyDetailsController.swift */,
 				B3F8BA7B1C833ABC00F9FBEA /* NFXInfoController.swift */,
 				B3F8BA7C1C833ABC00F9FBEA /* NFXListController.swift */,
+				B3F8BAE01C833ABC00F9FBEA /* NFXMockServer.swift */,
 				B3F8BA7D1C833ABC00F9FBEA /* NFXProtocol.swift */,
 				B3F8BA7F1C833ABC00F9FBEA /* NFXSettingsController.swift */,
 				B3F8BA801C833ABC00F9FBEA /* NFXStatisticsController.swift */,
@@ -454,6 +458,7 @@
 				B3F8BA8A1C833ABC00F9FBEA /* NFXGenericBodyDetailsController.swift in Sources */,
 				B3F8BA901C833ABC00F9FBEA /* NFXHTTPModel.swift in Sources */,
 				8201A39D204E3E3F00AB2C3D /* NFXAuthenticationChallengeSender.swift in Sources */,
+				B3F8BAE11C833ABC00F9FBEA /* NFXMockServer.swift in Sources */,
 				B3F8BAB21C833AC700F9FBEA /* NFXStatisticsController_iOS.swift in Sources */,
 				B3F8BAA01C833ABC00F9FBEA /* NFXStatisticsController.swift in Sources */,
 				B3F8BAB11C833AC700F9FBEA /* NFXSettingsController_iOS.swift in Sources */,
@@ -495,6 +500,7 @@
 				B3F8BA8F1C833ABC00F9FBEA /* NFXHelper.swift in Sources */,
 				B3F8BA871C833ABC00F9FBEA /* NFXConstants.swift in Sources */,
 				B3F8BA9B1C833ABC00F9FBEA /* NFXProtocol.swift in Sources */,
+				B3F8BAE21C833ABC00F9FBEA /* NFXMockServer.swift in Sources */,
 				B3F8D6811C833B1700F9FBEA /* NFXResponseTypeCell_OSX.swift in Sources */,
 				B3F8BA951C833ABC00F9FBEA /* NFXImageBodyDetailsController.swift in Sources */,
 				B3F8BA9F1C833ABC00F9FBEA /* NFXSettingsController.swift in Sources */,

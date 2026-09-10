@@ -20,9 +20,12 @@ class NFXListCell: UITableViewCell {
     var timeIntervalLabel: UILabel!
     var typeLabel: UILabel!
     var methodLabel: UILabel!
+    var mockLabel: UILabel!
     var leftSeparator: UIView!
     var rightSeparator: UIView!
     var circleView: UIView!
+    
+    fileprivate var isMocked = false
 
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -62,6 +65,17 @@ class NFXListCell: UITableViewCell {
         typeLabel.font = UIFont.NFXFont(size: 12)
         contentView.addSubview(typeLabel)
         
+        mockLabel = UILabel(frame: CGRect.zero)
+        mockLabel.text = "MOCK"
+        mockLabel.textAlignment = .center
+        mockLabel.textColor = UIColor.NFXOrangeColor()
+        mockLabel.font = UIFont.NFXFontBold(size: 10)
+        mockLabel.isHidden = true
+        mockLabel.layer.borderColor = UIColor.NFXOrangeColor().cgColor
+        mockLabel.layer.borderWidth = 1
+        mockLabel.layer.cornerRadius = 3
+        contentView.addSubview(mockLabel)
+        
         circleView = UIView(frame: CGRect.zero)
         circleView.backgroundColor = UIColor.NFXGray44Color()
         circleView.layer.cornerRadius = 4
@@ -97,6 +111,9 @@ class NFXListCell: UITableViewCell {
 
         typeLabel.frame = CGRect(x: methodLabel.frame.maxX + padding, y: URLLabel.frame.maxY - 2, width: 180, height: frame.height - URLLabel.frame.maxY - 2)
 
+        mockLabel.frame = CGRect(x: typeLabel.frame.maxX + 5, y: URLLabel.frame.maxY + 1, width: 38, height: frame.height - URLLabel.frame.maxY - 6)
+        mockLabel.isHidden = !isMocked
+        
         circleView.frame = CGRect(x: URLLabel.frame.maxX + 5, y: 17, width: 8, height: 8)
         
         leftSeparator.frame = CGRect(x: 0, y: frame.height - 1, width: statusView.frame.width, height: 1)
@@ -118,6 +135,7 @@ class NFXListCell: UITableViewCell {
         setRequestTime(obj.requestTime ?? "-")
         setType(obj.responseType ?? "-")
         setMethod(obj.requestMethod ?? "-")
+        setMocked(obj.isMocked)
         isNewBasedOnDate(obj.responseDate as Date? ?? Date())
     }
     
@@ -158,6 +176,11 @@ class NFXListCell: UITableViewCell {
     
     func setMethod(_ method: String) {
         methodLabel.text = method
+    }
+    
+    func setMocked(_ mocked: Bool) {
+        isMocked = mocked
+        mockLabel.isHidden = !mocked
     }
     
     func isNewBasedOnDate(_ responseDate: Date) {

@@ -39,6 +39,7 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
         tableView.alwaysBounceVertical = false
         tableView.backgroundColor = UIColor.clear
         tableView.separatorInset = .zero
+        tableView.keyboardDismissMode = .onDrag
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.tableFooterView?.isHidden = true
@@ -91,9 +92,10 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return 1
-        case 1: return self.tableData.count
-        case 2: return 1
+        case 1: return 2
+        case 2: return self.tableData.count
         case 3: return 1
+        case 4: return 1
         default: return 0
         }
     }
@@ -116,19 +118,22 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
             return cell
             
         case 1:
+            return mockCell(for: indexPath.row, reusing: cell)
+            
+        case 2:
             let shortType = tableData[indexPath.row]
             cell.textLabel?.text = shortType.rawValue
             configureCell(cell, indexPath: indexPath)
             return cell
             
-        case 2:
+        case 3:
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.text = "Share Session Logs"
             cell.textLabel?.textColor = UIColor.NFXGreenColor()
             cell.textLabel?.font = UIFont.NFXFont(size: 16)
             return cell
             
-        case 3:
+        case 4:
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.text = "Clear data"
             cell.textLabel?.textColor = UIColor.NFXRedColor()
@@ -142,7 +147,7 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -151,6 +156,19 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
         
         switch section {
         case 1:
+            
+            var mockInfoLabel: UILabel
+            mockInfoLabel = UILabel(frame: headerView.bounds)
+            mockInfoLabel.backgroundColor = UIColor.clear
+            mockInfoLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            mockInfoLabel.font = UIFont.NFXFont(size: 13)
+            mockInfoLabel.textColor = UIColor.NFXGray44Color()
+            mockInfoLabel.textAlignment = .center
+            mockInfoLabel.text = "\nRequests keep their path and query, only the host is replaced"
+            mockInfoLabel.numberOfLines = 2
+            headerView.addSubview(mockInfoLabel)
+            
+        case 2:
             
             var filtersInfoLabel: UILabel
             filtersInfoLabel = UILabel(frame: headerView.bounds)
@@ -173,12 +191,16 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
+            if indexPath.row == 1 {
+                (tableView.cellForRow(at: indexPath)?.accessoryView as? UITextField)?.becomeFirstResponder()
+            }
+        case 2:
             let cell = tableView.cellForRow(at: indexPath)
             self.filters[indexPath.row] = !self.filters[indexPath.row]
             configureCell(cell, indexPath: indexPath)
-        case 2:
-            shareSessionLogsPressed()
         case 3:
+            shareSessionLogsPressed()
+        case 4:
             clearDataButtonPressedOnTableIndex(indexPath)
         default:
             break
@@ -190,8 +212,9 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0: return 44
-        case 1: return 33
-        case 2,3: return 44
+        case 1: return 44
+        case 2: return 33
+        case 3,4: return 44
         default: return 0
         }
     }
@@ -207,11 +230,17 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
             }
         case 1:
             if iPhone4s {
+                return 40
+            } else {
+                return 50
+            }
+        case 2:
+            if iPhone4s {
                 return 50
             } else {
                 return 60
             }
-        case 2, 3:
+        case 3, 4:
             if iPhone4s {
                 return 25
             } else {
@@ -226,12 +255,54 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
         cell?.accessoryType = filters[indexPath.row] ? .checkmark : .none
     }
     
+    private func mockCell(for row: Int, reusing cell: UITableViewCell) -> UITableViewCell {
+        cell.selectionStyle = .none
+        
+        if row == 0 {
+            cell.textLabel?.text = "Mock Server"
+            
+            let mockServerSwitch: UISwitch
+            mockServerSwitch = UISwitch()
+            mockServerSwitch.setOn(NFX.sharedInstance().isMockServerEnabled(), animated: false)
+            mockServerSwitch.addTarget(self, action: #selector(NFXSettingsController_iOS.mockServerSwitchValueChanged(_:)), for: .valueChanged)
+            cell.accessoryView = mockServerSwitch
+        } else {
+            cell.textLabel?.text = "Server URL"
+            
+            let textField: UITextField
+            textField = UITextField(frame: CGRect(x: 0, y: 0, width: max(120, view.frame.width - 160), height: 30))
+            textField.placeholder = "http://localhost:3000"
+            textField.text = NFX.sharedInstance().getMockServerURLString()
+            textField.font = UIFont.NFXFont(size: 14)
+            textField.textColor = UIColor.NFXGray44Color()
+            textField.textAlignment = .right
+            textField.autocapitalizationType = .none
+            textField.autocorrectionType = .no
+            textField.keyboardType = .URL
+            textField.returnKeyType = .done
+            textField.clearButtonMode = .whileEditing
+            textField.addTarget(self, action: #selector(NFXSettingsController_iOS.mockURLTextFieldEditingDidEnd(_:)), for: .editingDidEnd)
+            textField.addTarget(self, action: #selector(NFXSettingsController_iOS.mockURLTextFieldEditingDidEnd(_:)), for: .editingDidEndOnExit)
+            cell.accessoryView = textField
+        }
+        
+        return cell
+    }
+    
     @objc func nfxEnabledSwitchValueChanged(_ sender: UISwitch) {
         if sender.isOn {
             NFX.sharedInstance().enable()
         } else {
             NFX.sharedInstance().disable()
         }
+    }
+    
+    @objc func mockServerSwitchValueChanged(_ sender: UISwitch) {
+        NFX.sharedInstance().setMockServerEnabled(sender.isOn)
+    }
+    
+    @objc func mockURLTextFieldEditingDidEnd(_ sender: UITextField) {
+        NFX.sharedInstance().setMockServerURL(sender.text)
     }
     
     func clearDataButtonPressedOnTableIndex(_ index: IndexPath) {

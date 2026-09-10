@@ -143,6 +143,32 @@ NFX.sharedInstance().ignoreURL("the_url")
 ```
 Tip: You can use the url of the host (for example "https://www.github.com") to ignore all paths of it 
 
+## Redirect requests to a mock server
+
+Point every intercepted request to your own mock server. Only the scheme, host and port are replaced - path, query, method, headers and body are preserved, so your mock server keeps serving the very same endpoints.
+
+#### Swift
+```swift
+NFX.sharedInstance().setMockServerURL("http://localhost:3000")
+NFX.sharedInstance().setMockServerEnabled(true)
+```
+
+#### Objective-C
+```objective-c
+[NFX.sharedInstance setMockServerURL:@"http://localhost:3000"];
+[NFX.sharedInstance setMockServerEnabled:YES];
+```
+
+You can also configure it at runtime from the netfox settings view (iOS): turn on the "Mock Server" switch and type the server URL. The configuration is stored in `UserDefaults`, so it survives app restarts.
+
+Notes:
+- Mocked requests are logged with their **original** URL and get a `MOCK` badge in the request list. The session log contains an extra `[Mocked] redirected to ...` line.
+- The mock server works independently from the logging switch, so you can keep logging turned off.
+- Ignored URLs (`ignoreURL` / `ignoreURLsWithRegex`) and netfox internal requests are never redirected.
+- Every redirected request carries the `X-Netfox-Original-URL` and `X-Netfox-Original-Host` headers, so your mock server can route or debug based on the original address.
+- A path prefix is supported as well: `http://localhost:3000/api` rewrites `https://example.com/v1/users` to `http://localhost:3000/api/v1/users`.
+- If your mock server is not served over HTTPS (e.g. `http://localhost:3000`), allow it in your `Info.plist` through `NSAppTransportSecurity` (`NSAllowsArbitraryLoads`, or `NSAllowsLocalNetworking` for local addresses).
+
 ## Features
 
 - Search: You can easily search among requests via
@@ -155,6 +181,7 @@ Tip: You can use the url of the host (for example "https://www.github.com") to i
 - Filtering: Select what types of responses (JSON/XML/HTML/Image/Other) you want to see
 - Enable/disable logging within the app
 - Clear data within the app
+- Mock server: Redirect every request to your own mock server, keeping its path and query
 - Statistics: Check cool things like average response time, total response size and more for your selected types of responses
 - Info: Check your IP address, your app version and build number and other things within the app
 - More to come.. ;)

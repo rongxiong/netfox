@@ -35,7 +35,9 @@ open class NFXProtocol: URLProtocol {
     }
     
     private class func canServeRequest(_ request: URLRequest) -> Bool {
-        guard NFX.sharedInstance().isEnabled() else {
+        // The mock server works independently from the logging switch, so the
+        // protocol has to stay in the loading chain even when logging is off.
+        guard NFX.sharedInstance().isEnabled() || NFX.swiftSharedInstance.mockServer.configuration.isEnabled else {
             return false
         }
         
@@ -62,9 +64,17 @@ open class NFXProtocol: URLProtocol {
     }
     
     override open func startLoading() {
+        // The model always keeps the original request, so the logs keep showing
+        // the URL the app asked for - even when it is served by the mock server.
         model.saveRequest(request)
         
-        let mutableRequest = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+        let outgoingRequest = NFX.swiftSharedInstance.mockServer.redirectedRequest(for: request) ?? request
+        if let mockedURL = outgoingRequest.url, mockedURL != request.url {
+            model.isMocked = true
+            model.mockTargetURL = mockedURL.absoluteString
+        }
+        
+        let mutableRequest = (outgoingRequest as NSURLRequest).mutableCopy() as! NSMutableURLRequest
         URLProtocol.setProperty(true, forKey: NFXProtocol.nfxInternalKey, in: mutableRequest)
         session.dataTask(with: mutableRequest as URLRequest).resume()
     }
@@ -121,6 +131,11 @@ extension NFXProtocol: URLSessionDataDelegate {
         }
         
         guard let request = task.originalRequest else {
+            return
+        }
+        
+        // With logging off (but the mock server on) nothing is persisted.
+        guard NFX.sharedInstance().isEnabled() else {
             return
         }
         
