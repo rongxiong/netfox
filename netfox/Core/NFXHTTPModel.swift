@@ -97,6 +97,41 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         saveResponseBodyData(data)
         formattedResponseLogEntry().appendToFileURL(NFXPath.sessionLogURL)
+        
+        saveSuccessLogToDocuments()
+    }
+    
+    /// On top of the regular session log, every successful exchange is kept in
+    /// its own file inside the Documents directory, named after the request URL
+    /// path, holding both the request and the response log entry.
+    func saveSuccessLogToDocuments() {
+        guard isSuccessful(), let fileName = getSuccessLogFileName() else { return }
+        
+        let log = formattedRequestLogEntry() + formattedResponseLogEntry()
+        saveData(log, to: NFXPath.documentsFileURL(fileName))
+    }
+    
+    /// e.g. "https://example.com/api/v1/users"  -> "api-v1-users.log"
+    ///      "https://example.com/api/v1/users/" -> "api-v1-users.log"
+    ///      "https://example.com"               -> "example_com.log"
+    @objc public func getSuccessLogFileName() -> String? {
+        let components = requestURLComponents ?? requestURL.flatMap { URLComponents(string: $0) }
+        guard let components = components else { return nil }
+        
+        var path = components.path
+        while path.hasPrefix("/") {
+            path.removeFirst()
+        }
+        while path.hasSuffix("/") {
+            path.removeLast()
+        }
+        
+        if path.isEmpty {
+            guard let host = components.host, !host.isEmpty else { return nil }
+            return host.replacingOccurrences(of: ".", with: "_") + ".log"
+        }
+        
+        return path.replacingOccurrences(of: "/", with: "-") + ".log"
     }
     
     func saveRequestBodyData(_ data: Data) {

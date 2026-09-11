@@ -339,6 +339,13 @@ struct NFXPath {
     static let tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
     static let nfxDirURL = tmpDirURL.appendingPathComponent("NFX", isDirectory: true)
     static let sessionLogURL = nfxDirURL.appendingPathComponent(sessionLogName)
+    /// Where the per-URL success logs are kept. Falls back to the temp dir when
+    /// the Documents directory is unavailable.
+    static let documentsDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first ?? tmpDirURL
+    
+    static func documentsFileURL(_ fileName: String) -> URL {
+        return documentsDirURL.appendingPathComponent(fileName)
+    }
     
     static func createNFXDirIfNotExist() {
         do {
