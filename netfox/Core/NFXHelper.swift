@@ -348,11 +348,27 @@ struct NFXPath {
     }
     
     static func createNFXDirIfNotExist() {
+        createDirIfNotExist(nfxDirURL)
+    }
+    
+    /// The system is free to purge the temporary directory while the app is not
+    /// running, so the working dir has to be re-created lazily - right before
+    /// every write - instead of only once at startup.
+    static func createDirIfNotExist(_ dirURL: URL) {
+        var isDirectory: ObjCBool = false
+        let exists = FileManager.default.fileExists(atPath: dirURL.path, isDirectory: &isDirectory)
+        guard !exists || !isDirectory.boolValue else { return }
+        
         do {
-            try FileManager.default.createDirectory(at: nfxDirURL, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true, attributes: nil)
         } catch let error {
-            print("[NFX]: failed to create working dir - \(error.localizedDescription)")
+            print("[NFX]: failed to create dir [\(dirURL)] - \(error.localizedDescription)")
         }
+    }
+    
+    /// Creates the directory that is meant to contain `fileURL` when it is missing.
+    static func createDirForFileIfNotExist(_ fileURL: URL) {
+        createDirIfNotExist(fileURL.deletingLastPathComponent())
     }
     
     static func deleteNFXDir() {
@@ -388,9 +404,20 @@ struct NFXPath {
 
 extension String {
     
+    /// ":", "/" and "\" (plus the characters Windows rejects) are not safe in
+    /// file names - ":" is the legacy HFS separator and is even swapped with
+    /// "/" by Finder. Every name netfox writes goes through here.
+    var nfxSafeFileName: String {
+        let invalidCharacters = CharacterSet(charactersIn: "/\\:?*<>|\"")
+        let sanitized = components(separatedBy: invalidCharacters).joined(separator: "-")
+        return sanitized.isEmpty ? "nfx" : sanitized
+    }
+    
     func appendToFileURL(_ fileURL: URL) {
+        NFXPath.createDirForFileIfNotExist(fileURL)
+        
         guard let fileHandle = try? FileHandle(forWritingTo: fileURL) else {
-            write(to: fileURL)
+            createFileIfNotExist(at: fileURL)
             return
         }
 
@@ -401,9 +428,9 @@ extension String {
                 try fileHandle.seekToEnd()
                 try fileHandle.write(contentsOf: data)
             } catch let error {
-                print("[NFX]: Failed to append [\(self.prefix(128))] to \(fileURL), trying to create new file - \(error.localizedDescription)")
-                write(to: fileURL)
+                print("[NFX]: Failed to append [\(self.prefix(128))] to \(fileURL) - \(error.localizedDescription)")
             }
+            try? fileHandle.close()
         } else {
             // TODO: replace FileHandle with more safe way, possible crash on iOS <13.4 https://github.com/kasketis/netfox/issues/221
             fileHandle.seekToEndOfFile()
@@ -411,7 +438,11 @@ extension String {
         }
     }
     
-    private func write(to fileURL: URL) {
+    /// Only used when the log file is not there yet - an existing file is never
+    /// overwritten, otherwise the entries written so far would be lost.
+    private func createFileIfNotExist(at fileURL: URL) {
+        guard !FileManager.default.fileExists(atPath: fileURL.path) else { return }
+        
         do {
             try write(to: fileURL, atomically: true, encoding: .utf8)
         } catch let error {

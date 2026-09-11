@@ -128,10 +128,10 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         if path.isEmpty {
             guard let host = components.host, !host.isEmpty else { return nil }
-            return host.replacingOccurrences(of: ".", with: "_") + ".log"
+            return (host.replacingOccurrences(of: ".", with: "_") + ".log").nfxSafeFileName
         }
         
-        return path.replacingOccurrences(of: "/", with: "-") + ".log"
+        return (path.replacingOccurrences(of: "/", with: "-") + ".log").nfxSafeFileName
     }
     
     func saveRequestBodyData(_ data: Data) {
@@ -191,7 +191,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @objc public func getRequestBodyFilename() -> String {
-        return "request_body_\(requestTime!)_\(randomHash)"
+        return "request_body_\(requestTime ?? "")_\(randomHash)".nfxSafeFileName
     }
     
     @objc public func getResponseBodyFileURL() -> URL {
@@ -199,11 +199,12 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @objc public func getResponseBodyFilename() -> String {
-        return "response_body_\(requestTime!)_\(randomHash)"
+        return "response_body_\(requestTime ?? "")_\(randomHash)".nfxSafeFileName
     }
     
     @objc public func saveData(_ dataString: String, to fileURL: URL) {
         do {
+            NFXPath.createDirForFileIfNotExist(fileURL)
             try dataString.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch let error {
             print("[NFX]: Failed to save data to [\(fileURL)] - \(error.localizedDescription)")
