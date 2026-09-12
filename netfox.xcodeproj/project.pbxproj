@@ -7,15 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		026274D9214C6BC400AE1BDF /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026274D8214C6BC400AE1BDF /* WKWebViewController.swift */; };
 		026274F1214C6BF000AE1BDF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026274F0214C6BF000AE1BDF /* SceneDelegate.swift */; };
 		719756B3279C7EC500402E07 /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
 		719756B4279C7EC500402E07 /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8229AD651F8FB34300A9D613 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8229AD641F8FB34300A9D613 /* AppDelegate.swift */; };
-		8229AD671F8FB34300A9D613 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8229AD661F8FB34300A9D613 /* ImageViewController.swift */; };
+		AB0000000000000000000050 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000040 /* Scenario.swift */; };
+		AB0000000000000000000051 /* ScenarioRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000041 /* ScenarioRunner.swift */; };
+		AB0000000000000000000052 /* ScenariosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000042 /* ScenariosView.swift */; };
 		8229AD6C1F8FB34300A9D613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8229AD6B1F8FB34300A9D613 /* Assets.xcassets */; };
-		82F6E1031F8FD81C002B31BD /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F6E1021F8FD81C002B31BD /* TextViewController.swift */; };
-		82F6E1051F8FF55D002B31BD /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F6E1041F8FF55D002B31BD /* WebViewController.swift */; };
 		9B0000000000000000000011 /* NFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000001 /* NFX.swift */; };
 		9B0000000000000000000012 /* NFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000001 /* NFX.swift */; };
 		9B0000000000000000000021 /* NFXAuthenticationChallengeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000002 /* NFXAuthenticationChallengeSender.swift */; };
@@ -96,15 +95,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		026274D8214C6BC400AE1BDF /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		026274F0214C6BF000AE1BDF /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netfox_ios_demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8229AD641F8FB34300A9D613 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8229AD661F8FB34300A9D613 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		AB0000000000000000000040 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
+		AB0000000000000000000041 /* ScenarioRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioRunner.swift; sourceTree = "<group>"; };
+		AB0000000000000000000042 /* ScenariosView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenariosView.swift; sourceTree = "<group>"; };
 		8229AD6B1F8FB34300A9D613 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8229AD701F8FB34300A9D613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		82F6E1021F8FD81C002B31BD /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
-		82F6E1041F8FF55D002B31BD /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_osx.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0000000000000000000001 /* NFX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFX.swift; sourceTree = "<group>"; };
@@ -166,13 +164,12 @@
 			isa = PBXGroup;
 			children = (
 				8229AD641F8FB34300A9D613 /* AppDelegate.swift */,
-				8229AD661F8FB34300A9D613 /* ImageViewController.swift */,
+				AB0000000000000000000040 /* Scenario.swift */,
+				AB0000000000000000000041 /* ScenarioRunner.swift */,
+				AB0000000000000000000042 /* ScenariosView.swift */,
 				8229AD6B1F8FB34300A9D613 /* Assets.xcassets */,
 				8229AD701F8FB34300A9D613 /* Info.plist */,
 				AB0000000000000000000001 /* DemoRootView.swift */,
-				82F6E1021F8FD81C002B31BD /* TextViewController.swift */,
-				82F6E1041F8FF55D002B31BD /* WebViewController.swift */,
-				026274D8214C6BC400AE1BDF /* WKWebViewController.swift */,
 				026274F0214C6BF000AE1BDF /* SceneDelegate.swift */,
 			);
 			path = netfox_ios_demo;
@@ -428,13 +425,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				026274D9214C6BC400AE1BDF /* WKWebViewController.swift in Sources */,
-				8229AD671F8FB34300A9D613 /* ImageViewController.swift in Sources */,
 				8229AD651F8FB34300A9D613 /* AppDelegate.swift in Sources */,
-				82F6E1031F8FD81C002B31BD /* TextViewController.swift in Sources */,
-				82F6E1051F8FF55D002B31BD /* WebViewController.swift in Sources */,
 				026274F1214C6BF000AE1BDF /* SceneDelegate.swift in Sources */,
 				AB0000000000000000000002 /* DemoRootView.swift in Sources */,
+				AB0000000000000000000050 /* Scenario.swift in Sources */,
+				AB0000000000000000000051 /* ScenarioRunner.swift in Sources */,
+				AB0000000000000000000052 /* ScenariosView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,7 +531,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = netfox_ios_demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-demo-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -564,7 +560,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = netfox_ios_demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-demo-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -44,18 +44,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the background to the background.
     }
 }
-
-/// Programmatic replacement for the former Main.storyboard tab hierarchy.
-final class DemoTabBarController: UITabBarController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        viewControllers = [
-            TextViewController(),
-            ImageViewController(),
-            WebViewController(),
-            WKWebViewController()
-        ]
-    }
-}
