@@ -238,7 +238,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         case .JSON:
             do {
                 let rawJsonData = try JSONSerialization.jsonObject(with: rawData, options: [])
-                let prettyPrintedString = try JSONSerialization.data(withJSONObject: rawJsonData, options: [.prettyPrinted])
+                let prettyPrintedString = try JSONSerialization.data(withJSONObject: rawJsonData, options: [.prettyPrinted, .withoutEscapingSlashes])
                 return String(data: prettyPrintedString, encoding: String.Encoding.utf8)
             } catch {
                 return nil

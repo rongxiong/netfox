@@ -158,21 +158,23 @@ struct NFXKeyValueRow: View {
     let field: NFXContentField
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(spacing: 8) {
+        HStack(alignment: .center, spacing: 8) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(field.key)
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Color.nfxTertiaryText)
-                Spacer(minLength: 8)
-                NFXCopyButton(text: field.value)
+
+                Text(field.value)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.nfxPrimaryText)
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            Text(field.value)
-                .font(.subheadline)
-                .foregroundStyle(Color.nfxPrimaryText)
-                .textSelection(.enabled)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer(minLength: 8)
+
+            NFXCopyButton(text: field.value)
         }
         .padding(.vertical, 6)
         .contextMenu {
