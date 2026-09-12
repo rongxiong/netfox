@@ -253,14 +253,17 @@ struct NFXMetricCard: View {
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(Color.nfxPrimaryText)
 
-            if let subtitle = subtitle {
-                Text(subtitle)
-                    .font(.caption2)
-                    .foregroundStyle(Color.nfxTertiaryText)
-                    .lineLimit(2)
-            }
+            // Reserve the subtitle line even when absent so every grid card
+            // keeps the same height.
+            Text(subtitle ?? " ")
+                .font(.caption2)
+                .foregroundStyle(subtitle == nil ? Color.clear : Color.nfxTertiaryText)
+                .lineLimit(2)
+
+            // Fill the grid row so every card in a row matches the tallest one.
+            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(NFXTheme.Metrics.cardPadding)
         .background(Color.nfxCard, in: RoundedRectangle(cornerRadius: NFXTheme.Metrics.cardRadius, style: .continuous))
         .overlay(alignment: .leading) {
