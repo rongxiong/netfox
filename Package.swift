@@ -1,11 +1,12 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
     name: "netfox",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v15),
+        .macOS(.v12)
     ],
     products: [
         .library(
@@ -15,8 +16,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "netfox",
-                path: "netfox/",
-                exclude: ["OSX"])
+                path: "netfox/")
     ],
     swiftLanguageVersions: [.v5]
 )

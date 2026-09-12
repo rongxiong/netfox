@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 #if os(OSX)
 import Cocoa
 #else
@@ -25,13 +26,13 @@ open class NFX: NSObject {
     
     // MARK: - Properties
     #if os(OSX)
-        var windowController: NFXWindowController?
+        var windowController: NFXMacWindowController?
         let mainMenu: NSMenu? = NSApp.mainMenu?.items[1].submenu
         var nfxMenuItem: NSMenuItem = NSMenuItem(title: "netfox", action: #selector(NFX.show), keyEquivalent: String.init(describing: (character: NSF9FunctionKey, length: 1)))
     #endif
     
     #if os(iOS)
-        fileprivate var navigationViewController: UINavigationController?
+        fileprivate var hostingViewController: UIViewController?
     #endif
     
     fileprivate enum Constants: String {
@@ -39,7 +40,6 @@ open class NFX: NSObject {
         case alreadyStoppedMessage = "Already stopped!"
         case startedMessage = "Started!"
         case stoppedMessage = "Stopped!"
-        case nibName = "NetfoxWindow"
     }
     
     fileprivate var started: Bool = false
@@ -311,36 +311,20 @@ extension NFX {
     }
     
     fileprivate func showNFX(on rootViewController: UIViewController?) {
-        let navigationController = UINavigationController(rootViewController: NFXListController_iOS())
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.tintColor = UIColor.NFXOrangeColor()
-        navigationController.navigationBar.barTintColor = UIColor.NFXStarkWhiteColor()
-        navigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.NFXOrangeColor()]
+        let controller = UIHostingController(rootView: NetfoxView())
+        controller.presentationController?.delegate = self
 
-        if #available(iOS 13.0, *) {
-            let appearence = UINavigationBarAppearance()
-            
-            appearence.configureWithOpaqueBackground()
-            appearence.backgroundColor = UIColor.NFXStarkWhiteColor()
-            appearence.titleTextAttributes = [.foregroundColor: UIColor.black]
-            
-            navigationController.navigationBar.standardAppearance = appearence
-            navigationController.navigationBar.scrollEdgeAppearance = appearence
-            
-            if #available(iOS 15.0, *) {
-                navigationController.navigationBar.compactScrollEdgeAppearance = appearence
-            }
-            
-            navigationController.presentationController?.delegate = self
-        }
-        
-        rootViewController?.present(navigationController, animated: true, completion: nil)
-        navigationViewController = navigationController
+        rootViewController?.present(controller, animated: true, completion: nil)
+        hostingViewController = controller
     }
     
     fileprivate func hideNFXFollowingPlatform(_ completion: (() -> Void)?) {
-        navigationViewController?.presentingViewController?.dismiss(animated: true, completion: completion)
-        navigationViewController = nil
+        if let presentingViewController = hostingViewController?.presentingViewController {
+            presentingViewController.dismiss(animated: true, completion: completion)
+        } else {
+            hostingViewController?.dismiss(animated: true, completion: completion)
+        }
+        hostingViewController = nil
     }
 }
 
@@ -383,11 +367,9 @@ extension NFX {
     
     public func showNFXFollowingPlatform()  {
         if windowController == nil {
-            let nibName = Constants.nibName.rawValue
-
-            windowController = NFXWindowController(windowNibName: nibName)
+            windowController = NFXMacWindowController(rootView: NFXMacHostView())
         }
-        windowController?.showWindow(nil)
+        windowController?.show()
     }
     
     public func hideNFXFollowingPlatform(completion: (() -> Void)?) {

@@ -19,6 +19,14 @@ Very useful and handy for network related issues and bugs
 
 Supports Swift 5 and above - bridged also for Objective-C.
 
+The whole netfox UI is written in SwiftUI.
+
+### Requirements
+
+- iOS 15.0+ / macOS 12.0+
+- Xcode 14+
+- Swift 5.7+ (SwiftPM)
+
 For Swift 4 support, use version [1.19.0](https://github.com/kasketis/netfox/releases/tag/1.19.0).
 
 For Swift 3.2 support, use version [1.12.1](https://github.com/kasketis/netfox/releases/tag/1.12.1).
@@ -31,7 +39,7 @@ Feel free to contribute :)
 
 ## Installation
 
-### SPM (beta, only iOS)
+### SPM (iOS & macOS)
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
@@ -68,10 +76,10 @@ If you prefer not to use dependency managers, you can integrate netfox into your
 
 You can do it by copying the "netfox" folder in your project (make sure that "Create groups" option is selected)
 
-The above folder contains 3 subfolders: Core, iOS and OSX. 
+The above folder contains 2 subfolders:
 
-- If you target on iOS keep only Core and iOS folders (remove OSX folder)
-- If you target on OSX keep only Core and OSX folders (remove iOS folder)
+- `Core`: the interception logic, the model and the SwiftUI state layer
+- `UI`: every SwiftUI screen (shared by iOS and macOS; the `Mac` subfolder is macOS only)
 
 ## Start
 
@@ -107,6 +115,32 @@ You can add the DEBUG symbol with the -DDEBUG entry. Set it in the "Swift Compil
 Just shake your device and check what's going right or wrong! 
 Shake again and go back to your app!
 ![](https://raw.githubusercontent.com/kasketis/netfox/master/assets/shake.png)
+
+### SwiftUI entry point
+
+Next to the gestures you can present netfox from your own SwiftUI code - as a sheet, or embedded in your own navigation stack. Both share the state with `NFX.sharedInstance().show()`, so opening it from either entry point shows the same data.
+
+```swift
+import SwiftUI
+import netfox
+
+struct DebugView: View {
+    @State private var showsNetfox = false
+
+    var body: some View {
+        List {
+            Button("Open netfox") { showsNetfox = true }
+        }
+        // Presents the whole netfox UI in a sheet
+        .netfoxPanel(isPresented: $showsNetfox)
+    }
+}
+
+// …or embed the root view yourself
+NavigationStack { NetfoxView() }
+```
+
+Both are available from iOS 15.0 / macOS 12.0.
 
 ## Stop
 
@@ -159,7 +193,7 @@ NFX.sharedInstance().setMockServerEnabled(true)
 [NFX.sharedInstance setMockServerEnabled:YES];
 ```
 
-You can also configure it at runtime from the netfox settings view (iOS): turn on the "Mock Server" switch and type the server URL. The configuration is stored in `UserDefaults`, so it survives app restarts.
+You can also configure it at runtime from the netfox settings view: turn on the "Mock Server" switch and type the server URL. The configuration is stored in `UserDefaults`, so it survives app restarts.
 
 ### Mock only specific URLs
 

@@ -39,85 +39,6 @@ public extension HTTPModelShortType {
 }
 
 
-extension NFXColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-    
-    convenience init(netHex: Int) {
-        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
-    }
-    
-    class func NFXOrangeColor() -> NFXColor {
-        return NFXColor.init(netHex: 0xec5e28)
-    }
-    
-    class func NFXGreenColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x38bb93)
-    }
-    
-    class func NFXDarkGreenColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x2d7c6e)
-    }
-    
-    class func NFXRedColor() -> NFXColor {
-        return NFXColor.init(netHex: 0xd34a33)
-    }
-    
-    class func NFXDarkRedColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x643026)
-    }
-    
-    class func NFXStarkWhiteColor() -> NFXColor {
-        return NFXColor.init(netHex: 0xccc5b9)
-    }
-    
-    class func NFXDarkStarkWhiteColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x9b958d)
-    }
-    
-    class func NFXLightGrayColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x9b9b9b)
-    }
-    
-    class func NFXGray44Color() -> NFXColor {
-        return NFXColor.init(netHex: 0x707070)
-    }
-    
-    class func NFXGray95Color() -> NFXColor {
-        return NFXColor.init(netHex: 0xf2f2f2)
-    }
-    
-    class func NFXBlackColor() -> NFXColor {
-        return NFXColor.init(netHex: 0x231f20)
-    }
-}
-
-extension NFXFont {
-    #if os(iOS)
-    class func NFXFont(size: CGFloat) -> UIFont {
-        return UIFont(name: "HelveticaNeue", size: size)!
-    }
-    
-    class func NFXFontBold(size: CGFloat) -> UIFont {
-        return UIFont(name: "HelveticaNeue-Bold", size: size)!
-    }
-    
-    #elseif os(OSX)
-    class func NFXFont(size: CGFloat) -> NSFont {
-        return NSFont(name: "HelveticaNeue", size: size)!
-    }
-    
-    class func NFXFontBold(size: CGFloat) -> NSFont {
-        return NSFont(name: "HelveticaNeue-Bold", size: size)!
-    }
-    #endif
-}
-
 extension URLRequest {
     func getNFXURL() -> String {
         if (url != nil) {
@@ -199,40 +120,6 @@ extension URLResponse {
     
     func getNFXHeaders() -> [AnyHashable: Any] {
         return (self as? HTTPURLResponse)?.allHeaderFields ?? [:]
-    }
-}
-
-extension NFXImage {
-    class func NFXSettings() -> NFXImage {
-        #if os (iOS)
-        return UIImage(data: NFXAssets.getImage(NFXAssetName.settings), scale: 1.7)!
-        #elseif os(OSX)
-        return NSImage(data: NFXAssets.getImage(NFXAssetName.settings))!
-        #endif
-    }
-
-    class func NFXClose() -> NFXImage {
-        #if os (iOS)
-        return UIImage(data: NFXAssets.getImage(NFXAssetName.close), scale: 1.7)!
-        #elseif os(OSX)
-        return NSImage(data: NFXAssets.getImage(NFXAssetName.close))!
-        #endif
-    }
-    
-    class func NFXInfo() -> NFXImage {
-        #if os (iOS)
-        return UIImage(data: NFXAssets.getImage(NFXAssetName.info), scale: 1.7)!
-        #elseif os(OSX)
-        return NSImage(data: NFXAssets.getImage(NFXAssetName.info))!
-        #endif
-    }
-    
-    class func NFXStatistics() -> NFXImage {
-        #if os (iOS)
-        return UIImage(data: NFXAssets.getImage(NFXAssetName.statistics), scale: 1.7)!
-        #elseif os(OSX)
-        return NSImage(data: NFXAssets.getImage(NFXAssetName.statistics))!
-        #endif
     }
 }
 

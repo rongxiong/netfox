@@ -1,0 +1,254 @@
+//
+//  NFXRequestListView.swift
+//  netfox
+//
+//  Copyright © 2016 netfox. All rights reserved.
+//
+
+import SwiftUI
+
+struct NFXRequestListView: View {
+
+    /// Set by the macOS layout, where selecting a row drives the detail column
+    /// instead of pushing it on a navigation stack.
+    var selection: Binding<NFXHTTPModel?>?
+
+    @EnvironmentObject private var store: NFXStore
+    @Environment(\.nfxDismiss) private var dismiss
+    @Environment(\.nfxShowsClose) private var showsClose
+
+    @State private var showsClearConfirmation = false
+
+    #if os(macOS)
+    @State private var showsSettings = false
+    @State private var showsStatistics = false
+    @State private var showsInfo = false
+    #endif
+
+    var body: some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.nfxBackground.ignoresSafeArea())
+            .nfxListStyle()
+            .navigationTitle("Requests")
+            .searchable(text: $store.searchText, prompt: Text("Search URL, method or type"))
+            .toolbar { toolbarContent }
+            .alert("Clear data?", isPresented: $showsClearConfirmation) {
+                Button("Cancel", role: .cancel) { }
+                Button("Clear", role: .destructive) { store.clear() }
+            } message: {
+                Text("Every intercepted request and its logged body will be removed.")
+            }
+            #if os(macOS)
+            .sheet(isPresented: $showsSettings) {
+                NFXMacSheetPage(title: "Settings") { NFXSettingsView() }
+            }
+            .sheet(isPresented: $showsStatistics) {
+                NFXMacSheetPage(title: "Statistics") { NFXStatisticsView() }
+            }
+            .sheet(isPresented: $showsInfo) {
+                NFXMacSheetPage(title: "Info") { NFXInfoView() }
+            }
+            #endif
+    }
+
+    // MARK: - Content
+
+    @ViewBuilder
+    private var content: some View {
+        if store.models.isEmpty {
+            NFXEmptyStateView(systemImage: "tray",
+                              title: "No requests yet",
+                              message: "Every request your app performs shows up here as soon as it is intercepted.")
+        } else if store.displayedModels.isEmpty {
+            NFXEmptyStateView(systemImage: "magnifyingglass",
+                              title: "No results",
+                              message: "Nothing matches “\(store.searchText)”.",
+                              actionTitle: "Clear search",
+                              action: { store.searchText = "" })
+        } else {
+            list
+        }
+    }
+
+    private var list: some View {
+        List {
+            Section {
+                ForEach(store.displayedModels, id: \.randomHash) { model in
+                    row(model)
+                        .nfxPlainRow(insets: EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
+                }
+            } header: {
+                Text(summaryText)
+                    .font(.caption)
+                    .foregroundStyle(Color.nfxSecondaryText)
+                    .textCase(nil)
+            }
+        }
+        .animation(.easeOut(duration: 0.2), value: store.displayedModels.count)
+    }
+
+    @ViewBuilder
+    private func row(_ model: NFXHTTPModel) -> some View {
+        let rowBody = NFXRequestRowView(model: model, isUnread: store.isUnread(model))
+
+        if let selection = selection {
+            Button {
+                selection.wrappedValue = model
+            } label: {
+                rowBody
+                    .background(isSelected(model) ? Color.nfxAccent.opacity(0.16) : Color.clear,
+                                in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .animation(.easeOut(duration: 0.15), value: isSelected(model))
+        } else {
+            NavigationLink {
+                NFXDetailsView(model: model)
+            } label: {
+                rowBody
+            }
+        }
+    }
+
+    private func isSelected(_ model: NFXHTTPModel) -> Bool {
+        guard let selection = selection else { return false }
+        return selection.wrappedValue?.randomHash == model.randomHash
+    }
+
+    private var summaryText: String {
+        let total = store.models.count
+        let shown = store.displayedModels.count
+        guard shown != total else {
+            return "\(NFXFormat.integer(total)) requests"
+        }
+        return "\(NFXFormat.integer(shown)) of \(NFXFormat.integer(total)) requests"
+    }
+
+    // MARK: - Toolbar
+
+    private var toolbarContent: some ToolbarContent {
+        Group {
+            #if os(macOS)
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: { showsSettings = true }) {
+                    Label("Settings", systemImage: "gearshape")
+                }
+            }
+            ToolbarItem(placement: .automatic) {
+                Button(action: { showsStatistics = true }) {
+                    Label("Statistics", systemImage: "chart.bar")
+                }
+            }
+            ToolbarItem(placement: .automatic) {
+                Button(action: { showsInfo = true }) {
+                    Label("Info", systemImage: "info.circle")
+                }
+            }
+            #else
+            ToolbarItem(placement: .primaryAction) {
+                NavigationLink {
+                    NFXSettingsView()
+                } label: {
+                    Label("Settings", systemImage: "gearshape")
+                }
+            }
+            ToolbarItem(placement: .automatic) {
+                NavigationLink {
+                    NFXStatisticsView()
+                } label: {
+                    Label("Statistics", systemImage: "chart.bar")
+                }
+            }
+            ToolbarItem(placement: .automatic) {
+                NavigationLink {
+                    NFXInfoView()
+                } label: {
+                    Label("Info", systemImage: "info.circle")
+                }
+            }
+            #endif
+
+            ToolbarItem(placement: .automatic) {
+                Button(role: .destructive, action: { showsClearConfirmation = true }) {
+                    Label("Clear", systemImage: "trash")
+                }
+            }
+
+            ToolbarItem(placement: .cancellationAction) {
+                closeButton
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var closeButton: some View {
+        if showsClose {
+            Button(action: { dismiss() }) {
+                Label("Close", systemImage: "xmark")
+            }
+        }
+    }
+}
+
+// MARK: - Row styling
+
+extension View {
+
+    func nfxPlainRow(insets: EdgeInsets) -> some View {
+        #if os(iOS)
+        self
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(insets)
+        #else
+        self
+            .listRowBackground(Color.clear)
+            .listRowInsets(insets)
+        #endif
+    }
+
+    func nfxListStyle() -> some View {
+        #if os(iOS)
+        self.listStyle(.insetGrouped)
+        #else
+        self.listStyle(.automatic)
+        #endif
+    }
+}
+
+#if os(macOS)
+
+/// Settings / statistics / info are presented as sheets on macOS.
+struct NFXMacSheetPage<Content: View>: View {
+
+    let title: String
+    let content: Content
+
+    @Environment(\.dismiss) private var dismiss
+
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                Spacer()
+                Button("Done") { dismiss() }
+            }
+            .padding(14)
+
+            Divider()
+
+            content
+                .frame(minWidth: 460, minHeight: 340)
+        }
+        .background(Color.nfxBackground)
+    }
+}
+
+#endif

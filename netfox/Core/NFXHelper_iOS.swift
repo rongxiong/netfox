@@ -1,5 +1,5 @@
 //
-//  NFXHelper.swift
+//  NFXHelper_iOS.swift
 //  netfox
 //
 //  Copyright © 2016 netfox. All rights reserved.
@@ -44,6 +44,7 @@ public extension UIDevice {
         switch identifier {
         case "i386": return "iPhone Simulator"
         case "x86_64": return "iPhone Simulator"
+        case "arm64": return "iPhone Simulator"
         case "iPhone1,1": return "iPhone"
         case "iPhone1,2": return "iPhone 3G"
         case "iPhone2,1": return "iPhone 3GS"
@@ -80,6 +81,27 @@ public extension UIDevice {
         case "iPhone12,3": return "iPhone 11 Pro"
         case "iPhone12,5": return "iPhone 11 Pro Max"
         case "iPhone12,8": return "iPhone SE 2nd Gen"
+        case "iPhone13,1": return "iPhone 12 mini"
+        case "iPhone13,2": return "iPhone 12"
+        case "iPhone13,3": return "iPhone 12 Pro"
+        case "iPhone13,4": return "iPhone 12 Pro Max"
+        case "iPhone14,2": return "iPhone 13 Pro"
+        case "iPhone14,3": return "iPhone 13 Pro Max"
+        case "iPhone14,4": return "iPhone 13 mini"
+        case "iPhone14,5": return "iPhone 13"
+        case "iPhone14,6": return "iPhone SE 3rd Gen"
+        case "iPhone14,7": return "iPhone 14"
+        case "iPhone14,8": return "iPhone 14 Plus"
+        case "iPhone15,2": return "iPhone 14 Pro"
+        case "iPhone15,3": return "iPhone 14 Pro Max"
+        case "iPhone15,4": return "iPhone 15"
+        case "iPhone15,5": return "iPhone 15 Plus"
+        case "iPhone16,1": return "iPhone 15 Pro"
+        case "iPhone16,2": return "iPhone 15 Pro Max"
+        case "iPhone17,1": return "iPhone 16 Pro"
+        case "iPhone17,2": return "iPhone 16 Pro Max"
+        case "iPhone17,3": return "iPhone 16"
+        case "iPhone17,4": return "iPhone 16 Plus"
         
         case "iPod1,1": return "1st Gen iPod"
         case "iPod2,1": return "2nd Gen iPod"
@@ -140,47 +162,41 @@ public extension UIDevice {
         case "iPad8,7": return "iPad Pro 12.9 inch 3rd Gen (WiFi+Cellular)"
         case "iPad8,8": return "iPad Pro 12.9 inch 3rd Gen (1TB, WiFi+Cellular)"
         case "iPad8,9": return "iPad Pro 11 inch 2nd Gen (WiFi)"
-        case "iPad8,10": return "iPad Pro 11 inch 2nd Gen (WiFi+Cellular)"
+        case "iPad8,10": return "iPad Pro 11 inch (WiFi+Cellular)"
         case "iPad8,11": return "iPad Pro 12.9 inch 4th Gen (WiFi)"
         case "iPad8,12": return "iPad Pro 12.9 inch 4th Gen (WiFi+Cellular)"
         case "iPad11,1": return "iPad mini 5th Gen (WiFi)"
         case "iPad11,2": return "iPad mini 5th Gen"
         case "iPad11,3": return "iPad Air 3rd Gen (WiFi)"
         case "iPad11,4": return "iPad Air 3rd Gen"
-        default: return "Not Available"
+        case "iPad11,6": return "iPad 8th Gen (WiFi)"
+        case "iPad11,7": return "iPad 8th Gen (WiFi+Cellular)"
+        case "iPad12,1": return "iPad 9th Gen (WiFi)"
+        case "iPad12,2": return "iPad 9th Gen (WiFi+Cellular)"
+        case "iPad13,1": return "iPad Air 4th Gen (WiFi)"
+        case "iPad13,2": return "iPad Air 4th Gen (WiFi+Cellular)"
+        case "iPad13,4": return "iPad Pro 11 inch 3rd Gen"
+        case "iPad13,8": return "iPad Pro 12.9 inch 5th Gen"
+        case "iPad13,16": return "iPad Air 5th Gen"
+        case "iPad13,18": return "iPad 10th Gen"
+        case "iPad14,3": return "iPad Pro 11 inch 4th Gen"
+        case "iPad14,5": return "iPad Pro 12.9 inch 6th Gen"
+        case "iPad14,8": return "iPad Air 11 inch (M2)"
+        case "iPad14,10": return "iPad Air 13 inch (M2)"
+        case "iPad14,11": return "iPad Pro 11 inch (M4)"
+        case "iPad16,3": return "iPad Pro 11 inch (M5)"
+        case "iPad16,6": return "iPad Pro 13 inch (M5)"
+        
+        case "AppleTV5,3": return "Apple TV"
+        case "AppleTV6,2": return "Apple TV 4K"
+        
+        case "Watch1,1": return "Apple Watch"
+        case "Watch6,3": return "Apple Watch Series 6"
+        
+        default: return identifier.isEmpty ? "Not Available" : identifier
         }
     }
 
 }
 
 #endif
-
-protocol DataCleaner {
-
-    func clearData(sourceView: UIView, originingIn sourceRect: CGRect?, then: @escaping () -> ())
-}
-
-extension DataCleaner where Self: UIViewController {
-
-    func clearData(sourceView: UIView, originingIn sourceRect: CGRect?, then: @escaping () -> ()) {
-        let actionSheetController: UIAlertController = UIAlertController(title: "Clear data?", message: "", preferredStyle: .actionSheet)
-        actionSheetController.popoverPresentationController?.sourceView = sourceView
-        if let sourceRect = sourceRect {
-            actionSheetController.popoverPresentationController?.sourceRect = sourceRect
-        }
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
-        actionSheetController.addAction(cancelAction)
-
-        let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            NFX.sharedInstance().clearOldData()
-            then()
-        }
-        actionSheetController.addAction(yesAction)
-
-        let noAction = UIAlertAction(title: "No", style: .default) { _ in }
-        actionSheetController.addAction(noAction)
-
-        present(actionSheetController, animated: true, completion: nil)
-    }
-}

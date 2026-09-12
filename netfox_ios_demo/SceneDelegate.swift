@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -19,8 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.windowScene = windowScene
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        window.rootViewController = storyboard.instantiateInitialViewController()
+        if #available(iOS 15.0, *) {
+            window.rootViewController = UIHostingController(rootView: DemoRootView())
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            window.rootViewController = storyboard.instantiateInitialViewController()
+        }
 
         self.window = window
         window.makeKeyAndVisible()
