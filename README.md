@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-<img alt="Version" src="https://img.shields.io/badge/version-1.21.0-green.svg?style=flat-square" />
-<a href="https://travis-ci.org/kasketis/netfox"><img alt="CI Status" src="http://img.shields.io/travis/kasketis/netfox.svg?style=flat-square" /></a>
+<img alt="Version" src="https://img.shields.io/badge/version-2.0.0-green.svg?style=flat-square" />
+<a href="https://travis-ci.org/rongxiong/netfox"><img alt="CI Status" src="http://img.shields.io/travis/rongxiong/netfox.svg?style=flat-square" /></a>
 <a href="https://cocoapods.org/pods/netfox"><img alt="Cocoapods Compatible" src="https://img.shields.io/cocoapods/v/netfox.svg?style=flat-square" /></a>
 <a href="https://github.com/Carthage/Carthage"><img alt="Carthage Compatible" src="https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat-square" /></a>
 <img alt="Platform" src="https://img.shields.io/cocoapods/p/netfox.svg?style=flat-square" />
@@ -34,7 +34,7 @@ For Swift 3.2 support, use version [1.12.1](https://github.com/kasketis/netfox/r
 Feel free to contribute :)
 
 ### Overview
-| ![](https://raw.githubusercontent.com/kasketis/netfox/master/assets/overview1_5_3.gif)  | ![](https://cloud.githubusercontent.com/assets/1402212/12893260/78f90916-ce90-11e5-830a-d1a1b91b2ac4.png) |
+| ![](https://raw.githubusercontent.com/rongxiong/netfox/master/assets/overview1_5_3.gif)  | ![](https://cloud.githubusercontent.com/assets/1402212/12893260/78f90916-ce90-11e5-830a-d1a1b91b2ac4.png) |
 |---|---|
 
 ## Installation
@@ -43,7 +43,7 @@ Feel free to contribute :)
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
-To add `netfox` as a package dependency to your Xcode project, select `File > Add Packages` and enter as repository URL the `https://github.com/kasketis/netfox` (always choose the latest release)
+To add `netfox` as a package dependency to your Xcode project, select `File > Add Packages` and enter as repository URL the `https://github.com/rongxiong/netfox` (always choose the latest release)
 
 For more info, please check [here](https://developer.apple.com/documentation/swift_packages/adding_package_dependencies_to_your_app)
 
@@ -68,7 +68,7 @@ pod 'netfox', :configurations => ['Debug', 'Test']
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate netfox into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 <pre>
-github "kasketis/netfox"
+github "rongxiong/netfox"
 </pre>
 ### Manually
 
@@ -114,7 +114,7 @@ You can add the DEBUG symbol with the -DDEBUG entry. Set it in the "Swift Compil
 
 Just shake your device and check what's going right or wrong! 
 Shake again and go back to your app!
-![](https://raw.githubusercontent.com/kasketis/netfox/master/assets/shake.png)
+![](https://raw.githubusercontent.com/rongxiong/netfox/master/assets/shake.png)
 
 ### SwiftUI entry point
 
@@ -257,7 +257,7 @@ Notes:
 
 ## Other
 
-- If you experience any problems with request logging please check [this](https://github.com/kasketis/netfox/blob/master/Workarounds.md). If you don't get your answer please open an [issue](https://github.com/kasketis/netfox/issues)
+- If you experience any problems with request logging please check [this](https://github.com/rongxiong/netfox/blob/master/Workarounds.md). If you don't get your answer please open an [issue](https://github.com/rongxiong/netfox/issues)
 - Due to the large size of request/response bodies, the library provides disk storage for low memory overhead
 
 ## Sponsors
@@ -270,5 +270,5 @@ Special thanks to [tbaranes](https://github.com/tbaranes) and [vincedev](https:/
 
 ## Licence
 
-All source code is licensed under [MIT License](https://github.com/kasketis/netfox/blob/master/LICENSE). Which means you could do virtually anything with the code. I will appreciate it very much if you keep an attribution where appropriate.
+All source code is licensed under [MIT License](https://github.com/rongxiong/netfox/blob/master/LICENSE). Which means you could do virtually anything with the code. I will appreciate it very much if you keep an attribution where appropriate.
 

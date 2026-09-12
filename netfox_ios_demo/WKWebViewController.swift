@@ -20,6 +20,6 @@ class WKWebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.load(URLRequest(url: URL(string: "https://github.com/kasketis/netfox")!))
+        webView.load(URLRequest(url: URL(string: "https://github.com/rongxiong/netfox")!))
     }
 }

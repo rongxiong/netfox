@@ -25,7 +25,7 @@ struct NFXSettingsView: View {
     @State private var mailAttachment: Data?
     #endif
 
-    private let projectURL = URL(string: "https://github.com/kasketis/netfox")!
+    private let projectURL = URL(string: "https://github.com/rongxiong/netfox")!
 
     var body: some View {
         List {
@@ -68,7 +68,7 @@ struct NFXSettingsView: View {
                     Text("netfox \(nfxVersion)")
                         .font(.footnote)
                         .foregroundStyle(Color.nfxSecondaryText)
-                    Link("github.com/kasketis/netfox", destination: projectURL)
+                    Link("github.com/rongxiong/netfox", destination: projectURL)
                         .font(.footnote)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)

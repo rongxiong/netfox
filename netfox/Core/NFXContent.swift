@@ -256,7 +256,7 @@ enum NFXContentBuilder {
             }
         }
 
-        log += "logged via netfox - [https://github.com/kasketis/netfox]\n"
+        log += "logged via netfox - [https://github.com/rongxiong/netfox]\n"
         return log
     }
 
