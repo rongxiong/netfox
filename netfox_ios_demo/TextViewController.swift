@@ -17,7 +17,12 @@ class TextViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tabBarItem.image = UIImage(systemName: "doc.text")
+    }
+
     @IBAction func tappedLoad(_ sender: Any) {
         dataTask?.cancel()
         

@@ -13,6 +13,11 @@ class WKWebViewController: UIViewController {
     
     @IBOutlet weak var webView: WKWebView!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tabBarItem.image = UIImage(systemName: "safari")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.load(URLRequest(url: URL(string: "https://github.com/kasketis/netfox")!))

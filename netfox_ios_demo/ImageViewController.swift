@@ -18,6 +18,11 @@ class ImageViewController: UIViewController {
         super.init(coder: aDecoder)
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        tabBarItem.image = UIImage(systemName: "photo")
+    }
+
     @IBAction func tappedLoadImage(_ sender: Any) {
         dataTask?.cancel()
         
