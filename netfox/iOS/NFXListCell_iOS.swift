@@ -104,7 +104,8 @@ class NFXListCell: UITableViewCell {
         
         timeIntervalLabel.frame = CGRect(x: 0, y: requestTimeLabel.frame.maxY + 5, width: statusView.frame.width, height: 14)
         
-        URLLabel.frame = CGRect(x: statusView.frame.maxX + padding, y: 0, width: frame.width - URLLabel.frame.minX - 25 - padding, height: 40)
+        let urlX = statusView.frame.maxX + padding
+        URLLabel.frame = CGRect(x: urlX, y: 0, width: max(0, frame.width - urlX - 25 - padding), height: 40)
         URLLabel.autoresizingMask = .flexibleWidth
         
         let bottomY = URLLabel.frame.maxY - 2
