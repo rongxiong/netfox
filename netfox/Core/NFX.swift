@@ -292,7 +292,14 @@ open class NFX: NSObject {
     func getSelectedGesture() -> ENFXGesture {
         return selectedGesture
     }
-    
+
+    /// True while netfox is presented through its own UIKit entry point
+    /// (shake gesture / `show()`). Always false when the UI is embedded
+    /// with the SwiftUI `netfoxPanel(isPresented:)` modifier.
+    var isUIKitPresented: Bool {
+        return presented
+    }
+
 }
 
 #if os(iOS)

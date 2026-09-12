@@ -47,9 +47,28 @@ public struct NetfoxView: View {
     public init() { }
 
     public var body: some View {
-        NFXRootContainer()
+        NFXDismissableRoot()
             .environmentObject(store)
-            .environment(\.nfxDismiss, { NFX.sharedInstance().hide() })
+    }
+}
+
+/// Bridges the in-UI close button to whichever presentation owns the view:
+/// SwiftUI's own `dismiss()` for the `netfoxPanel(isPresented:)` sheet, or
+/// `NFX.hide()` for the classic UIKit entry point (shake / `show()`).
+private struct NFXDismissableRoot: View {
+
+    @Environment(\.dismiss) private var swiftDismiss
+
+    var body: some View {
+        NFXRootContainer()
+            .environment(\.nfxDismiss, {
+                let nfx = NFX.sharedInstance()
+                if nfx.isUIKitPresented {
+                    nfx.hide()
+                } else {
+                    swiftDismiss()
+                }
+            })
     }
 }
 
