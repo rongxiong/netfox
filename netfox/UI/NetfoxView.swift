@@ -69,6 +69,11 @@ private struct NFXDismissableRoot: View {
                     swiftDismiss()
                 }
             })
+            // Covers the SwiftUI sheet close button, swipe-to-dismiss and
+            // macOS sheet close - paths that never call NFX.hide().
+            .onDisappear {
+                NFX.sharedInstance().markVisited()
+            }
     }
 }
 

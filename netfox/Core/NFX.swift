@@ -243,6 +243,13 @@ open class NFX: NSObject {
     internal func getLastVisitDate() -> Date {
         return lastVisitDate
     }
+
+    /// Marks every request logged so far as seen. Must run whenever the
+    /// netfox surface is dismissed, including the SwiftUI `netfoxPanel`
+    /// sheet whose dismissal bypasses `hideNFX()`.
+    internal func markVisited() {
+        lastVisitDate = Date()
+    }
     
     fileprivate func showNFX() {
         if presented {
