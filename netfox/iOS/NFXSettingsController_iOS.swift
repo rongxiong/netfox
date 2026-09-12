@@ -27,7 +27,7 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
         
         edgesForExtendedLayout = UIRectEdge()
         extendedLayoutIncludesOpaqueBars = false
-        automaticallyAdjustsScrollViewInsets = false
+        tableView.contentInsetAdjustmentBehavior = .never
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage.NFXStatistics(), style: .plain, target: self, action: #selector(NFXSettingsController_iOS.statisticsButtonPressed)), UIBarButtonItem(image: UIImage.NFXInfo(), style: .plain, target: self, action: #selector(NFXSettingsController_iOS.infoButtonPressed))]
         
@@ -220,7 +220,7 @@ class NFXSettingsController_iOS: NFXSettingsController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let iPhone4s = (UIScreen.main.bounds.height == 480)
+        let iPhone4s = (UIScreen.nfx_main.bounds.height == 480)
         switch section {
         case 0:
             if iPhone4s {

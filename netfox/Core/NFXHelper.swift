@@ -299,8 +299,9 @@ class NFXDebugInfo {
     
     class func getNFXDeviceScreenResolution() -> String {
         #if os(iOS)
-        let scale = UIScreen.main.scale
-        let bounds = UIScreen.main.bounds
+        let screen = UIScreen.nfx_main
+        let scale = screen.scale
+        let bounds = screen.bounds
         let width = bounds.size.width * scale
         let height = bounds.size.height * scale
         return "\(width) x \(height)"
@@ -554,19 +555,29 @@ extension String {
 #if os(iOS)
 extension UIWindow {
     static var keyWindow: UIWindow? {
-        if #available(iOS 13.0, *) {
+        UIApplication.shared.connectedScenes
+            .sorted { $0.activationState.sortPriority < $1.activationState.sortPriority }
+            .compactMap { $0 as? UIWindowScene }
+            .compactMap { $0.windows.first { $0.isKeyWindow } }
+            .first
+    }
+}
+
+/// iOS 26+ compatible replacement for the deprecated `UIScreen.main`.
+/// Prefers the screen from the first connected UIWindowScene, and falls
+/// back to `UIScreen.screens.first` (always available, never deprecated).
+extension UIScreen {
+    static var nfx_main: UIScreen {
+        if #available(iOS 26.0, *) {
             return UIApplication.shared.connectedScenes
-                .sorted { $0.activationState.sortPriority < $1.activationState.sortPriority }
                 .compactMap { $0 as? UIWindowScene }
-                .compactMap { $0.windows.first { $0.isKeyWindow } }
-                .first
+                .first?.screen ?? UIScreen.screens.first ?? UIScreen()
         } else {
-            return UIApplication.shared.keyWindow
+            return UIScreen.main
         }
     }
 }
 
-@available(iOS 13.0, *)
 private extension UIScene.ActivationState {
     var sortPriority: Int {
         switch self {

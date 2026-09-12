@@ -25,9 +25,7 @@ class NFXListController_iOS: NFXListController, UITableViewDelegate, UITableView
         
         title = "Requests"
         
-        edgesForExtendedLayout = UIRectEdge.all
-        extendedLayoutIncludesOpaqueBars = true
-        automaticallyAdjustsScrollViewInsets = false
+        edgesForExtendedLayout = []
         tableView.frame = self.view.frame
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         tableView.translatesAutoresizingMaskIntoConstraints = true
@@ -35,6 +33,10 @@ class NFXListController_iOS: NFXListController, UITableViewDelegate, UITableView
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
+        tableView.tableFooterView = UIView(frame: .zero)
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
         view.addSubview(self.tableView)
         
         tableView.register(NFXListCell.self, forCellReuseIdentifier: NSStringFromClass(NFXListCell.self))
@@ -52,7 +54,11 @@ class NFXListController_iOS: NFXListController, UITableViewDelegate, UITableView
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
+        if #available(iOS 13.0, *) {
+            searchController.obscuresBackgroundDuringPresentation = false
+        } else {
+            searchController.dimsBackgroundDuringPresentation = false
+        }
         searchController.searchBar.autoresizingMask = [.flexibleWidth]
         searchController.searchBar.backgroundColor = UIColor.clear
         searchController.searchBar.barTintColor = UIColor.NFXOrangeColor()
@@ -123,8 +129,20 @@ class NFXListController_iOS: NFXListController, UITableViewDelegate, UITableView
         return cell
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView(frame: .zero)
+    }
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView(frame: .zero)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

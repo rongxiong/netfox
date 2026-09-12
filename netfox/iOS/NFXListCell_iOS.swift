@@ -107,11 +107,19 @@ class NFXListCell: UITableViewCell {
         URLLabel.frame = CGRect(x: statusView.frame.maxX + padding, y: 0, width: frame.width - URLLabel.frame.minX - 25 - padding, height: 40)
         URLLabel.autoresizingMask = .flexibleWidth
         
-        methodLabel.frame = CGRect(x: statusView.frame.maxX + padding, y: URLLabel.frame.maxY - 2, width: 40, height: frame.height - URLLabel.frame.maxY - 2)
+        let bottomY = URLLabel.frame.maxY - 2
+        let bottomHeight = frame.height - URLLabel.frame.maxY - 2
+        let methodX = statusView.frame.maxX + padding
 
-        typeLabel.frame = CGRect(x: methodLabel.frame.maxX + padding, y: URLLabel.frame.maxY - 2, width: 180, height: frame.height - URLLabel.frame.maxY - 2)
+        let methodWidth = methodLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: bottomHeight)).width
+        methodLabel.frame = CGRect(x: methodX, y: bottomY, width: methodWidth, height: bottomHeight)
 
-        mockLabel.frame = CGRect(x: typeLabel.frame.maxX + 5, y: URLLabel.frame.maxY + 1, width: 38, height: frame.height - URLLabel.frame.maxY - 6)
+        let typeX = methodLabel.frame.maxX + padding
+        let typeMaxX = frame.width - padding - (isMocked ? 38 + 5 : 0)
+        let typeWidth = min(180, max(0, typeMaxX - typeX))
+        typeLabel.frame = CGRect(x: typeX, y: bottomY, width: typeWidth, height: bottomHeight)
+
+        mockLabel.frame = CGRect(x: frame.width - 38 - padding, y: URLLabel.frame.maxY + 1, width: 38, height: frame.height - URLLabel.frame.maxY - 6)
         mockLabel.isHidden = !isMocked
         
         circleView.frame = CGRect(x: URLLabel.frame.maxX + 5, y: 17, width: 8, height: 8)
