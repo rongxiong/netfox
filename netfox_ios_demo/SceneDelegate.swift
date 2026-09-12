@@ -9,7 +9,6 @@
 import UIKit
 import SwiftUI
 
-@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -19,13 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         window.windowScene = windowScene
-
-        if #available(iOS 15.0, *) {
-            window.rootViewController = UIHostingController(rootView: DemoRootView())
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            window.rootViewController = storyboard.instantiateInitialViewController()
-        }
+        window.rootViewController = UIHostingController(rootView: DemoRootView())
 
         self.window = window
         window.makeKeyAndVisible()
@@ -36,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
+        // Called when the scene has moved from an inactive state to active.
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -48,6 +41,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
+        // Called as the scene transitions from the background to the background.
+    }
+}
+
+/// Programmatic replacement for the former Main.storyboard tab hierarchy.
+final class DemoTabBarController: UITabBarController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        viewControllers = [
+            TextViewController(),
+            ImageViewController(),
+            WebViewController(),
+            WKWebViewController()
+        ]
     }
 }

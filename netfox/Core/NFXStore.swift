@@ -12,7 +12,6 @@ import Foundation
 /// It mirrors `NFXHTTPModelManager` into `@Published` values so the SwiftUI
 /// views can bind to it, and owns the (debounced) search filtering so typing
 /// never blocks the main thread even with thousands of logged requests.
-@available(iOS 15.0, macOS 12.0, *)
 public final class NFXStore: ObservableObject {
 
     /// Shared instance keeps every netfox surface (panel, sheet, mac window) in sync.
@@ -121,7 +120,6 @@ public final class NFXStore: ObservableObject {
 }
 
 /// Writable mirror of the toggles shown by the settings screen.
-@available(iOS 15.0, macOS 12.0, *)
 public final class NFXSettingsStore: ObservableObject {
 
     @Published var isLoggingEnabled: Bool

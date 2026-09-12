@@ -34,7 +34,6 @@ struct NFXNavigationContainer<Content: View>: View {
 #if os(macOS)
 
 /// Same idea for the macOS double column layout.
-@available(macOS 12.0, *)
 struct NFXSplitContainer<Sidebar: View, Detail: View>: View {
 
     @ViewBuilder let sidebar: () -> Sidebar

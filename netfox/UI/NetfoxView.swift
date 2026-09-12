@@ -39,7 +39,6 @@ extension EnvironmentValues {
 /// Embed it anywhere - inside your own navigation stack, or presented with the
 /// `netfoxPanel(isPresented:)` modifier. It shares its state with the classic
 /// `NFX.sharedInstance().show()` entry point.
-@available(iOS 15.0, macOS 12.0, *)
 public struct NetfoxView: View {
 
     @StateObject private var store = NFXStore.shared
@@ -92,7 +91,6 @@ struct NFXRootContainer: View {
 
 // MARK: - SwiftUI entry point
 
-@available(iOS 15.0, macOS 12.0, *)
 public extension View {
 
     /// Presents netfox in a sheet bound to `isPresented`.

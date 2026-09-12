@@ -311,19 +311,13 @@ extension String {
 
         let data = data(using: .utf8)!
         
-        if #available(iOS 13.4, macOS 10.15.4, *) {
-            do {
-                try fileHandle.seekToEnd()
-                try fileHandle.write(contentsOf: data)
-            } catch let error {
-                print("[NFX]: Failed to append [\(self.prefix(128))] to \(fileURL) - \(error.localizedDescription)")
-            }
-            try? fileHandle.close()
-        } else {
-            // TODO: replace FileHandle with more safe way, possible crash on iOS <13.4 https://github.com/kasketis/netfox/issues/221
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(data)
+        do {
+            try fileHandle.seekToEnd()
+            try fileHandle.write(contentsOf: data)
+        } catch let error {
+            print("[NFX]: Failed to append [\(self.prefix(128))] to \(fileURL) - \(error.localizedDescription)")
         }
+        try? fileHandle.close()
     }
     
     /// Only used when the log file is not there yet - an existing file is never

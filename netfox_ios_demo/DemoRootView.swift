@@ -2,13 +2,12 @@
 //  DemoRootView.swift
 //  netfox_ios_demo
 //
-//  Shows the new SwiftUI entry point on top of the existing storyboard demo UI.
+//  Shows the SwiftUI entry point on top of the code-based demo UI.
 //
 
 import SwiftUI
 import netfox_ios
 
-@available(iOS 15.0, *)
 struct DemoRootView: View {
 
     @State private var showsNetfoxPanel = false
@@ -16,7 +15,7 @@ struct DemoRootView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            DemoStoryboardView(tabBarHeight: $tabBarHeight)
+            DemoTabBarContainer(tabBarHeight: $tabBarHeight)
 
             Button {
                 showsNetfoxPanel = true
@@ -41,8 +40,7 @@ struct DemoRootView: View {
     }
 }
 
-@available(iOS 15.0, *)
-struct DemoStoryboardView: UIViewControllerRepresentable {
+struct DemoTabBarContainer: UIViewControllerRepresentable {
 
     @Binding var tabBarHeight: CGFloat
 
@@ -51,11 +49,8 @@ struct DemoStoryboardView: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> UIViewController {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() ?? UIViewController()
-        if let tabBarController = controller as? UITabBarController
-            ?? controller.children.compactMap({ $0 as? UITabBarController }).first {
-            context.coordinator.observe(tabBarController.tabBar)
-        }
+        let controller = DemoTabBarController()
+        context.coordinator.observe(controller.tabBar)
         return controller
     }
 
