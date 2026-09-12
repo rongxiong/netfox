@@ -15,7 +15,10 @@ class WKWebViewController: UIViewController {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        tabBarItem.image = UIImage(systemName: "safari")
+        // iOS 26 compatibility mode ignores images assigned to the
+        // storyboard-archived UITabBarItem; use a code-created item.
+        let image = UIImage(systemName: "safari")
+        tabBarItem = UITabBarItem(title: tabBarItem.title, image: image, selectedImage: image)
     }
 
     override func viewDidLoad() {

@@ -20,7 +20,10 @@ class ImageViewController: UIViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tabBarItem.image = UIImage(systemName: "photo")
+        // iOS 26 compatibility mode ignores images assigned to the
+        // storyboard-archived UITabBarItem; use a code-created item.
+        let image = UIImage(systemName: "photo")
+        tabBarItem = UITabBarItem(title: tabBarItem.title, image: image, selectedImage: image)
     }
 
     @IBAction func tappedLoadImage(_ sender: Any) {

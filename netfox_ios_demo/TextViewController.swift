@@ -20,7 +20,10 @@ class TextViewController: UIViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tabBarItem.image = UIImage(systemName: "doc.text")
+        // iOS 26 compatibility mode ignores images assigned to the
+        // storyboard-archived UITabBarItem; use a code-created item.
+        let image = UIImage(systemName: "doc.text")
+        tabBarItem = UITabBarItem(title: tabBarItem.title, image: image, selectedImage: image)
     }
 
     @IBAction func tappedLoad(_ sender: Any) {
