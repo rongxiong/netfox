@@ -76,13 +76,14 @@ struct NFXRequestListView: View {
             Section {
                 ForEach(store.displayedModels, id: \.randomHash) { model in
                     row(model)
-                        .nfxPlainRow(insets: EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
+                        .nfxPlainRow(insets: EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                 }
             } header: {
                 Text(summaryText)
                     .font(.caption)
                     .foregroundStyle(Color.nfxSecondaryText)
                     .textCase(nil)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 4, trailing: 0))
             }
         }
         .animation(.easeOut(duration: 0.2), value: store.displayedModels.count)
@@ -92,7 +93,7 @@ struct NFXRequestListView: View {
     private func row(_ model: NFXHTTPModel) -> some View {
         let rowBody = NFXRequestRowView(model: model, isUnread: store.isUnread(model))
 
-        if let selection = selection {
+        if let selection {
             Button {
                 selection.wrappedValue = model
             } label: {
@@ -103,10 +104,12 @@ struct NFXRequestListView: View {
             .buttonStyle(.plain)
             .animation(.easeOut(duration: 0.15), value: isSelected(model))
         } else {
-            NavigationLink {
-                NFXDetailsView(model: model)
-            } label: {
+            // Plain button + programmatic push so the system list disclosure
+            // chevron is not rendered outside the card.
+            NFXPushRow {
                 rowBody
+            } destination: {
+                NFXDetailsView(model: model)
             }
         }
     }
@@ -187,6 +190,48 @@ struct NFXRequestListView: View {
             Button(action: { dismiss() }) {
                 Label("Close", systemImage: "xmark")
             }
+        }
+    }
+}
+
+/// List row that pushes `Destination` on tap without rendering the system
+/// list disclosure chevron. The button drives an isActive state; iOS 16 /
+/// macOS 13 use `navigationDestination`, older systems use a hidden link.
+struct NFXPushRow<Label: View, Destination: View>: View {
+
+    @ViewBuilder let label: () -> Label
+    @ViewBuilder let destination: () -> Destination
+
+    @State private var isActive = false
+
+    var body: some View {
+        Button {
+            isActive = true
+        } label: {
+            label()
+        }
+        .buttonStyle(.plain)
+        .modifier(PushDestination(isActive: $isActive, destination: destination))
+    }
+}
+
+private struct PushDestination<Destination: View>: ViewModifier {
+
+    @Binding var isActive: Bool
+    @ViewBuilder let destination: () -> Destination
+
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, macOS 13.0, *) {
+            content.navigationDestination(isPresented: $isActive) {
+                destination()
+            }
+        } else {
+            content.background(
+                NavigationLink(destination: destination(), isActive: $isActive) {
+                    EmptyView()
+                }
+                .hidden()
+            )
         }
     }
 }
