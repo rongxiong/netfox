@@ -21,6 +21,17 @@ extension NFXTests {
         nonisolated static let screenSize = CGSize(width: 390, height: 844)
         nonisolated static let rowSize = CGSize(width: 390, height: 84)
 
+        /// Per-pixel perceptual tolerance for edge antialiasing. On the exact
+        /// same device model and iOS build, headless CI simulators rasterize
+        /// card-corner blend pixels slightly differently than a headed machine
+        /// (observed: 2 px out of ~3M, one 16-bit Display P3 blend step) which
+        /// fails SnapshotTesting's default exact comparison. The library's CIE
+        /// Lab metric scores such a pixel ~0.903, so 0.90 (delta-E <= 10)
+        /// covers it. `precision` stays at its default 1.0, meaning EVERY pixel
+        /// must stay inside that band; real layout or color regressions
+        /// (delta-E in the tens to hundreds) are still caught.
+        nonisolated static let perceptualPrecision: Float = 0.90
+
         private let environment = NFXTestEnvironment()
 
         // MARK: - Rows
@@ -34,7 +45,9 @@ extension NFXTests {
                                                 responseBodyLength: 2048,
                                                 duration: 0.42)
             assertSnapshot(of: hostedController(NFXRequestRowView(model: success, isUnread: false)),
-                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize),
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "success",
                            testName: "testRequestRow")
 
@@ -45,7 +58,9 @@ extension NFXTests {
                                                 responseBodyLength: 96,
                                                 duration: 1.87)
             assertSnapshot(of: hostedController(NFXRequestRowView(model: failure, isUnread: true)),
-                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize),
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "failure-unread",
                            testName: "testRequestRow")
         }
@@ -61,7 +76,9 @@ extension NFXTests {
                                                isMocked: true,
                                                mockTargetURL: "http://127.0.0.1:8080/v1/users?page=2")
             assertSnapshot(of: hostedController(NFXRequestRowView(model: mocked, isUnread: true)),
-                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize),
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "mocked",
                            testName: "testMockedRequestRow")
         }
@@ -75,7 +92,8 @@ extension NFXTests {
                                           message: "Every request your app performs shows up here as soon as it is intercepted.")
             assertSnapshot(of: hostedController(empty),
                            as: .image(on: Self.fixedSizeConfig(CGSize(width: 390, height: 320)),
-                                      drawHierarchyInKeyWindow: true),
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "no-requests",
                            testName: "testEmptyState")
         }
@@ -96,7 +114,9 @@ extension NFXTests {
                 NFXDetailsView(model: model)
             }
             assertSnapshot(of: hostedController(screen),
-                           as: .image(on: .iPhone13, drawHierarchyInKeyWindow: true),
+                           as: .image(on: .iPhone13,
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "info",
                            testName: "testDetailsScreen")
         }
@@ -107,7 +127,9 @@ extension NFXTests {
                 NFXSettingsView()
             }
             assertSnapshot(of: hostedController(screen),
-                           as: .image(on: .iPhone13, drawHierarchyInKeyWindow: true),
+                           as: .image(on: .iPhone13,
+                                      drawHierarchyInKeyWindow: true,
+                                      perceptualPrecision: Self.perceptualPrecision),
                            named: "settings",
                            testName: "testSettingsScreen")
         }
