@@ -37,6 +37,11 @@ final class NFXTestEnvironment {
     /// `NFX.start()` and `URLSessionConfiguration.implementNetfox()` are
     /// one-shot: run them once for the whole test process.
     private static let bootstrap: Void = {
+        // Pin display formatting so date strings (and snapshots) are identical
+        // regardless of the developer machine / CI runner region and time zone.
+        NFXFormatConfig.locale = Locale(identifier: "en_US_POSIX")
+        NFXFormatConfig.timeZone = TimeZone(identifier: "UTC")!
+
         if NFX.sharedInstance().isStarted() == false {
             NFX.sharedInstance().start()
         }

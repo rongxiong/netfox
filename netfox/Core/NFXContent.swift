@@ -97,6 +97,13 @@ struct NFXStatisticsSummary {
 
 // MARK: - Formatting
 
+/// Locale/region used for date and number display formatting.
+/// Tests pin this to fixed values so snapshots do not depend on the machine region.
+enum NFXFormatConfig {
+    static var locale: Locale = .current
+    static var timeZone: TimeZone = .current
+}
+
 enum NFXFormat {
 
     static func bytes(_ byteCount: Int) -> String {
@@ -121,7 +128,10 @@ enum NFXFormat {
 
     static func date(_ date: Date?) -> String {
         guard let date = date else { return "-" }
-        return DateFormatter.nfxTimestamp.string(from: date)
+        let formatter = DateFormatter.nfxTimestamp
+        formatter.locale = NFXFormatConfig.locale
+        formatter.timeZone = NFXFormatConfig.timeZone
+        return formatter.string(from: date)
     }
 }
 
