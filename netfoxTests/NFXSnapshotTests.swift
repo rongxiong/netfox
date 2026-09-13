@@ -33,8 +33,8 @@ extension NFXTests {
                                                 contentType: "application/json",
                                                 responseBodyLength: 2048,
                                                 duration: 0.42)
-            assertSnapshot(of: hosted(NFXRequestRowView(model: success, isUnread: false), size: Self.rowSize),
-                           as: .image,
+            assertSnapshot(of: hostedController(NFXRequestRowView(model: success, isUnread: false)),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
                            named: "success",
                            testName: "testRequestRow")
 
@@ -44,8 +44,8 @@ extension NFXTests {
                                                 contentType: "application/json",
                                                 responseBodyLength: 96,
                                                 duration: 1.87)
-            assertSnapshot(of: hosted(NFXRequestRowView(model: failure, isUnread: true), size: Self.rowSize),
-                           as: .image,
+            assertSnapshot(of: hostedController(NFXRequestRowView(model: failure, isUnread: true)),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
                            named: "failure-unread",
                            testName: "testRequestRow")
         }
@@ -60,8 +60,8 @@ extension NFXTests {
                                                duration: 0.08,
                                                isMocked: true,
                                                mockTargetURL: "http://127.0.0.1:8080/v1/users?page=2")
-            assertSnapshot(of: hosted(NFXRequestRowView(model: mocked, isUnread: true), size: Self.rowSize),
-                           as: .image,
+            assertSnapshot(of: hostedController(NFXRequestRowView(model: mocked, isUnread: true)),
+                           as: .image(on: Self.fixedSizeConfig(Self.rowSize), drawHierarchyInKeyWindow: true),
                            named: "mocked",
                            testName: "testMockedRequestRow")
         }
@@ -73,8 +73,9 @@ extension NFXTests {
             let empty = NFXEmptyStateView(systemImage: "tray",
                                           title: "No requests yet",
                                           message: "Every request your app performs shows up here as soon as it is intercepted.")
-            assertSnapshot(of: hosted(empty, size: CGSize(width: 390, height: 320)),
-                           as: .image,
+            assertSnapshot(of: hostedController(empty),
+                           as: .image(on: Self.fixedSizeConfig(CGSize(width: 390, height: 320)),
+                                      drawHierarchyInKeyWindow: true),
                            named: "no-requests",
                            testName: "testEmptyState")
         }
@@ -95,7 +96,7 @@ extension NFXTests {
                 NFXDetailsView(model: model)
             }
             assertSnapshot(of: hostedController(screen),
-                           as: .image(on: .iPhone13),
+                           as: .image(on: .iPhone13, drawHierarchyInKeyWindow: true),
                            named: "info",
                            testName: "testDetailsScreen")
         }
@@ -106,33 +107,30 @@ extension NFXTests {
                 NFXSettingsView()
             }
             assertSnapshot(of: hostedController(screen),
-                           as: .image(on: .iPhone13),
+                           as: .image(on: .iPhone13, drawHierarchyInKeyWindow: true),
                            named: "settings",
                            testName: "testSettingsScreen")
         }
 
         // MARK: - Rendering
 
-        /// Wraps a full screen (navigation container) in a hosting controller.
-        /// SnapshotTesting's view-controller strategy installs it in a real
-        /// window, so navigation-bar layout margins and safe-area insets match
-        /// what the app renders on device - snapshotting a detached `view`
-        /// would pin the large title to x: 0.
-        private func hostedController<Content: View>(_ view: Content) -> UIHostingController<AnyView> {
-            UIHostingController(rootView: AnyView(view.environmentObject(NFXStore.shared)))
+        private static func fixedSizeConfig(_ size: CGSize) -> ViewImageConfig {
+            ViewImageConfig(safeArea: .zero, size: size, traits: .init())
         }
 
-        /// Renders a SwiftUI view into a plain UIView of a fixed size, so the
-        /// snapshot never depends on the window the tests happen to run in.
-        private func hosted<Content: View>(_ view: Content,
-                                           size: CGSize = NFXSnapshotTests.screenSize) -> UIView {
+        /// Wraps a screen (or any SwiftUI view) in a hosting controller.
+        ///
+        /// Every snapshot goes through the `.image(on:drawHierarchyInKeyWindow:)`
+        /// strategy: the default `CALayer.render(in:)` capture path skips the
+        /// render-server-composited parts of iOS 16+ controls, which on iOS 26
+        /// leaves `Toggle` switches without their white thumb. `drawHierarchy`
+        /// in the host app's key window composites them exactly as on device.
+        /// That strategy requires a hosted test bundle, so netfoxTests runs
+        /// inside netfox_ios_demo.
+        private func hostedController<Content: View>(_ view: Content) -> UIHostingController<AnyView> {
             let hosting = UIHostingController(rootView: AnyView(view.environmentObject(NFXStore.shared)))
-            let rendered = hosting.view ?? UIView()
-            rendered.frame = CGRect(origin: .zero, size: size)
-            rendered.backgroundColor = UIColor(Color.nfxBackground)
-            rendered.setNeedsLayout()
-            rendered.layoutIfNeeded()
-            return rendered
+            hosting.view.backgroundColor = UIColor(Color.nfxBackground)
+            return hosting
         }
     }
 }

@@ -114,6 +114,13 @@
 			remoteGlobalIDString = 8229AD611F8FB34300A9D613;
 			remoteInfo = netfox_ios_demo;
 		};
+		A1B2C3050000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BC02061C09CDA000C17F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8229AD611F8FB34300A9D613;
+			remoteInfo = netfox_ios_demo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -446,6 +453,7 @@
 			);
 			dependencies = (
 				A1B2C300000000000000000A /* PBXTargetDependency */,
+				A1B2C3050000000000000002 /* PBXTargetDependency */,
 			);
 			name = netfoxTests;
 			packageProductDependencies = (
@@ -739,6 +747,11 @@
 			target = 8229AD611F8FB34300A9D613 /* netfox_ios_demo */;
 			targetProxy = A1B2C400000000000000000B /* PBXContainerItemProxy */;
 		};
+		A1B2C3050000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8229AD611F8FB34300A9D613 /* netfox_ios_demo */;
+			targetProxy = A1B2C3050000000000000001 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -810,10 +823,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/netfox_ios_demo.app/netfox_ios_demo";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -832,10 +847,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/netfox_ios_demo.app/netfox_ios_demo";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
