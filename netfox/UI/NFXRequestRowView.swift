@@ -26,6 +26,11 @@ struct NFXRequestRowView: View {
         NFXFormat.duration(model.noResponse ? nil : model.timeInterval)
     }
 
+    private var timeText: String {
+        guard let date = model.requestDate else { return "--:--" }
+        return NFXFormat.clockTime(date)
+    }
+
     var body: some View {
         HStack(spacing: 12) {
             Capsule()
@@ -64,7 +69,7 @@ struct NFXRequestRowView: View {
 
                     Spacer(minLength: 0)
 
-                    Text(model.requestTime ?? "--:--")
+                    Text(timeText)
                         .font(NFXTheme.mono(11))
                         .foregroundStyle(Color.nfxTertiaryText)
                 }

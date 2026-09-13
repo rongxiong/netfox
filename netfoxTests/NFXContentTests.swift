@@ -132,6 +132,18 @@ extension NFXTests {
             #expect(NFXFormat.integer(nil) == "-")
             #expect(NFXFormat.date(nil) == "-")
             #expect(NFXFormat.date(Date()) != "-")
+            // Milliseconds are preserved (pinned en_US_POSIX / UTC environment).
+            #expect(NFXFormat.date(Date(timeIntervalSince1970: 1_700_000_000))
+                    == "Nov 14, 2023 at 22:13:20.000")
+        }
+
+        @Test
+        func clockTimeIsPreciseToMilliseconds() {
+            // NFXTestEnvironment pins the time zone to UTC.
+            let epoch = Date(timeIntervalSince1970: 0)
+            #expect(NFXFormat.clockTime(epoch) == "00:00:00.000")
+            #expect(NFXFormat.clockTime(epoch.addingTimeInterval(0.42)) == "00:00:00.420")
+            #expect(NFXFormat.clockTime(epoch.addingTimeInterval(82_401.999)) == "22:53:21.999")
         }
 
         @Test

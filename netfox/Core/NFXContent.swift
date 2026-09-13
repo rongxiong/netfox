@@ -126,9 +126,21 @@ enum NFXFormat {
         return NumberFormatter.nfxDecimal.string(from: NSNumber(value: value)) ?? "\(value)"
     }
 
+    /// Full calendar date and time precise to the millisecond, used by the
+    /// Details "Request date" / "Response date" fields.
     static func date(_ date: Date?) -> String {
         guard let date = date else { return "-" }
-        let formatter = DateFormatter.nfxTimestamp
+        let formatter = DateFormatter()
+        formatter.locale = NFXFormatConfig.locale
+        formatter.timeZone = NFXFormatConfig.timeZone
+        formatter.setLocalizedDateFormatFromTemplate("MMMdyyyyHHmmssSSS")
+        return formatter.string(from: date)
+    }
+
+    /// Time-of-day with millisecond precision (`HH:mm:ss.SSS`), used by the
+    /// request list cards so requests arriving in the same second stay ordered.
+    static func clockTime(_ date: Date) -> String {
+        let formatter = DateFormatter.nfxClockTime
         formatter.locale = NFXFormatConfig.locale
         formatter.timeZone = NFXFormatConfig.timeZone
         return formatter.string(from: date)
@@ -145,10 +157,9 @@ private extension NumberFormatter {
 }
 
 private extension DateFormatter {
-    static let nfxTimestamp: DateFormatter = {
+    static let nfxClockTime: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .medium
+        formatter.dateFormat = "HH:mm:ss.SSS"
         return formatter
     }()
 }

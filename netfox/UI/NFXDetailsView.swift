@@ -73,9 +73,10 @@ struct NFXDetailsView: View {
                 Text(NFXFormat.duration(model.noResponse ? nil : model.timeInterval))
                     .font(NFXTheme.mono(13, weight: .semibold))
                     .foregroundStyle(Color.nfxPrimaryText)
-                Text(model.requestTime ?? "--:--")
+                Text(model.requestDate.map { NFXFormat.clockTime($0) } ?? "--:--")
                     .font(.caption2)
                     .foregroundStyle(Color.nfxTertiaryText)
+                    .monospacedDigit()
             }
         }
         .nfxCard()
