@@ -19,6 +19,18 @@ struct NFXRequestListView: View {
 
     @State private var showsClearConfirmation = false
 
+    /// The model whose details are pushed on iOS 16+ / macOS 13+. A single
+    /// `navigationDestination` modifier outside the lazy `List` reads this;
+    /// rows only flip it through plain buttons.
+    @State private var presentedModel: NFXHTTPModel?
+
+    private var isDetailPresented: Binding<Bool> {
+        Binding(
+            get: { presentedModel != nil },
+            set: { presented in if !presented { presentedModel = nil } }
+        )
+    }
+
     #if os(macOS)
     @State private var showsSettings = false
     @State private var showsStatistics = false
@@ -73,7 +85,24 @@ struct NFXRequestListView: View {
         }
     }
 
+    @ViewBuilder
     private var list: some View {
+        if #available(iOS 16.0, macOS 13.0, *) {
+            // The destination must live outside the lazy List, otherwise the
+            // navigation stack only sees rows that have already rendered and
+            // SwiftUI logs a misplaced-modifier warning.
+            requestList
+                .navigationDestination(isPresented: isDetailPresented) {
+                    if let model = presentedModel {
+                        NFXDetailsView(model: model)
+                    }
+                }
+        } else {
+            requestList
+        }
+    }
+
+    private var requestList: some View {
         List {
             Section {
                 ForEach(store.displayedModels, id: \.randomHash) { model in
@@ -109,11 +138,22 @@ struct NFXRequestListView: View {
             .animation(.easeOut(duration: 0.15), value: isSelected(model))
         } else {
             // Plain button + programmatic push so the system list disclosure
-            // chevron is not rendered outside the card.
-            NFXPushRow {
-                rowBody
-            } destination: {
-                NFXDetailsView(model: model)
+            // chevron is not rendered outside the card. On iOS 16+ the push
+            // is driven by one `navigationDestination` outside the List;
+            // older systems fall back to a per-row hidden NavigationLink.
+            if #available(iOS 16.0, macOS 13.0, *) {
+                Button {
+                    presentedModel = model
+                } label: {
+                    rowBody
+                }
+                .buttonStyle(.plain)
+            } else {
+                NFXPushRow {
+                    rowBody
+                } destination: {
+                    NFXDetailsView(model: model)
+                }
             }
         }
     }
@@ -207,8 +247,10 @@ struct NFXRequestListView: View {
 }
 
 /// List row that pushes `Destination` on tap without rendering the system
-/// list disclosure chevron. The button drives an isActive state; iOS 16 /
-/// macOS 13 use `navigationDestination`, older systems use a hidden link.
+/// list disclosure chevron. Legacy path for iOS 15 / macOS 12 only: a hidden
+/// isActive `NavigationLink` performs the push. On newer systems
+/// `NFXRequestListView` drives a single `navigationDestination` outside the
+/// lazy `List` and plain buttons set the presented model.
 struct NFXPushRow<Label: View, Destination: View>: View {
 
     @ViewBuilder let label: () -> Label
@@ -223,28 +265,12 @@ struct NFXPushRow<Label: View, Destination: View>: View {
             label()
         }
         .buttonStyle(.plain)
-        .modifier(PushDestination(isActive: $isActive, destination: destination))
-    }
-}
-
-private struct PushDestination<Destination: View>: ViewModifier {
-
-    @Binding var isActive: Bool
-    @ViewBuilder let destination: () -> Destination
-
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, macOS 13.0, *) {
-            content.navigationDestination(isPresented: $isActive) {
-                destination()
+        .background(
+            NavigationLink(destination: destination(), isActive: $isActive) {
+                EmptyView()
             }
-        } else {
-            content.background(
-                NavigationLink(destination: destination(), isActive: $isActive) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-        }
+            .hidden()
+        )
     }
 }
 
