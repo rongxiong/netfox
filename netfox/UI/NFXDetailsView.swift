@@ -39,6 +39,7 @@ struct NFXDetailsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier(NFXAccessibility.Details.picker)
 
                 tabContent
             }
@@ -87,10 +88,13 @@ struct NFXDetailsView: View {
         switch selection {
         case .info:
             infoTab
+                .accessibilityIdentifier(NFXAccessibility.Details.info)
         case .request:
             sectionView(content.request)
+                .accessibilityIdentifier(NFXAccessibility.Details.request)
         case .response:
             responseTab
+                .accessibilityIdentifier(NFXAccessibility.Details.response)
         }
     }
 

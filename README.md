@@ -251,6 +251,43 @@ Notes:
 - Info: Check your IP address, your app version and build number and other things within the app
 - More to come.. ;)
 
+## Tests
+
+The project ships with two test targets, both wired into the `netfox_ios` scheme:
+
+| Target | What it covers |
+| --- | --- |
+| `netfoxTests` | Unit tests for the core (mock server, request/response recording, filtering, search, formatting), end-to-end interception against a local HTTP server, and SwiftUI image snapshots |
+| `netfoxUITests` | XCUITest that drives the netfox panel inside `netfox_ios_demo` |
+
+Run everything from the command line:
+
+```bash
+xcodebuild -scheme netfox_ios \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
+```
+
+or only one of them:
+
+```bash
+xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:netfoxTests test
+xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:netfoxUITests test
+```
+
+Notes:
+
+- The tests never touch the internet. The interception tests spin up a tiny
+  HTTP server on `127.0.0.1`, and the UI tests launch the demo with
+  `-nfxUITestSeed`, which fires a fixed batch of requests against a server
+  started inside the demo itself.
+- Image snapshots use [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing),
+  added as a Swift package **only** to `netfoxTests`. References live in
+  `netfoxTests/__Snapshots__` and must be re-recorded on the same simulator
+  they were taken on. To record, delete the reference and re-run - the first
+  run records it and the second one passes.
+- Opening the project for the first time resolves that package, so it needs
+  network access once.
+
 ## Integrations
 
 [Droar](https://github.com/myriadmobile/netfox-Droar): A modular, single-line installation debugging window.

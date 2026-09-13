@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,9 +11,6 @@
 		719756B3279C7EC500402E07 /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
 		719756B4279C7EC500402E07 /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8229AD651F8FB34300A9D613 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8229AD641F8FB34300A9D613 /* AppDelegate.swift */; };
-		AB0000000000000000000050 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000040 /* Scenario.swift */; };
-		AB0000000000000000000051 /* ScenarioRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000041 /* ScenarioRunner.swift */; };
-		AB0000000000000000000052 /* ScenariosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000042 /* ScenariosView.swift */; };
 		8229AD6C1F8FB34300A9D613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8229AD6B1F8FB34300A9D613 /* Assets.xcassets */; };
 		9B0000000000000000000011 /* NFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000001 /* NFX.swift */; };
 		9B0000000000000000000012 /* NFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000001 /* NFX.swift */; };
@@ -67,7 +64,32 @@
 		9B0000000000000000000252 /* NFXMacRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000025 /* NFXMacRootView.swift */; };
 		9B0000000000000000000261 /* NFXMacWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000026 /* NFXMacWindowController.swift */; };
 		9B0000000000000000000262 /* NFXMacWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000026 /* NFXMacWindowController.swift */; };
+		A1B2C300000000000000000C /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
+		A1B2C300000000000000000E /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A1B2C3200000000000000001 /* NFXTestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000001 /* NFXTestEnvironment.swift */; };
+		A1B2C3200000000000000002 /* NFXLocalHTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000002 /* NFXLocalHTTPServer.swift */; };
+		A1B2C3200000000000000003 /* NFXModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000003 /* NFXModelFactory.swift */; };
+		A1B2C3200000000000000004 /* NFXMockServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000004 /* NFXMockServerTests.swift */; };
+		A1B2C3200000000000000005 /* NFXHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000005 /* NFXHelperTests.swift */; };
+		A1B2C3200000000000000006 /* NFXHTTPModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000006 /* NFXHTTPModelTests.swift */; };
+		A1B2C3200000000000000007 /* NFXHTTPModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000007 /* NFXHTTPModelManagerTests.swift */; };
+		A1B2C3200000000000000008 /* NFXStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000008 /* NFXStoreTests.swift */; };
+		A1B2C3200000000000000009 /* NFXContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000009 /* NFXContentTests.swift */; };
+		A1B2C320000000000000000A /* NFXProtocolInterceptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */; };
+		A1B2C320000000000000000B /* NFXSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C310000000000000000B /* NFXSnapshotTests.swift */; };
+		A1B2C4200000000000000001 /* NFXUITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000001 /* NFXUITestBase.swift */; };
+		A1B2C4200000000000000002 /* NFXDemoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000002 /* NFXDemoPage.swift */; };
+		A1B2C4200000000000000003 /* NFXNetfoxPanelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000003 /* NFXNetfoxPanelPage.swift */; };
+		A1B2C4200000000000000004 /* NFXNetfoxPanelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000004 /* NFXNetfoxPanelUITests.swift */; };
+		A1B2C5000000000000000002 /* NFXAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000001 /* NFXAccessibility.swift */; };
+		A1B2C5000000000000000003 /* NFXAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000001 /* NFXAccessibility.swift */; };
+		A1B2C5000000000000000012 /* NFXDemoSeedServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000011 /* NFXDemoSeedServer.swift */; };
+		A1B2C5000000000000000014 /* NFXDemoSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000013 /* NFXDemoSeeder.swift */; };
+		A1B2C6000000000000000003 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C6000000000000000002 /* SnapshotTesting */; };
 		AB0000000000000000000002 /* DemoRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000001 /* DemoRootView.swift */; };
+		AB0000000000000000000050 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000040 /* Scenario.swift */; };
+		AB0000000000000000000051 /* ScenarioRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000041 /* ScenarioRunner.swift */; };
+		AB0000000000000000000052 /* ScenariosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000042 /* ScenariosView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +99,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = B3BC020E1C09CDA000C17F3A;
 			remoteInfo = netfox_ios;
+		};
+		A1B2C300000000000000000B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BC02061C09CDA000C17F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B3BC020E1C09CDA000C17F3A;
+			remoteInfo = netfox_ios;
+		};
+		A1B2C400000000000000000B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BC02061C09CDA000C17F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8229AD611F8FB34300A9D613;
+			remoteInfo = netfox_ios_demo;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -92,19 +128,25 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B2C300000000000000000D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A1B2C300000000000000000E /* netfox_ios.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		026274F0214C6BF000AE1BDF /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netfox_ios_demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8229AD641F8FB34300A9D613 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AB0000000000000000000040 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
-		AB0000000000000000000041 /* ScenarioRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioRunner.swift; sourceTree = "<group>"; };
-		AB0000000000000000000042 /* ScenariosView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenariosView.swift; sourceTree = "<group>"; };
 		8229AD6B1F8FB34300A9D613 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8229AD701F8FB34300A9D613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_osx.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0000000000000000000001 /* NFX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFX.swift; sourceTree = "<group>"; };
 		8A0000000000000000000002 /* NFXAuthenticationChallengeSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXAuthenticationChallengeSender.swift; sourceTree = "<group>"; };
 		8A0000000000000000000003 /* NFXContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXContent.swift; sourceTree = "<group>"; };
@@ -131,7 +173,32 @@
 		8A0000000000000000000024 /* NFXSharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSharing.swift; sourceTree = "<group>"; };
 		8A0000000000000000000025 /* NFXMacRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMacRootView.swift; sourceTree = "<group>"; };
 		8A0000000000000000000026 /* NFXMacWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMacWindowController.swift; sourceTree = "<group>"; };
+		A1B2C3000000000000000002 /* netfoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3100000000000000001 /* NFXTestEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXTestEnvironment.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000002 /* NFXLocalHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXLocalHTTPServer.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000003 /* NFXModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXModelFactory.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000004 /* NFXMockServerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMockServerTests.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000005 /* NFXHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXHelperTests.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000006 /* NFXHTTPModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXHTTPModelTests.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000007 /* NFXHTTPModelManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXHTTPModelManagerTests.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000008 /* NFXStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXStoreTests.swift; sourceTree = "<group>"; };
+		A1B2C3100000000000000009 /* NFXContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXContentTests.swift; sourceTree = "<group>"; };
+		A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXProtocolInterceptionTests.swift; sourceTree = "<group>"; };
+		A1B2C310000000000000000B /* NFXSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSnapshotTests.swift; sourceTree = "<group>"; };
+		A1B2C4000000000000000002 /* netfoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfoxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C4100000000000000001 /* NFXUITestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXUITestBase.swift; sourceTree = "<group>"; };
+		A1B2C4100000000000000002 /* NFXDemoPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoPage.swift; sourceTree = "<group>"; };
+		A1B2C4100000000000000003 /* NFXNetfoxPanelPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXNetfoxPanelPage.swift; sourceTree = "<group>"; };
+		A1B2C4100000000000000004 /* NFXNetfoxPanelUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXNetfoxPanelUITests.swift; sourceTree = "<group>"; };
+		A1B2C5000000000000000001 /* NFXAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXAccessibility.swift; sourceTree = "<group>"; };
+		A1B2C5000000000000000011 /* NFXDemoSeedServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoSeedServer.swift; sourceTree = "<group>"; };
+		A1B2C5000000000000000013 /* NFXDemoSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoSeeder.swift; sourceTree = "<group>"; };
 		AB0000000000000000000001 /* DemoRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoRootView.swift; sourceTree = "<group>"; };
+		AB0000000000000000000040 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
+		AB0000000000000000000041 /* ScenarioRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioRunner.swift; sourceTree = "<group>"; };
+		AB0000000000000000000042 /* ScenariosView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenariosView.swift; sourceTree = "<group>"; };
+		B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = netfox_osx.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +207,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				719756B3279C7EC500402E07 /* netfox_ios.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C300000000000000000C /* netfox_ios.framework in Frameworks */,
+				A1B2C6000000000000000003 /* SnapshotTesting in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C4000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,63 +243,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8229AD631F8FB34300A9D613 /* netfox_ios_demo */ = {
+		7C0000000000000000000001 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8229AD641F8FB34300A9D613 /* AppDelegate.swift */,
-				AB0000000000000000000040 /* Scenario.swift */,
-				AB0000000000000000000041 /* ScenarioRunner.swift */,
-				AB0000000000000000000042 /* ScenariosView.swift */,
-				8229AD6B1F8FB34300A9D613 /* Assets.xcassets */,
-				8229AD701F8FB34300A9D613 /* Info.plist */,
-				AB0000000000000000000001 /* DemoRootView.swift */,
-				026274F0214C6BF000AE1BDF /* SceneDelegate.swift */,
+				8A0000000000000000000011 /* NetfoxView.swift */,
+				8A0000000000000000000012 /* NFXBodyView.swift */,
+				8A0000000000000000000013 /* NFXDetailsView.swift */,
+				8A0000000000000000000014 /* NFXEmptyStateView.swift */,
+				8A0000000000000000000015 /* NFXInfoView.swift */,
+				8A0000000000000000000016 /* NFXNavigationContainer.swift */,
+				8A0000000000000000000017 /* NFXQueryItemsView.swift */,
+				8A0000000000000000000018 /* NFXRequestListView.swift */,
+				8A0000000000000000000019 /* NFXRequestRowView.swift */,
+				8A0000000000000000000020 /* NFXSettingsView.swift */,
+				8A0000000000000000000021 /* NFXStatisticsView.swift */,
+				8A0000000000000000000022 /* NFXTheme.swift */,
+				A1B2C5000000000000000001 /* NFXAccessibility.swift */,
+				7C0000000000000000000003 /* Components */,
+				7C0000000000000000000004 /* Sharing */,
+				7C0000000000000000000005 /* Mac */,
 			);
-			path = netfox_ios_demo;
-			sourceTree = "<group>";
-		};
-		8229AD761F8FB4B500A9D613 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B3BC02051C09CDA000C17F3A = {
-			isa = PBXGroup;
-			children = (
-				CEFE42B41C0DDBD8001A56E0 /* netfox */,
-				8229AD631F8FB34300A9D613 /* netfox_ios_demo */,
-				B3BC02101C09CDA000C17F3A /* Products */,
-				8229AD761F8FB4B500A9D613 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		B3BC02101C09CDA000C17F3A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */,
-				E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */,
-				8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		B3F8BA701C833ABC00F9FBEA /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				8A0000000000000000000001 /* NFX.swift */,
-				8A0000000000000000000002 /* NFXAuthenticationChallengeSender.swift */,
-				8A0000000000000000000003 /* NFXContent.swift */,
-				8A0000000000000000000004 /* NFXHelper.swift */,
-				8A0000000000000000000005 /* NFXHelper_iOS.swift */,
-				8A0000000000000000000006 /* NFXHTTPModel.swift */,
-				8A0000000000000000000007 /* NFXHTTPModelManager.swift */,
-				8A0000000000000000000008 /* NFXMockServer.swift */,
-				8A0000000000000000000009 /* NFXProtocol.swift */,
-				8A0000000000000000000010 /* NFXStore.swift */,
-			);
-			path = Core;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		7C0000000000000000000003 /* Components */ = {
@@ -244,26 +291,98 @@
 			path = Mac;
 			sourceTree = "<group>";
 		};
-		7C0000000000000000000001 /* UI */ = {
+		8229AD631F8FB34300A9D613 /* netfox_ios_demo */ = {
 			isa = PBXGroup;
 			children = (
-				8A0000000000000000000011 /* NetfoxView.swift */,
-				8A0000000000000000000012 /* NFXBodyView.swift */,
-				8A0000000000000000000013 /* NFXDetailsView.swift */,
-				8A0000000000000000000014 /* NFXEmptyStateView.swift */,
-				8A0000000000000000000015 /* NFXInfoView.swift */,
-				8A0000000000000000000016 /* NFXNavigationContainer.swift */,
-				8A0000000000000000000017 /* NFXQueryItemsView.swift */,
-				8A0000000000000000000018 /* NFXRequestListView.swift */,
-				8A0000000000000000000019 /* NFXRequestRowView.swift */,
-				8A0000000000000000000020 /* NFXSettingsView.swift */,
-				8A0000000000000000000021 /* NFXStatisticsView.swift */,
-				8A0000000000000000000022 /* NFXTheme.swift */,
-				7C0000000000000000000003 /* Components */,
-				7C0000000000000000000004 /* Sharing */,
-				7C0000000000000000000005 /* Mac */,
+				8229AD641F8FB34300A9D613 /* AppDelegate.swift */,
+				A1B2C5000000000000000011 /* NFXDemoSeedServer.swift */,
+				A1B2C5000000000000000013 /* NFXDemoSeeder.swift */,
+				AB0000000000000000000040 /* Scenario.swift */,
+				AB0000000000000000000041 /* ScenarioRunner.swift */,
+				AB0000000000000000000042 /* ScenariosView.swift */,
+				8229AD6B1F8FB34300A9D613 /* Assets.xcassets */,
+				8229AD701F8FB34300A9D613 /* Info.plist */,
+				AB0000000000000000000001 /* DemoRootView.swift */,
+				026274F0214C6BF000AE1BDF /* SceneDelegate.swift */,
 			);
-			path = UI;
+			path = netfox_ios_demo;
+			sourceTree = "<group>";
+		};
+		8229AD761F8FB4B500A9D613 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1B2C3000000000000000003 /* netfoxTests */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3100000000000000001 /* NFXTestEnvironment.swift */,
+				A1B2C3100000000000000002 /* NFXLocalHTTPServer.swift */,
+				A1B2C3100000000000000003 /* NFXModelFactory.swift */,
+				A1B2C3100000000000000004 /* NFXMockServerTests.swift */,
+				A1B2C3100000000000000005 /* NFXHelperTests.swift */,
+				A1B2C3100000000000000006 /* NFXHTTPModelTests.swift */,
+				A1B2C3100000000000000007 /* NFXHTTPModelManagerTests.swift */,
+				A1B2C3100000000000000008 /* NFXStoreTests.swift */,
+				A1B2C3100000000000000009 /* NFXContentTests.swift */,
+				A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */,
+				A1B2C310000000000000000B /* NFXSnapshotTests.swift */,
+			);
+			path = netfoxTests;
+			sourceTree = "<group>";
+		};
+		A1B2C4000000000000000003 /* netfoxUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C4100000000000000001 /* NFXUITestBase.swift */,
+				A1B2C4100000000000000002 /* NFXDemoPage.swift */,
+				A1B2C4100000000000000003 /* NFXNetfoxPanelPage.swift */,
+				A1B2C4100000000000000004 /* NFXNetfoxPanelUITests.swift */,
+			);
+			path = netfoxUITests;
+			sourceTree = "<group>";
+		};
+		B3BC02051C09CDA000C17F3A = {
+			isa = PBXGroup;
+			children = (
+				CEFE42B41C0DDBD8001A56E0 /* netfox */,
+				8229AD631F8FB34300A9D613 /* netfox_ios_demo */,
+				A1B2C3000000000000000003 /* netfoxTests */,
+				A1B2C4000000000000000003 /* netfoxUITests */,
+				B3BC02101C09CDA000C17F3A /* Products */,
+				8229AD761F8FB4B500A9D613 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B3BC02101C09CDA000C17F3A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */,
+				E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */,
+				8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */,
+				A1B2C3000000000000000002 /* netfoxTests.xctest */,
+				A1B2C4000000000000000002 /* netfoxUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B3F8BA701C833ABC00F9FBEA /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				8A0000000000000000000001 /* NFX.swift */,
+				8A0000000000000000000002 /* NFXAuthenticationChallengeSender.swift */,
+				8A0000000000000000000003 /* NFXContent.swift */,
+				8A0000000000000000000004 /* NFXHelper.swift */,
+				8A0000000000000000000005 /* NFXHelper_iOS.swift */,
+				8A0000000000000000000006 /* NFXHTTPModel.swift */,
+				8A0000000000000000000007 /* NFXHTTPModelManager.swift */,
+				8A0000000000000000000008 /* NFXMockServer.swift */,
+				8A0000000000000000000009 /* NFXProtocol.swift */,
+				8A0000000000000000000010 /* NFXStore.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		CEFE42B41C0DDBD8001A56E0 /* netfox */ = {
@@ -314,6 +433,46 @@
 			productReference = 8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A1B2C3000000000000000001 /* netfoxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3000000000000000007 /* Build configuration list for PBXNativeTarget "netfoxTests" */;
+			buildPhases = (
+				A1B2C3000000000000000004 /* Sources */,
+				A1B2C3000000000000000005 /* Frameworks */,
+				A1B2C3000000000000000006 /* Resources */,
+				A1B2C300000000000000000D /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1B2C300000000000000000A /* PBXTargetDependency */,
+			);
+			name = netfoxTests;
+			packageProductDependencies = (
+				A1B2C6000000000000000002 /* SnapshotTesting */,
+			);
+			productName = netfoxTests;
+			productReference = A1B2C3000000000000000002 /* netfoxTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A1B2C4000000000000000001 /* netfoxUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C4000000000000000007 /* Build configuration list for PBXNativeTarget "netfoxUITests" */;
+			buildPhases = (
+				A1B2C4000000000000000004 /* Sources */,
+				A1B2C4000000000000000005 /* Frameworks */,
+				A1B2C4000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1B2C400000000000000000A /* PBXTargetDependency */,
+			);
+			name = netfoxUITests;
+			productName = netfoxUITests;
+			productReference = A1B2C4000000000000000002 /* netfoxUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		B3BC020E1C09CDA000C17F3A /* netfox_ios */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3BC02171C09CDA000C17F3A /* Build configuration list for PBXNativeTarget "netfox_ios" */;
@@ -356,14 +515,24 @@
 		B3BC02061C09CDA000C17F3A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 2660;
 				ORGANIZATIONNAME = kasketis;
 				TargetAttributes = {
 					8229AD611F8FB34300A9D613 = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
+					};
+					A1B2C3000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+						ProvisioningStyle = Automatic;
+					};
+					A1B2C4000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8229AD611F8FB34300A9D613;
 					};
 					B3BC020E1C09CDA000C17F3A = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -384,6 +553,9 @@
 				Base,
 			);
 			mainGroup = B3BC02051C09CDA000C17F3A;
+			packageReferences = (
+				A1B2C6000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = B3BC02101C09CDA000C17F3A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -391,6 +563,8 @@
 				B3BC020E1C09CDA000C17F3A /* netfox_ios */,
 				E20FD2E81C6912D400DCFF61 /* netfox_osx */,
 				8229AD611F8FB34300A9D613 /* netfox_ios_demo */,
+				A1B2C3000000000000000001 /* netfoxTests */,
+				A1B2C4000000000000000001 /* netfoxUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -401,6 +575,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				8229AD6C1F8FB34300A9D613 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C4000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +619,37 @@
 				AB0000000000000000000050 /* Scenario.swift in Sources */,
 				AB0000000000000000000051 /* ScenarioRunner.swift in Sources */,
 				AB0000000000000000000052 /* ScenariosView.swift in Sources */,
+				A1B2C5000000000000000012 /* NFXDemoSeedServer.swift in Sources */,
+				A1B2C5000000000000000014 /* NFXDemoSeeder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3200000000000000001 /* NFXTestEnvironment.swift in Sources */,
+				A1B2C3200000000000000002 /* NFXLocalHTTPServer.swift in Sources */,
+				A1B2C3200000000000000003 /* NFXModelFactory.swift in Sources */,
+				A1B2C3200000000000000004 /* NFXMockServerTests.swift in Sources */,
+				A1B2C3200000000000000005 /* NFXHelperTests.swift in Sources */,
+				A1B2C3200000000000000006 /* NFXHTTPModelTests.swift in Sources */,
+				A1B2C3200000000000000007 /* NFXHTTPModelManagerTests.swift in Sources */,
+				A1B2C3200000000000000008 /* NFXStoreTests.swift in Sources */,
+				A1B2C3200000000000000009 /* NFXContentTests.swift in Sources */,
+				A1B2C320000000000000000A /* NFXProtocolInterceptionTests.swift in Sources */,
+				A1B2C320000000000000000B /* NFXSnapshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C4000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C4200000000000000001 /* NFXUITestBase.swift in Sources */,
+				A1B2C4200000000000000002 /* NFXDemoPage.swift in Sources */,
+				A1B2C4200000000000000003 /* NFXNetfoxPanelPage.swift in Sources */,
+				A1B2C4200000000000000004 /* NFXNetfoxPanelUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +683,7 @@
 				9B0000000000000000000241 /* NFXSharing.swift in Sources */,
 				9B0000000000000000000251 /* NFXMacRootView.swift in Sources */,
 				9B0000000000000000000261 /* NFXMacWindowController.swift in Sources */,
+				A1B2C5000000000000000002 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +717,7 @@
 				9B0000000000000000000242 /* NFXSharing.swift in Sources */,
 				9B0000000000000000000252 /* NFXMacRootView.swift in Sources */,
 				9B0000000000000000000262 /* NFXMacWindowController.swift in Sources */,
+				A1B2C5000000000000000003 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,8 +729,17 @@
 			target = B3BC020E1C09CDA000C17F3A /* netfox_ios */;
 			targetProxy = 8229AD741F8FB37000A9D613 /* PBXContainerItemProxy */;
 		};
+		A1B2C300000000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B3BC020E1C09CDA000C17F3A /* netfox_ios */;
+			targetProxy = A1B2C300000000000000000B /* PBXContainerItemProxy */;
+		};
+		A1B2C400000000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8229AD611F8FB34300A9D613 /* netfox_ios_demo */;
+			targetProxy = A1B2C400000000000000000B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
-
 
 /* Begin XCBuildConfiguration section */
 		8229AD721F8FB34300A9D613 /* Debug */ = {
@@ -532,7 +762,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = netfox_ios_demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-demo-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -561,7 +794,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = netfox_ios_demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-demo-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -569,10 +805,100 @@
 			};
 			name = Release;
 		};
+		A1B2C3000000000000000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kasketis.netfoxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3000000000000000009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kasketis.netfoxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B2C4000000000000000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kasketis.netfoxUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = netfox_ios_demo;
+			};
+			name = Debug;
+		};
+		A1B2C4000000000000000009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kasketis.netfoxUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = netfox_ios_demo;
+			};
+			name = Release;
+		};
 		B3BC02151C09CDA000C17F3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -604,6 +930,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -623,6 +950,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -634,6 +962,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -665,6 +994,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -677,7 +1007,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -689,16 +1021,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "netfox-info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.0.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -711,16 +1049,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "netfox-info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.0.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -734,10 +1078,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -746,9 +1092,14 @@
 				);
 				INFOPLIST_FILE = "netfox-info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -764,17 +1115,24 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = "OSX=YES";
 				INFOPLIST_FILE = "netfox-info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kasketis.netfox-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -791,6 +1149,24 @@
 			buildConfigurations = (
 				8229AD721F8FB34300A9D613 /* Debug */,
 				8229AD731F8FB34300A9D613 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3000000000000000007 /* Build configuration list for PBXNativeTarget "netfoxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3000000000000000008 /* Debug */,
+				A1B2C3000000000000000009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C4000000000000000007 /* Build configuration list for PBXNativeTarget "netfoxUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C4000000000000000008 /* Debug */,
+				A1B2C4000000000000000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -823,6 +1199,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1B2C6000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B2C6000000000000000002 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C6000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3BC02061C09CDA000C17F3A /* Project object */;
 }

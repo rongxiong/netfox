@@ -32,11 +32,13 @@ struct NFXSettingsView: View {
             Section("Logging") {
                 Toggle("Logging", isOn: loggingBinding)
                     .tint(Color.nfxAccent)
+                    .accessibilityIdentifier(NFXAccessibility.Settings.logging)
             }
 
             Section {
                 Toggle("Mock Server", isOn: mockServerBinding)
                     .tint(Color.nfxAccent)
+                    .accessibilityIdentifier(NFXAccessibility.Settings.mockServer)
                 mockURLRow
             } header: {
                 Text("Mock Server")
@@ -61,6 +63,7 @@ struct NFXSettingsView: View {
                 Button(role: .destructive, action: { showsClearConfirmation = true }) {
                     Text("Clear Data")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Settings.clearData)
             }
 
             Section {
@@ -113,6 +116,7 @@ struct NFXSettingsView: View {
             .submitLabel(.done)
             .onSubmit { settings.commitMockServerURL() }
             .frame(minWidth: 160)
+            .accessibilityIdentifier(NFXAccessibility.Settings.mockServerURL)
 
         #if os(iOS)
         return field

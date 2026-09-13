@@ -9,7 +9,9 @@ import Foundation
 
 @objc
 open class NFXProtocol: URLProtocol {
-    static let nfxInternalKey = "com.netfox.NFXInternal"
+    /// Marks the requests netfox itself performs, so they are not intercepted
+    /// again. Exposed so a host app can stub the inner request (e.g. in tests).
+    public static let nfxInternalKey = "com.netfox.NFXInternal"
     
     private lazy var session: URLSession = { [unowned self] in
         return URLSession(configuration: .default, delegate: self, delegateQueue: nil)

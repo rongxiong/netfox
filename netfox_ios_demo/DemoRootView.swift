@@ -32,6 +32,7 @@ struct DemoRootView: View {
             .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
             .padding(.trailing, 24)
             .padding(.bottom, 24)
+            .accessibilityIdentifier(NFXAccessibility.Demo.netfoxButton)
         }
         .netfoxPanel(isPresented: $showsNetfoxPanel)
     }

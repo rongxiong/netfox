@@ -60,12 +60,14 @@ struct NFXRequestListView: View {
             NFXEmptyStateView(systemImage: "tray",
                               title: "No requests yet",
                               message: "Every request your app performs shows up here as soon as it is intercepted.")
+            .accessibilityIdentifier(NFXAccessibility.emptyState)
         } else if store.displayedModels.isEmpty {
             NFXEmptyStateView(systemImage: "magnifyingglass",
                               title: "No results",
                               message: "Nothing matches “\(store.searchText)”.",
                               actionTitle: "Clear search",
                               action: { store.searchText = "" })
+            .accessibilityIdentifier(NFXAccessibility.emptyState)
         } else {
             list
         }
@@ -87,11 +89,13 @@ struct NFXRequestListView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: store.displayedModels.count)
+        .accessibilityIdentifier(NFXAccessibility.requestList)
     }
 
     @ViewBuilder
     private func row(_ model: NFXHTTPModel) -> some View {
         let rowBody = NFXRequestRowView(model: model, isUnread: store.isUnread(model))
+            .accessibilityIdentifier(NFXAccessibility.row(model.randomHash))
 
         if let selection {
             Button {
@@ -137,16 +141,19 @@ struct NFXRequestListView: View {
                 Button(action: { showsSettings = true }) {
                     Label("Settings", systemImage: "gearshape")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.settings)
             }
             ToolbarItem(placement: .automatic) {
                 Button(action: { showsStatistics = true }) {
                     Label("Statistics", systemImage: "chart.bar")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.statistics)
             }
             ToolbarItem(placement: .automatic) {
                 Button(action: { showsInfo = true }) {
                     Label("Info", systemImage: "info.circle")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.info)
             }
             #else
             ToolbarItem(placement: .primaryAction) {
@@ -155,6 +162,7 @@ struct NFXRequestListView: View {
                 } label: {
                     Label("Settings", systemImage: "gearshape")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.settings)
             }
             ToolbarItem(placement: .automatic) {
                 NavigationLink {
@@ -162,6 +170,7 @@ struct NFXRequestListView: View {
                 } label: {
                     Label("Statistics", systemImage: "chart.bar")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.statistics)
             }
             ToolbarItem(placement: .automatic) {
                 NavigationLink {
@@ -169,6 +178,7 @@ struct NFXRequestListView: View {
                 } label: {
                     Label("Info", systemImage: "info.circle")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.info)
             }
             #endif
 
@@ -176,6 +186,7 @@ struct NFXRequestListView: View {
                 Button(role: .destructive, action: { showsClearConfirmation = true }) {
                     Label("Clear", systemImage: "trash")
                 }
+                .accessibilityIdentifier(NFXAccessibility.Toolbar.clear)
             }
 
             ToolbarItem(placement: .cancellationAction) {
@@ -190,6 +201,7 @@ struct NFXRequestListView: View {
             Button(action: { dismiss() }) {
                 Label("Close", systemImage: "xmark")
             }
+            .accessibilityIdentifier(NFXAccessibility.Toolbar.close)
         }
     }
 }
