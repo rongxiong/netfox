@@ -94,8 +94,8 @@ extension NFXTests {
             let screen = NFXNavigationContainer {
                 NFXDetailsView(model: model)
             }
-            assertSnapshot(of: hosted(screen),
-                           as: .image,
+            assertSnapshot(of: hostedController(screen),
+                           as: .image(on: .iPhone13),
                            named: "info",
                            testName: "testDetailsScreen")
         }
@@ -105,13 +105,22 @@ extension NFXTests {
             let screen = NFXNavigationContainer {
                 NFXSettingsView()
             }
-            assertSnapshot(of: hosted(screen),
-                           as: .image,
+            assertSnapshot(of: hostedController(screen),
+                           as: .image(on: .iPhone13),
                            named: "settings",
                            testName: "testSettingsScreen")
         }
 
         // MARK: - Rendering
+
+        /// Wraps a full screen (navigation container) in a hosting controller.
+        /// SnapshotTesting's view-controller strategy installs it in a real
+        /// window, so navigation-bar layout margins and safe-area insets match
+        /// what the app renders on device - snapshotting a detached `view`
+        /// would pin the large title to x: 0.
+        private func hostedController<Content: View>(_ view: Content) -> UIHostingController<AnyView> {
+            UIHostingController(rootView: AnyView(view.environmentObject(NFXStore.shared)))
+        }
 
         /// Renders a SwiftUI view into a plain UIView of a fixed size, so the
         /// snapshot never depends on the window the tests happen to run in.
@@ -121,16 +130,7 @@ extension NFXTests {
             let rendered = hosting.view ?? UIView()
             rendered.frame = CGRect(origin: .zero, size: size)
             rendered.backgroundColor = UIColor(Color.nfxBackground)
-
-            // SwiftUI finishes parts of its first layout pass asynchronously
-            // (font resolution, attributed strings). A single layout pass is
-            // enough on a fast machine but races the snapshot on slow CI
-            // runners, so pump the main runloop until the view has settled.
-            for _ in 0 ..< 5 {
-                rendered.setNeedsLayout()
-                rendered.layoutIfNeeded()
-                RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.02))
-            }
+            rendered.setNeedsLayout()
             rendered.layoutIfNeeded()
             return rendered
         }
