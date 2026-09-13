@@ -103,7 +103,7 @@ struct NFXRequestListView: View {
             } label: {
                 rowBody
                     .background(isSelected(model) ? Color.nfxAccent.opacity(0.16) : Color.clear,
-                                in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                in: RoundedRectangle(cornerRadius: NFXTheme.Metrics.cardRadius, style: .continuous))
             }
             .buttonStyle(.plain)
             .animation(.easeOut(duration: 0.15), value: isSelected(model))

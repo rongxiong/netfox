@@ -72,11 +72,11 @@ struct NFXRequestRowView: View {
             }
         }
         .padding(.vertical, 10)
-        .padding(.trailing, 6)
+        .padding(.trailing, 12)
         .padding(.leading, 6)
-        .background(Color.nfxCard, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .background(Color.nfxCard, in: RoundedRectangle(cornerRadius: NFXTheme.Metrics.cardRadius, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
+            RoundedRectangle(cornerRadius: NFXTheme.Metrics.cardRadius, style: .continuous)
                 .strokeBorder(Color.nfxSeparator.opacity(0.25), lineWidth: 1)
         )
     }
