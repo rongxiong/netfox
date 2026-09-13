@@ -121,6 +121,16 @@ extension NFXTests {
             let rendered = hosting.view ?? UIView()
             rendered.frame = CGRect(origin: .zero, size: size)
             rendered.backgroundColor = UIColor(Color.nfxBackground)
+
+            // SwiftUI finishes parts of its first layout pass asynchronously
+            // (font resolution, attributed strings). A single layout pass is
+            // enough on a fast machine but races the snapshot on slow CI
+            // runners, so pump the main runloop until the view has settled.
+            for _ in 0 ..< 5 {
+                rendered.setNeedsLayout()
+                rendered.layoutIfNeeded()
+                RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.02))
+            }
             rendered.layoutIfNeeded()
             return rendered
         }

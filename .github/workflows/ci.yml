@@ -21,6 +21,8 @@ jobs:
   ios-tests:
     name: iOS unit tests (Swift Testing)
     runs-on: macos-latest
+    env:
+      SNAPSHOT_ARTIFACTS: ${{ github.workspace }}/snapshot-failures
     steps:
       - uses: actions/checkout@v7
       - name: Select latest stable Xcode
@@ -37,18 +39,26 @@ jobs:
       - name: Run netfoxTests
         run: |
           set -o pipefail
+          mkdir -p test-results
           xcodebuild test \
             -scheme netfox_ios \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
             -only-testing:netfoxTests \
-            -resultBundlePath TestResults-unit.xcresult \
+            -resultBundlePath test-results/TestResults-unit.xcresult \
             2>&1 | xcbeautify
+      - name: Upload snapshot diffs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: snapshot-failures
+          path: snapshot-failures
+          if-no-files-found: ignore
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: unit-test-results
-          path: TestResults-unit.xcresult
+          path: test-results
 
   ios-ui-tests:
     name: iOS UI tests (demo app)
@@ -69,18 +79,19 @@ jobs:
       - name: Run netfoxUITests
         run: |
           set -o pipefail
+          mkdir -p test-results-ui
           xcodebuild test \
             -scheme netfox_ios \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
             -only-testing:netfoxUITests \
-            -resultBundlePath TestResults-ui.xcresult \
+            -resultBundlePath test-results-ui/TestResults-ui.xcresult \
             2>&1 | xcbeautify
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: ui-test-results
-          path: TestResults-ui.xcresult
+          path: test-results-ui
 
   macos-build:
     name: macOS build
