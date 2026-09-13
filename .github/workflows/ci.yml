@@ -10,19 +10,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  spm-build:
-    name: SPM build (macOS)
+  build-and-test:
+    name: Build & test
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Swift build
-        run: swift build
 
-  ios-tests:
-    name: iOS unit tests (Swift Testing)
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
       - name: Select latest stable Xcode
         run: |
           LATEST_XCODE=$(
@@ -34,7 +27,11 @@ jobs:
           echo "Using $LATEST_XCODE"
           sudo xcode-select -s "$LATEST_XCODE"
           xcodebuild -version
-      - name: Run netfoxTests
+
+      - name: Swift Package Manager build
+        run: swift build
+
+      - name: Run unit tests (Swift Testing)
         run: |
           set -o pipefail
           mkdir -p test-results
@@ -44,30 +41,8 @@ jobs:
             -only-testing:netfoxTests \
             -resultBundlePath test-results/TestResults-unit.xcresult \
             2>&1 | xcbeautify
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: unit-test-results
-          path: test-results
 
-  ios-ui-tests:
-    name: iOS UI tests (demo app)
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Select latest stable Xcode
-        run: |
-          LATEST_XCODE=$(
-            ls -d /Applications/Xcode_*.app 2>/dev/null | while read -r x; do
-              target=$(readlink "$x" 2>/dev/null || echo "$x")
-              echo "$target" | grep -Eqi 'beta|release.candidate' || echo "$x"
-            done | sort -V | tail -1
-          )
-          echo "Using $LATEST_XCODE"
-          sudo xcode-select -s "$LATEST_XCODE"
-          xcodebuild -version
-      - name: Run netfoxUITests
+      - name: Run UI tests (demo app)
         run: |
           set -o pipefail
           mkdir -p test-results-ui
@@ -77,33 +52,27 @@ jobs:
             -only-testing:netfoxUITests \
             -resultBundlePath test-results-ui/TestResults-ui.xcresult \
             2>&1 | xcbeautify
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: ui-test-results
-          path: test-results-ui
 
-  macos-build:
-    name: macOS build
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Select latest stable Xcode
-        run: |
-          LATEST_XCODE=$(
-            ls -d /Applications/Xcode_*.app 2>/dev/null | while read -r x; do
-              target=$(readlink "$x" 2>/dev/null || echo "$x")
-              echo "$target" | grep -Eqi 'beta|release.candidate' || echo "$x"
-            done | sort -V | tail -1
-          )
-          echo "Using $LATEST_XCODE"
-          sudo xcode-select -s "$LATEST_XCODE"
-          xcodebuild -version
-      - name: Build netfox_osx
+      - name: Build macOS framework
         run: |
           set -o pipefail
           xcodebuild build \
             -scheme netfox_osx \
             -destination 'platform=macOS' \
             2>&1 | xcbeautify
+
+      - name: Upload unit test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-results
+          path: test-results
+          if-no-files-found: ignore
+
+      - name: Upload UI test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ui-test-results
+          path: test-results-ui
+          if-no-files-found: ignore
