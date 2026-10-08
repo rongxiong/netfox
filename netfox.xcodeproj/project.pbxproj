@@ -64,6 +64,10 @@
 		9B0000000000000000000252 /* NFXMacRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000025 /* NFXMacRootView.swift */; };
 		9B0000000000000000000261 /* NFXMacWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000026 /* NFXMacWindowController.swift */; };
 		9B0000000000000000000262 /* NFXMacWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000026 /* NFXMacWindowController.swift */; };
+		9B0000000000000000000271 /* NFXBodyReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000027 /* NFXBodyReader.swift */; };
+		9B0000000000000000000272 /* NFXBodyReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000027 /* NFXBodyReader.swift */; };
+		9B0000000000000000000281 /* NFXBodyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000028 /* NFXBodyLoader.swift */; };
+		9B0000000000000000000282 /* NFXBodyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000028 /* NFXBodyLoader.swift */; };
 		A1B2C300000000000000000C /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
 		A1B2C300000000000000000E /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A1B2C3200000000000000001 /* NFXTestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000001 /* NFXTestEnvironment.swift */; };
@@ -77,6 +81,7 @@
 		A1B2C3200000000000000009 /* NFXContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000009 /* NFXContentTests.swift */; };
 		A1B2C320000000000000000A /* NFXProtocolInterceptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */; };
 		A1B2C320000000000000000B /* NFXSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C310000000000000000B /* NFXSnapshotTests.swift */; };
+		A1B2C320000000000000000C /* NFXBodyReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C310000000000000000C /* NFXBodyReaderTests.swift */; };
 		A1B2C4200000000000000001 /* NFXUITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000001 /* NFXUITestBase.swift */; };
 		A1B2C4200000000000000002 /* NFXDemoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000002 /* NFXDemoPage.swift */; };
 		A1B2C4200000000000000003 /* NFXNetfoxPanelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C4100000000000000003 /* NFXNetfoxPanelPage.swift */; };
@@ -180,6 +185,8 @@
 		8A0000000000000000000024 /* NFXSharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSharing.swift; sourceTree = "<group>"; };
 		8A0000000000000000000025 /* NFXMacRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMacRootView.swift; sourceTree = "<group>"; };
 		8A0000000000000000000026 /* NFXMacWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMacWindowController.swift; sourceTree = "<group>"; };
+		8A0000000000000000000027 /* NFXBodyReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXBodyReader.swift; sourceTree = "<group>"; };
+		8A0000000000000000000028 /* NFXBodyLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXBodyLoader.swift; sourceTree = "<group>"; };
 		A1B2C3000000000000000002 /* netfoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3100000000000000001 /* NFXTestEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXTestEnvironment.swift; sourceTree = "<group>"; };
 		A1B2C3100000000000000002 /* NFXLocalHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXLocalHTTPServer.swift; sourceTree = "<group>"; };
@@ -192,6 +199,7 @@
 		A1B2C3100000000000000009 /* NFXContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXContentTests.swift; sourceTree = "<group>"; };
 		A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXProtocolInterceptionTests.swift; sourceTree = "<group>"; };
 		A1B2C310000000000000000B /* NFXSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSnapshotTests.swift; sourceTree = "<group>"; };
+		A1B2C310000000000000000C /* NFXBodyReaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXBodyReaderTests.swift; sourceTree = "<group>"; };
 		A1B2C4000000000000000002 /* netfoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfoxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C4100000000000000001 /* NFXUITestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXUITestBase.swift; sourceTree = "<group>"; };
 		A1B2C4100000000000000002 /* NFXDemoPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoPage.swift; sourceTree = "<group>"; };
@@ -265,6 +273,7 @@
 				8A0000000000000000000020 /* NFXSettingsView.swift */,
 				8A0000000000000000000021 /* NFXStatisticsView.swift */,
 				8A0000000000000000000022 /* NFXTheme.swift */,
+				8A0000000000000000000028 /* NFXBodyLoader.swift */,
 				A1B2C5000000000000000001 /* NFXAccessibility.swift */,
 				7C0000000000000000000003 /* Components */,
 				7C0000000000000000000004 /* Sharing */,
@@ -336,6 +345,7 @@
 				A1B2C3100000000000000009 /* NFXContentTests.swift */,
 				A1B2C310000000000000000A /* NFXProtocolInterceptionTests.swift */,
 				A1B2C310000000000000000B /* NFXSnapshotTests.swift */,
+				A1B2C310000000000000000C /* NFXBodyReaderTests.swift */,
 			);
 			path = netfoxTests;
 			sourceTree = "<group>";
@@ -388,6 +398,7 @@
 				8A0000000000000000000008 /* NFXMockServer.swift */,
 				8A0000000000000000000009 /* NFXProtocol.swift */,
 				8A0000000000000000000010 /* NFXStore.swift */,
+				8A0000000000000000000027 /* NFXBodyReader.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -647,6 +658,7 @@
 				A1B2C3200000000000000009 /* NFXContentTests.swift in Sources */,
 				A1B2C320000000000000000A /* NFXProtocolInterceptionTests.swift in Sources */,
 				A1B2C320000000000000000B /* NFXSnapshotTests.swift in Sources */,
+				A1B2C320000000000000000C /* NFXBodyReaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,6 +703,8 @@
 				9B0000000000000000000241 /* NFXSharing.swift in Sources */,
 				9B0000000000000000000251 /* NFXMacRootView.swift in Sources */,
 				9B0000000000000000000261 /* NFXMacWindowController.swift in Sources */,
+				9B0000000000000000000271 /* NFXBodyReader.swift in Sources */,
+				9B0000000000000000000281 /* NFXBodyLoader.swift in Sources */,
 				A1B2C5000000000000000002 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,6 +739,8 @@
 				9B0000000000000000000242 /* NFXSharing.swift in Sources */,
 				9B0000000000000000000252 /* NFXMacRootView.swift in Sources */,
 				9B0000000000000000000262 /* NFXMacWindowController.swift in Sources */,
+				9B0000000000000000000272 /* NFXBodyReader.swift in Sources */,
+				9B0000000000000000000282 /* NFXBodyLoader.swift in Sources */,
 				A1B2C5000000000000000003 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -37,7 +37,7 @@ jobs:
           mkdir -p test-results
           xcodebuild test \
             -scheme netfox_ios \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
             -only-testing:netfoxTests \
             -resultBundlePath test-results/TestResults-unit.xcresult \
             2>&1 | xcbeautify
@@ -48,7 +48,7 @@ jobs:
           mkdir -p test-results-ui
           xcodebuild test \
             -scheme netfox_ios \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
             -only-testing:netfoxUITests \
             -resultBundlePath test-results-ui/TestResults-ui.xcresult \
             2>&1 | xcbeautify

@@ -161,13 +161,30 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
     }
     
-    fileprivate func prettyOutput(_ rawData: Data, contentType: String? = nil) -> String {
+    /// Bodies bigger than this are served as they were written instead of being
+    /// pretty printed: `JSONSerialization` has to materialize the whole object
+    /// tree and then a second, formatted copy of it, which costs seconds (and
+    /// hundreds of megabytes) once the payload gets big.
+    public static let prettyPrintByteLimit = NFXBodyReader.prettyPrintByteLimit
+
+    func prettyOutput(_ rawData: Data, contentType: String? = nil) -> String {
+        guard let output = prettyPrintedBody(rawData, contentType: contentType) else {
+            return String(decoding: rawData, as: UTF8.self)
+        }
+
+        return output
+    }
+
+    /// The formatted (pretty printed) form of `rawData`, or `nil` when the
+    /// payload is not JSON, or is too large for the reformatting to pay off.
+    func prettyPrintedBody(_ rawData: Data, contentType: String?) -> String? {
         guard let contentType = contentType,
+              rawData.count <= NFXHTTPModel.prettyPrintByteLimit,
               let output = prettyPrint(rawData, type: .init(contentType: contentType))
         else {
-            return String(data: rawData, encoding: String.Encoding.utf8) ?? ""
+            return nil
         }
-        
+
         return output
     }
 
