@@ -179,49 +179,25 @@ struct NFXBodyView: View {
         }
     }
 
-    @ViewBuilder
     private var footerView: some View {
-        if loader.isComplete {
-            VStack(alignment: .leading, spacing: 8) {
+        VStack(spacing: 8) {
+            if loader.isComplete {
                 Text("End of body · \(NFXFormat.bytes(loader.loadedByteCount))")
                     .font(.caption2)
                     .foregroundStyle(Color.nfxTertiaryText)
-
-                // Why this body is one long line: it is past the point where
-                // formatting is done by default.
-                if loader.canFormat, loader.isPrettyPrinted == false, byteLength > NFXBodyReader.prettyPrintByteLimit {
-                    Button("Format this body") {
-                        loader.toggleFormatting()
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    .tint(Color.nfxAccent)
-                }
-            }
-            .padding(.vertical, 12)
-        } else {
-            VStack(alignment: .leading, spacing: 8) {
+            } else {
                 Text("Showing \(NFXFormat.bytes(loader.loadedByteCount)) of \(NFXFormat.bytes(byteLength))")
                     .font(.caption2)
                     .foregroundStyle(Color.nfxTertiaryText)
 
-                HStack(spacing: 8) {
-                    Button("Load more") { loader.loadMore() }
-                        .buttonStyle(.bordered)
-                        .controlSize(.small)
-                        .tint(Color.nfxAccent)
-
-                    if loader.canFormat, loader.isPrettyPrinted == false,
-                       byteLength > NFXBodyReader.prettyPrintByteLimit {
-                        Button("Format") { loader.toggleFormatting() }
-                            .buttonStyle(.bordered)
-                            .controlSize(.small)
-                            .tint(Color.nfxAccent)
-                    }
-                }
+                Button("Load more") { loader.loadMore() }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(Color.nfxAccent)
             }
-            .padding(.vertical, 12)
         }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.vertical, 12)
     }
 
     // MARK: - Actions
