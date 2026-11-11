@@ -264,14 +264,14 @@ Run everything from the command line:
 
 ```bash
 xcodebuild -scheme netfox_ios \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test
 ```
 
 or only one of them:
 
 ```bash
-xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:netfoxTests test
-xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:netfoxUITests test
+xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 18 Pro' -only-testing:netfoxTests test
+xcodebuild -scheme netfox_ios -destination 'platform=iOS Simulator,name=iPhone 18 Pro' -only-testing:netfoxUITests test
 ```
 
 Notes:
