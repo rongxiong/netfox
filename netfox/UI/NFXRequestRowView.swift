@@ -57,6 +57,7 @@ struct NFXRequestRowView: View {
                     .font(.footnote)
                     .foregroundStyle(Color.nfxPrimaryText)
                     .lineLimit(2)
+                    .truncationMode(.head)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
 
