@@ -33,6 +33,10 @@ public enum NFXAccessibility {
         public static let response = "nfx.details.response"
     }
 
+    public enum Body {
+        public static let format = "nfx.body.format"
+    }
+
     public enum Settings {
         public static let logging = "nfx.settings.logging"
         public static let mockServer = "nfx.settings.mockServer"

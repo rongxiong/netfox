@@ -22,11 +22,16 @@ struct NFXBodySource: @unchecked Sendable {
     /// Turns the raw file bytes into their display form - pretty printed JSON.
     /// `nil`, or a `nil` result, means the file is served exactly as written.
     let format: ((Data) -> String?)?
+    /// Set when the user asked for this body to be reformatted, whatever its
+    /// size: past `prettyPrintByteLimit` the formatting costs real time and
+    /// memory, so it stays an explicit choice.
+    let forcesFormatting: Bool
 
-    init(url: URL, byteLength: Int, format: ((Data) -> String?)? = nil) {
+    init(url: URL, byteLength: Int, format: ((Data) -> String?)? = nil, forcesFormatting: Bool = false) {
         self.url = url
         self.byteLength = byteLength
         self.format = format
+        self.forcesFormatting = forcesFormatting
     }
 }
 
@@ -57,7 +62,8 @@ final class NFXBodyReader: @unchecked Sendable {
     /// Payloads above this size are streamed as they were written:
     /// `JSONSerialization` builds a complete object tree plus a second,
     /// formatted copy of it, which costs far more than the formatting is worth
-    /// once the body gets big.
+    /// once the body gets big. It is not a hard limit - the body screen can ask
+    /// for the formatting anyway - but it is the default.
     static let prettyPrintByteLimit = 512 * 1024
 
     /// A page is never shrunk below this - otherwise a body made of very short
@@ -81,7 +87,7 @@ final class NFXBodyReader: @unchecked Sendable {
         var formatted = false
 
         if source.byteLength > 0,
-           source.byteLength <= Self.prettyPrintByteLimit,
+           source.byteLength <= Self.prettyPrintByteLimit || source.forcesFormatting,
            let data = try? Data(contentsOf: source.url),
            let text = source.format?(data),
            text.isEmpty == false {
@@ -214,8 +220,20 @@ final class NFXBodyReader: @unchecked Sendable {
 
 extension NFXHTTPModel {
 
+    /// Only JSON can be reformatted, so nothing else offers the option.
+    func canFormatBody(_ type: NFXBodyType) -> Bool {
+        guard type == .request ? (requestBodyLength ?? 0) > 0 : (responseBodyLength ?? 0) > 0 else { return false }
+
+        let contentType = type == .request ? requestType : responseType
+        guard let contentType else { return false }
+        return HTTPModelShortType(contentType: contentType) == .JSON
+    }
+
     /// Everything the body screen needs to read `type` one page at a time.
-    func bodySource(for type: NFXBodyType) -> NFXBodySource {
+    ///
+    /// `forcesFormatting` reformats the body whatever its size - what the body
+    /// screen asks for once the user turns formatting on.
+    func bodySource(for type: NFXBodyType, forcesFormatting: Bool = false) -> NFXBodySource {
         let isRequest = type == .request
 
         return NFXBodySource(
@@ -224,8 +242,10 @@ extension NFXHTTPModel {
             format: { [weak self] data in
                 guard let self else { return nil }
                 return self.prettyPrintedBody(data,
-                                              contentType: isRequest ? self.requestType : self.responseType)
-            }
+                                              contentType: isRequest ? self.requestType : self.responseType,
+                                              ignoringSizeLimit: forcesFormatting)
+            },
+            forcesFormatting: forcesFormatting
         )
     }
 }

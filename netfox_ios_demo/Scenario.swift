@@ -164,8 +164,20 @@ enum ScenarioCatalog {
             Scenario(method: "GET", title: "Gzipped response",
                      subtitle: "postman-echo.com/gzip · Content-Encoding",
                      work: .single(build: { URLRequest(url: URL(string: "\(echo)/gzip")!) },
-                                   timeout: 30, cancelAfter: nil, tracksProgress: false))
+                                   timeout: 30, cancelAfter: nil, tracksProgress: false)),
+            bigJSONScenario()
         ]
+    }
+
+    /// A 25 MB JSON document bundled with the demo and served by its own
+    /// loopback server, so it is the same size on every run and needs no
+    /// internet connection. Far too big to pretty print, so the body viewer
+    /// streams it page by page.
+    private static func bigJSONScenario() -> Scenario {
+        return Scenario(method: "GET", title: "Big JSON response",
+                        subtitle: "127.0.0.1/demo/big-json · 25 MB, streamed in pages",
+                        work: .single(build: { URLRequest(url: NFXDemoSeeder.bigJSONURL) },
+                                      timeout: 60, cancelAfter: nil, tracksProgress: true))
     }
 
     private static func contentScenarios() -> [Scenario] {

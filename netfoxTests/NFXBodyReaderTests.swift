@@ -142,6 +142,27 @@ extension NFXTests {
         }
 
         @Test
+        func formattingCanBeForcedAboveTheBudget() throws {
+            // Past the budget a JSON body is streamed exactly as it arrived…
+            let items = Array(repeating: "{\"id\":1}", count: 90_000)
+            let text = "{\"items\":[\(items.joined(separator: ","))]}"
+            let model = NFXModelFactory.model(contentType: "application/json",
+                                              responseBodyLength: text.utf8.count)
+            NFXPath.createDirForFileIfNotExist(model.getResponseBodyFileURL())
+            try Data(text.utf8).write(to: model.getResponseBodyFileURL())
+
+            let raw = NFXBodyReader(source: model.bodySource(for: .response))
+            #expect(raw.isPrettyPrinted == false)
+            #expect(allPages(of: raw).joined() == text)
+
+            // … unless the body screen asks for it, which is what the format
+            // toggle does.
+            let formatted = NFXBodyReader(source: model.bodySource(for: .response, forcesFormatting: true))
+            #expect(formatted.isPrettyPrinted)
+            #expect(allPages(of: formatted).joined().contains("\n  "))
+        }
+
+        @Test
         func bodySourcePointsAtTheMatchingFile() {
             let model = NFXModelFactory.persistedModel()
             let response = model.bodySource(for: .response)

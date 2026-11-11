@@ -23,6 +23,11 @@ final class NFXBodyLoader: ObservableObject {
     @Published private(set) var isComplete = false
     /// `true` when the pages carry pretty printed JSON.
     @Published private(set) var isPrettyPrinted = false
+    /// `true` when the user asked for this body to be reformatted, whatever
+    /// its size.
+    @Published private(set) var isFormattingRequested = false
+    /// `true` while a (re)format is running.
+    @Published private(set) var isFormatting = false
     /// Bytes handed to the view so far.
     @Published private(set) var loadedByteCount = 0
     /// Decoded preview of an image response.
@@ -33,7 +38,12 @@ final class NFXBodyLoader: ObservableObject {
     /// Size of the payload, shown as the "showing X of Y" denominator.
     let byteLength: Int
 
-    private let source: NFXBodySource
+    /// Only JSON can be reformatted, so nothing else offers the option.
+    var canFormat: Bool { model.canFormatBody(bodyType) }
+
+    private let model: NFXHTTPModel
+    private let bodyType: NFXBodyType
+    private var source: NFXBodySource
     private var reader: NFXBodyReader?
 
     /// Pages are appended while scrolling up to this budget: a huge response
@@ -47,6 +57,8 @@ final class NFXBodyLoader: ObservableObject {
     private static let imagePreviewByteLimit = 16 * 1024 * 1024
 
     init(model: NFXHTTPModel, bodyType: NFXBodyType) {
+        self.model = model
+        self.bodyType = bodyType
         self.source = model.bodySource(for: bodyType)
         self.byteLength = bodyType == .request ? model.requestBodyLength ?? 0 : model.responseBodyLength ?? 0
     }
@@ -88,6 +100,29 @@ final class NFXBodyLoader: ObservableObject {
         Task { self.loadMore() }
     }
 
+    /// Turns formatting on or off and re-reads the body from scratch.
+    ///
+    /// Formatting a big body is not free - the whole payload is decoded into
+    /// an object tree and formatted into a second copy - so it runs off the
+    /// main actor and the caller shows `isFormatting` while it happens.
+    func toggleFormatting() {
+        guard canFormat, isFormatting == false else { return }
+
+        let requested = isFormattingRequested == false
+        isFormatting = true
+
+        Task { @MainActor in
+            await reload(forcingFormatting: requested)
+            isFormatting = false
+
+            // The payload turned out not to be formattable after all (a body
+            // that is not valid JSON, say): leave the toggle where it was.
+            if isFormattingRequested, isPrettyPrinted == false {
+                isFormattingRequested = false
+            }
+        }
+    }
+
     /// The whole body as a single string, read off the main actor.
     ///
     /// Copy / share only - the result is never rendered, because putting it
@@ -98,6 +133,23 @@ final class NFXBodyLoader: ObservableObject {
     }
 
     // MARK: - Internals
+
+    /// Reopens the body file, dropping whatever was served so far.
+    private func reload(forcingFormatting: Bool) async {
+        let newSource = model.bodySource(for: bodyType, forcesFormatting: forcingFormatting)
+        let newReader = await Task.detached { NFXBodyReader(source: newSource) }.value
+
+        source = newSource
+        reader = newReader
+        isFormattingRequested = forcingFormatting
+        isPrettyPrinted = newReader.isPrettyPrinted
+
+        pages.removeAll()
+        loadedByteCount = 0
+        isComplete = false
+
+        append(upTo: Self.initialByteBudget)
+    }
 
     private func append(upTo budget: Int) {
         var added = 0

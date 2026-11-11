@@ -47,6 +47,9 @@ struct NFXBodyView: View {
             .navigationTitle(title)
             .toolbar {
                 ToolbarItem(placement: .automatic) {
+                    formatButton
+                }
+                ToolbarItem(placement: .automatic) {
                     Menu {
                         Button("Copy") { export { NFXClipboard.copy($0) } }
                         Button("Share") { export { sharePayload = .text($0, title: title) } }
@@ -59,13 +62,34 @@ struct NFXBodyView: View {
             .nfxShareSheet(item: $sharePayload)
             .overlay {
                 if isExporting {
-                    ZStack {
-                        Color.nfxBackground.opacity(0.6).ignoresSafeArea()
-                        ProgressView("Reading body…")
-                    }
+                    overlay(message: "Reading body…")
+                } else if loader.isFormatting {
+                    overlay(message: "Formatting body…")
                 }
             }
             .task { await loader.prepare(isImage: isImagePreview) }
+    }
+
+    // MARK: - Formatting
+
+    /// Formatting is opt-in: bodies past `prettyPrintByteLimit` are streamed
+    /// as they arrived, and reformatting one is the user's call.
+    private var formatButton: some View {
+        Button {
+            loader.toggleFormatting()
+        } label: {
+            Label(loader.isFormattingRequested ? "Raw" : "Format",
+                  systemImage: loader.isFormattingRequested ? "text.alignleft" : "curlybraces")
+        }
+        .disabled(loader.canFormat == false)
+        .accessibilityIdentifier(NFXAccessibility.Body.format)
+    }
+
+    private func overlay(message: String) -> some View {
+        return ZStack {
+            Color.nfxBackground.opacity(0.6).ignoresSafeArea()
+            ProgressView(message)
+        }
     }
 
     @ViewBuilder
@@ -158,20 +182,43 @@ struct NFXBodyView: View {
     @ViewBuilder
     private var footerView: some View {
         if loader.isComplete {
-            Text("End of body · \(NFXFormat.bytes(loader.loadedByteCount))")
-                .font(.caption2)
-                .foregroundStyle(Color.nfxTertiaryText)
-                .padding(.vertical, 12)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("End of body · \(NFXFormat.bytes(loader.loadedByteCount))")
+                    .font(.caption2)
+                    .foregroundStyle(Color.nfxTertiaryText)
+
+                // Why this body is one long line: it is past the point where
+                // formatting is done by default.
+                if loader.canFormat, loader.isPrettyPrinted == false, byteLength > NFXBodyReader.prettyPrintByteLimit {
+                    Button("Format this body") {
+                        loader.toggleFormatting()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(Color.nfxAccent)
+                }
+            }
+            .padding(.vertical, 12)
         } else {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Showing \(NFXFormat.bytes(loader.loadedByteCount)) of \(NFXFormat.bytes(byteLength))")
                     .font(.caption2)
                     .foregroundStyle(Color.nfxTertiaryText)
 
-                Button("Load more") { loader.loadMore() }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    .tint(Color.nfxAccent)
+                HStack(spacing: 8) {
+                    Button("Load more") { loader.loadMore() }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                        .tint(Color.nfxAccent)
+
+                    if loader.canFormat, loader.isPrettyPrinted == false,
+                       byteLength > NFXBodyReader.prettyPrintByteLimit {
+                        Button("Format") { loader.toggleFormatting() }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .tint(Color.nfxAccent)
+                    }
+                }
             }
             .padding(.vertical, 12)
         }

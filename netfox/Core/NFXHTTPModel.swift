@@ -177,9 +177,12 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     /// The formatted (pretty printed) form of `rawData`, or `nil` when the
     /// payload is not JSON, or is too large for the reformatting to pay off.
-    func prettyPrintedBody(_ rawData: Data, contentType: String?) -> String? {
+    ///
+    /// `ignoringSizeLimit` drops that size check - the body screen passes it
+    /// when the user explicitly asked for a big body to be formatted.
+    func prettyPrintedBody(_ rawData: Data, contentType: String?, ignoringSizeLimit: Bool = false) -> String? {
         guard let contentType = contentType,
-              rawData.count <= NFXHTTPModel.prettyPrintByteLimit,
+              ignoringSizeLimit || rawData.count <= NFXHTTPModel.prettyPrintByteLimit,
               let output = prettyPrint(rawData, type: .init(contentType: contentType))
         else {
             return nil

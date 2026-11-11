@@ -90,6 +90,7 @@
 		A1B2C5000000000000000003 /* NFXAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000001 /* NFXAccessibility.swift */; };
 		A1B2C5000000000000000012 /* NFXDemoSeedServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000011 /* NFXDemoSeedServer.swift */; };
 		A1B2C5000000000000000014 /* NFXDemoSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C5000000000000000013 /* NFXDemoSeeder.swift */; };
+		A1B2C5000000000000000020 /* big-json.json in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C500000000000000001F /* big-json.json */; };
 		A1B2C6000000000000000003 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C6000000000000000002 /* SnapshotTesting */; };
 		AB0000000000000000000002 /* DemoRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000001 /* DemoRootView.swift */; };
 		AB0000000000000000000050 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000040 /* Scenario.swift */; };
@@ -207,6 +208,7 @@
 		A1B2C4100000000000000004 /* NFXNetfoxPanelUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXNetfoxPanelUITests.swift; sourceTree = "<group>"; };
 		A1B2C5000000000000000001 /* NFXAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXAccessibility.swift; sourceTree = "<group>"; };
 		A1B2C5000000000000000011 /* NFXDemoSeedServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoSeedServer.swift; sourceTree = "<group>"; };
+		A1B2C500000000000000001F /* big-json.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "big-json.json"; sourceTree = "<group>"; };
 		A1B2C5000000000000000013 /* NFXDemoSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXDemoSeeder.swift; sourceTree = "<group>"; };
 		AB0000000000000000000001 /* DemoRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoRootView.swift; sourceTree = "<group>"; };
 		AB0000000000000000000040 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				8229AD701F8FB34300A9D613 /* Info.plist */,
 				AB0000000000000000000001 /* DemoRootView.swift */,
 				026274F0214C6BF000AE1BDF /* SceneDelegate.swift */,
+				A1B2C500000000000000001F /* big-json.json */,
 			);
 			path = netfox_ios_demo;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8229AD6C1F8FB34300A9D613 /* Assets.xcassets in Resources */,
+				A1B2C5000000000000000020 /* big-json.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,8 +2,9 @@
 //  NFXDemoSeedServer.swift
 //  netfox_ios_demo
 //
-//  A tiny HTTP server bound to 127.0.0.1, started only when the UI tests ask
-//  for the seeded batch (`-nfxUITestSeed`).
+//  A tiny HTTP server bound to 127.0.0.1. It serves the demo payloads bundled
+//  with the app for the whole run, and the seeded batch (`-nfxUITestSeed`)
+//  the UI tests rely on on top of them.
 //
 //  netfox intercepts the seeded requests and re-issues them from its own
 //  internal session, so the answers cannot come from a custom URLProtocol -
@@ -20,17 +21,33 @@ final class NFXDemoSeedServer {
     struct Response {
         let status: Int
         let headers: [String: String]
-        let body: Data
+        private let storedBody: Data
+        /// Builds the body on first use - a payload of tens of megabytes should
+        /// not be materialized while the app is still launching. `nil` for the
+        /// routes whose body is a few bytes long.
+        private let bodyFactory: (() -> Data)?
 
-        init(status: Int, contentType: String, body: Data) {
+        /// The payload to write out.
+        var body: Data { bodyFactory?() ?? storedBody }
+
+        init(status: Int, contentType: String, body: Data, bodyFactory: (() -> Data)? = nil) {
             self.status = status
             self.headers = ["Content-Type": contentType]
-            self.body = body
+            self.storedBody = body
+            self.bodyFactory = bodyFactory
         }
 
         static func json(_ value: [String: Any], status: Int = 200) -> Response {
             let data = (try? JSONSerialization.data(withJSONObject: value)) ?? Data()
             return Response(status: status, contentType: "application/json", body: data)
+        }
+
+        /// A body read from a file in the app bundle, memory mapped so a
+        /// payload of tens of megabytes never has to be copied onto the heap.
+        static func file(at url: URL, contentType: String) -> Response {
+            return Response(status: 200, contentType: contentType, body: Data(), bodyFactory: {
+                return (try? Data(contentsOf: url, options: .mappedIfSafe)) ?? Data()
+            })
         }
 
         static func text(_ value: String, contentType: String, status: Int = 200) -> Response {

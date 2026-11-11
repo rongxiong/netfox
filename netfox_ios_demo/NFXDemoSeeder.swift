@@ -2,9 +2,14 @@
 //  NFXDemoSeeder.swift
 //  netfox_ios_demo
 //
-//  Fires a fixed batch of requests against the local seed server at launch,
-//  but only when the app is launched by the UI tests. Requests are fired one
-//  after another, so the netfox list always ends up in the same order.
+//  Owns the demo's loopback server and, when the UI tests ask for it, the
+//  fixed batch of requests fired against it at launch.
+//
+//  The server runs for the whole session: it serves `big-json.json` out of
+//  the app bundle (so that scenario is the same size on every run and needs no
+//  internet connection), and it serves the seeded batch under the
+//  `-nfxUITestSeed` launch argument, which fires the requests one after
+//  another so the netfox list always ends up in the same order.
 //
 
 import Foundation
@@ -13,6 +18,14 @@ import netfox_ios
 enum NFXDemoSeeder {
 
     static let launchArgument = "-nfxUITestSeed"
+
+    /// Route of the bundled big JSON document.
+    private static let bigJSONPath = "/demo/big-json"
+
+    /// A 25 MB JSON document, far past `NFXBodyReader.prettyPrintByteLimit`:
+    /// the body viewer streams it in pages instead of pretty printing it, and
+    /// the details screen refuses to preview it inline.
+    private static let bigJSONResource = "big-json"
 
     private struct Seed {
         let path: String
@@ -51,16 +64,36 @@ enum NFXDemoSeeder {
     private static let session = URLSession(configuration: .default)
     private static let server = NFXDemoSeedServer()
 
-    /// Fires the seeded batch when the `-nfxUITestSeed` launch argument is set.
-    static func seedIfNeeded() {
-        guard ProcessInfo.processInfo.arguments.contains(launchArgument) else { return }
+    /// Loopback URL of the bundled big JSON document. The port is only known
+    /// once `start()` has bound the socket, which happens during launch, long
+    /// before a scenario row can be tapped; the fallback only shows up if the
+    /// server never came up at all.
+    static var bigJSONURL: URL {
+        guard let baseURL = server.baseURL else {
+            return URL(string: "http://127.0.0.1\(bigJSONPath)")!
+        }
+        return URL(string: baseURL.absoluteString + bigJSONPath)!
+    }
+
+    /// Starts the loopback server, then fires the seeded batch when the
+    /// `-nfxUITestSeed` launch argument is set.
+    static func start() {
+        let isUITesting = ProcessInfo.processInfo.arguments.contains(launchArgument)
 
         var routes: [String: NFXDemoSeedServer.Response] = [:]
-        for seed in seeds {
+        if let url = Bundle.main.url(forResource: bigJSONResource, withExtension: "json") {
+            routes[bigJSONPath] = .file(at: url, contentType: "application/json")
+        }
+        for seed in seeds where isUITesting {
             routes[seed.path] = seed.response
         }
         try? server.start(routes: routes)
 
+        guard isUITesting, server.baseURL != nil else { return }
+        fireSeededBatch()
+    }
+
+    private static func fireSeededBatch() {
         guard let baseURL = server.baseURL else { return }
 
         var iterator = seeds.makeIterator()
