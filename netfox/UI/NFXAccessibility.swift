@@ -37,6 +37,15 @@ public enum NFXAccessibility {
         public static let format = "nfx.body.format"
     }
 
+    public enum Search {
+        public static let toggle = "nfx.search.toggle"
+        public static let field = "nfx.search.field"
+        public static let status = "nfx.search.status"
+        public static let previous = "nfx.search.previous"
+        public static let next = "nfx.search.next"
+        public static let close = "nfx.search.close"
+    }
+
     public enum Settings {
         public static let logging = "nfx.settings.logging"
         public static let mockServer = "nfx.settings.mockServer"

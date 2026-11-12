@@ -35,6 +35,25 @@ final class NFXBodyLoader: ObservableObject {
     /// `true` when an image response exists but is too large to decode.
     @Published private(set) var isImageTooLarge = false
 
+    // MARK: - Find in body
+
+    /// Text typed into the find bar. Local to this screen: the request list's
+    /// search text lives in `NFXStore` and must not be disturbed.
+    @Published var searchText = "" {
+        didSet { scheduleSearch() }
+    }
+    @Published private(set) var searchResult: NFXTextSearchResult = .empty
+    /// Highlight ranges grouped by page index, ready for the lazy stack.
+    @Published private(set) var matchRangesByPage: [Int: [NSRange]] = [:]
+    /// Bumped whenever the current hit changes. A token - rather than the
+    /// hit's id - guarantees a scroll even if the first hit of a new query
+    /// happens to sit at exactly the same position.
+    @Published private(set) var searchScrollToken = 0
+    @Published private(set) var currentMatchIndex: Int? {
+        didSet { searchScrollToken += 1 }
+    }
+    @Published private(set) var isSearching = false
+
     /// Size of the payload, shown as the "showing X of Y" denominator.
     let byteLength: Int
 
@@ -45,6 +64,7 @@ final class NFXBodyLoader: ObservableObject {
     private let bodyType: NFXBodyType
     private var source: NFXBodySource
     private var reader: NFXBodyReader?
+    private var searchTask: Task<Void, Never>?
 
     /// Pages are appended while scrolling up to this budget: a huge response
     /// must not end up in memory just because the user scrolled past it.
@@ -120,6 +140,10 @@ final class NFXBodyLoader: ObservableObject {
             if isFormattingRequested, isPrettyPrinted == false {
                 isFormattingRequested = false
             }
+
+            // Reformatting changes the page boundaries, so the old hits no
+            // longer point at the right text.
+            if searchText.isEmpty == false { scheduleSearch() }
         }
     }
 
@@ -130,6 +154,72 @@ final class NFXBodyLoader: ObservableObject {
     func entireText() async -> String {
         let source = self.source
         return await Task.detached { NFXBodyReader.entireText(source: source) }.value
+    }
+
+    // MARK: - Search
+
+    var currentMatch: NFXTextSearchMatch? {
+        guard let currentMatchIndex, currentMatchIndex < searchResult.count else { return nil }
+        return searchResult.matches[currentMatchIndex]
+    }
+
+    func nextMatch() {
+        guard searchResult.matches.isEmpty == false else { return }
+        currentMatchIndex = ((currentMatchIndex ?? -1) + 1) % searchResult.count
+    }
+
+    func previousMatch() {
+        guard searchResult.matches.isEmpty == false else { return }
+        let count = searchResult.count
+        currentMatchIndex = ((currentMatchIndex ?? 0) - 1 + count) % count
+    }
+
+    /// Makes sure the page holding a hit exists before the view scrolls to it.
+    /// Jumping to a hit is an explicit action, and the lazy stack still only
+    /// renders the visible pages.
+    func ensurePageIsLoaded(_ pageIndex: Int) {
+        while pages.count <= pageIndex, isComplete == false {
+            if appendNextPage() == 0 { break }
+        }
+    }
+
+    /// Debounces typing, then searches a freshly opened reader off the main
+    /// actor. Using the same source guarantees the same page boundaries as the
+    /// pages already on screen.
+    private func scheduleSearch() {
+        searchTask?.cancel()
+        let query = searchText
+
+        guard query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
+            searchResult = .empty
+            matchRangesByPage = [:]
+            currentMatchIndex = nil
+            isSearching = false
+            return
+        }
+
+        isSearching = true
+        searchTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(nanoseconds: 180_000_000)
+            guard Task.isCancelled == false else { return }
+            await self?.performSearch(query)
+        }
+    }
+
+    private func performSearch(_ query: String) async {
+        let source = self.source
+        let result = await Task.detached {
+            NFXTextSearch.find(query: query, source: source)
+        }.value
+
+        // Typing continued while the file was being read.
+        guard searchText == query else { return }
+
+        searchResult = result
+        matchRangesByPage = Dictionary(grouping: result.matches, by: \.chunkIndex)
+            .mapValues { $0.map(\.range) }
+        currentMatchIndex = result.matches.isEmpty ? nil : 0
+        isSearching = false
     }
 
     // MARK: - Internals
@@ -147,6 +237,9 @@ final class NFXBodyLoader: ObservableObject {
         pages.removeAll()
         loadedByteCount = 0
         isComplete = false
+        searchResult = .empty
+        matchRangesByPage = [:]
+        currentMatchIndex = nil
 
         append(upTo: Self.initialByteBudget)
     }

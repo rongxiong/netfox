@@ -27,6 +27,15 @@ enum NFXUITestID {
         static let mockServer = "nfx.settings.mockServer"
         static let mockServerURL = "nfx.settings.mockServerURL"
     }
+
+    enum Search {
+        static let toggle = "nfx.search.toggle"
+        static let field = "nfx.search.field"
+        static let status = "nfx.search.status"
+        static let previous = "nfx.search.previous"
+        static let next = "nfx.search.next"
+        static let close = "nfx.search.close"
+    }
 }
 
 class NFXUITestBase: XCTestCase {

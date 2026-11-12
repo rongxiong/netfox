@@ -68,6 +68,10 @@
 		9B0000000000000000000272 /* NFXBodyReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000027 /* NFXBodyReader.swift */; };
 		9B0000000000000000000281 /* NFXBodyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000028 /* NFXBodyLoader.swift */; };
 		9B0000000000000000000282 /* NFXBodyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000028 /* NFXBodyLoader.swift */; };
+		9B0000000000000000000291 /* NFXTextSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000029 /* NFXTextSearch.swift */; };
+		9B0000000000000000000292 /* NFXTextSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0000000000000000000029 /* NFXTextSearch.swift */; };
+		9B00000000000000000002A1 /* NFXSearchViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A000000000000000000002A /* NFXSearchViews.swift */; };
+		9B00000000000000000002A2 /* NFXSearchViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A000000000000000000002A /* NFXSearchViews.swift */; };
 		A1B2C300000000000000000C /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
 		A1B2C300000000000000000E /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A1B2C3200000000000000001 /* NFXTestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3100000000000000001 /* NFXTestEnvironment.swift */; };
@@ -188,6 +192,8 @@
 		8A0000000000000000000026 /* NFXMacWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXMacWindowController.swift; sourceTree = "<group>"; };
 		8A0000000000000000000027 /* NFXBodyReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXBodyReader.swift; sourceTree = "<group>"; };
 		8A0000000000000000000028 /* NFXBodyLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXBodyLoader.swift; sourceTree = "<group>"; };
+		8A0000000000000000000029 /* NFXTextSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXTextSearch.swift; sourceTree = "<group>"; };
+		8A000000000000000000002A /* NFXSearchViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXSearchViews.swift; sourceTree = "<group>"; };
 		A1B2C3000000000000000002 /* netfoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3100000000000000001 /* NFXTestEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXTestEnvironment.swift; sourceTree = "<group>"; };
 		A1B2C3100000000000000002 /* NFXLocalHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXLocalHTTPServer.swift; sourceTree = "<group>"; };
@@ -288,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				8A0000000000000000000023 /* NFXComponents.swift */,
+				8A000000000000000000002A /* NFXSearchViews.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -402,6 +409,7 @@
 				8A0000000000000000000009 /* NFXProtocol.swift */,
 				8A0000000000000000000010 /* NFXStore.swift */,
 				8A0000000000000000000027 /* NFXBodyReader.swift */,
+				8A0000000000000000000029 /* NFXTextSearch.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -709,6 +717,8 @@
 				9B0000000000000000000261 /* NFXMacWindowController.swift in Sources */,
 				9B0000000000000000000271 /* NFXBodyReader.swift in Sources */,
 				9B0000000000000000000281 /* NFXBodyLoader.swift in Sources */,
+				9B0000000000000000000291 /* NFXTextSearch.swift in Sources */,
+				9B00000000000000000002A1 /* NFXSearchViews.swift in Sources */,
 				A1B2C5000000000000000002 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -745,6 +755,8 @@
 				9B0000000000000000000262 /* NFXMacWindowController.swift in Sources */,
 				9B0000000000000000000272 /* NFXBodyReader.swift in Sources */,
 				9B0000000000000000000282 /* NFXBodyLoader.swift in Sources */,
+				9B0000000000000000000292 /* NFXTextSearch.swift in Sources */,
+				9B00000000000000000002A2 /* NFXSearchViews.swift in Sources */,
 				A1B2C5000000000000000003 /* NFXAccessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

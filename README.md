@@ -240,6 +240,7 @@ Notes:
 	- Request url: github.com, .gr, or whatever you want
 	- Request method: GET, POST, etc
 	- Response type: Like json, xml, html, image and more 
+- Find in response body: Search the entire response body from the "Response body" screen - including multi-megabyte payloads, streamed page by page. Case-insensitive, with highlighted matches, a match counter and previous/next navigation; typing automatically jumps to the matching text line, and ⌘F opens the find bar on macOS
 - Sharing: You can share your log via email with backend devs or someone who can help.
 	- Simple log option includes only request/response headers and small request/response bodies (when applicable)
 	- Full log option includes request/response headers and request/response bodies (as attachments)

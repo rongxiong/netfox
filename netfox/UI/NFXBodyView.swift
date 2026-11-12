@@ -21,9 +21,17 @@ struct NFXBodyView: View {
     @StateObject private var loader: NFXBodyLoader
     @State private var sharePayload: NFXSharePayload?
     @State private var isExporting = false
+    @State private var showsSearch = false
+    @State private var resetScrollToken = 0
 
     private var isImagePreview: Bool {
         bodyType == .response && model.shortType == .IMAGE
+    }
+
+    /// Find is offered on text responses only - image previews and request
+    /// bodies have no response text lines to search.
+    private var canSearch: Bool {
+        bodyType == .response && isImagePreview == false && loader.image == nil
     }
 
     private var byteLength: Int { loader.byteLength }
@@ -46,6 +54,16 @@ struct NFXBodyView: View {
             .background(Color.nfxBackground.ignoresSafeArea())
             .navigationTitle(title)
             .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button {
+                        showsSearch = true
+                    } label: {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                    .disabled(canSearch == false || loader.pages.isEmpty)
+                    .keyboardShortcut("f", modifiers: .command)
+                    .accessibilityIdentifier(NFXAccessibility.Search.toggle)
+                }
                 ToolbarItem(placement: .automatic) {
                     formatButton
                 }
@@ -137,26 +155,86 @@ struct NFXBodyView: View {
 
     private var textContent: some View {
         VStack(alignment: .leading, spacing: 10) {
-            metaBar
+            // The find bar is a separate toolbar above the body card, not part
+            // of the text container itself.
+            if showsSearch && canSearch {
+                NFXSearchBar(text: $loader.searchText,
+                             prompt: "Search in response body",
+                             matchCount: loader.searchResult.count,
+                             isTruncated: loader.searchResult.isTruncated,
+                             isSearching: loader.isSearching,
+                             currentIndex: loader.currentMatchIndex,
+                             onPrevious: { loader.previousMatch() },
+                             onNext: { loader.nextMatch() },
+                             onClose: closeSearch)
+            }
 
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(loader.pages) { page in
-                        Text(page.text)
-                            .font(NFXTheme.mono(12))
-                            .foregroundStyle(Color.nfxPrimaryText)
-                            .textSelection(.enabled)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .onAppear { loader.loadMoreIfNeeded() }
+            VStack(alignment: .leading, spacing: 10) {
+                metaBar
+
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 0) {
+                            // Stable anchor for returning to the first line
+                            // when the find bar closes.
+                            Color.clear
+                                .frame(height: 1)
+                                .id(NFXSearchScroll.topAnchor)
+
+                            // Rows are always rendered line by line. Switching
+                            // between one big `Text` per page and per-line
+                            // views left the lazy stack with a stale layout, so
+                            // the body looked empty once search was closed.
+                            ForEach(loader.pages) { page in
+                                NFXHighlightedLines(chunkIndex: page.index,
+                                                    text: page.text,
+                                                    ranges: loader.matchRangesByPage[page.index] ?? [],
+                                                    currentRange: loader.currentMatch?.chunkIndex == page.index
+                                                        ? loader.currentMatch?.range : nil)
+                                    .onAppear { loader.loadMoreIfNeeded() }
+                            }
+
+                            footerView
+                        }
                     }
-
-                    footerView
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .onChange(of: loader.searchScrollToken) { _ in
+                        scrollToCurrentMatch(proxy)
+                    }
+                    .onChange(of: resetScrollToken) { _ in
+                        NFXSearchScroll.perform(proxy, to: NFXSearchScroll.topAnchor)
+                    }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .nfxCard()
         }
-        .nfxCard()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(NFXTheme.Metrics.screenPadding)
+    }
+
+    private func closeSearch() {
+        // Cancel the delayed follow-up scroll before collapsing the rows. The
+        // body is brought back to its first line only after the rows have
+        // switched back and the keyboard started dismissing - scrolling in the
+        // middle of that relayout can leave the text off-screen.
+        NFXSearchScroll.cancel()
+        showsSearch = false
+        loader.searchText = ""
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            resetScrollToken += 1
+        }
+    }
+
+    /// A hit may sit on a page that has not been read yet. Load up to it, then
+    /// scroll to the exact line (not the beginning of its 32 KB page).
+    private func scrollToCurrentMatch(_ proxy: ScrollViewProxy) {
+        guard let match = loader.currentMatch else { return }
+        loader.ensurePageIsLoaded(match.chunkIndex)
+        guard match.chunkIndex < loader.pages.count else { return }
+
+        let anchor = NFXTextSearch.anchor(for: match, in: loader.pages[match.chunkIndex].text)
+        NFXSearchScroll.perform(proxy, to: anchor)
     }
 
     private var contentType: String? {
