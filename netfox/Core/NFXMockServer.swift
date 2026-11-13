@@ -56,9 +56,13 @@ internal final class NFXMockServer {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         self.isEnabled = defaults.bool(forKey: DefaultsKey.enabled)
-        if let storedURLString = defaults.string(forKey: DefaultsKey.url) {
+        // Only restore a URL that can actually be used for rewriting. An
+        // invalid persisted value would otherwise show up in the settings UI
+        // as if mocking were configured while baseURL stayed nil.
+        if let storedURLString = defaults.string(forKey: DefaultsKey.url),
+           let normalized = NFXMockServer.normalizedURL(from: storedURLString) {
             self.urlString = storedURLString
-            self.baseURL = NFXMockServer.normalizedURL(from: storedURLString)
+            self.baseURL = normalized
         }
     }
 

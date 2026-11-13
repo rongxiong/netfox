@@ -99,5 +99,33 @@ extension NFXTests {
             #expect(NFXStore.shared.models.isEmpty)
             #expect(NFXStore.shared.displayedModels.isEmpty)
         }
+
+        // MARK: - Mock Server settings
+
+        @Test
+        func enablingMockServerAppliesTheDefaultURL() {
+            NFX.sharedInstance().setMockServerURL(nil)
+            NFX.sharedInstance().setMockServerEnabled(false)
+
+            let settings = NFXSettingsStore()
+            #expect(settings.mockServerURL.isEmpty)
+
+            settings.setMockServerEnabled(true)
+
+            #expect(settings.mockServerURL == NFXSettingsStore.defaultMockServerURL)
+            #expect(NFX.sharedInstance().getMockServerURLString() == NFXSettingsStore.defaultMockServerURL)
+            #expect(!settings.isMockServerURLInvalid)
+        }
+
+        @Test
+        func settingsRepairAnEnabledMockWithoutAURL() {
+            NFX.sharedInstance().setMockServerURL(nil)
+            NFX.sharedInstance().setMockServerEnabled(true)
+
+            let settings = NFXSettingsStore()
+
+            #expect(settings.mockServerURL == NFXSettingsStore.defaultMockServerURL)
+            #expect(NFX.sharedInstance().getMockServerURLString() == NFXSettingsStore.defaultMockServerURL)
+        }
     }
 }

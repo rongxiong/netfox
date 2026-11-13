@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-<img alt="Version" src="https://img.shields.io/badge/version-2.0.0-green.svg?style=flat-square" />
+<img alt="Version" src="https://img.shields.io/badge/version-2.0.5-green.svg?style=flat-square" />
 <a href="https://github.com/rongxiong/netfox/actions/workflows/ci.yml"><img alt="CI Status" src="https://img.shields.io/github/actions/workflow/status/rongxiong/netfox/ci.yml?style=flat-square" /></a>
 <a href="https://cocoapods.org/pods/netfox"><img alt="Cocoapods Compatible" src="https://img.shields.io/cocoapods/v/netfox.svg?style=flat-square" /></a>
 <a href="https://github.com/Carthage/Carthage"><img alt="Carthage Compatible" src="https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat-square" /></a>
@@ -193,7 +193,7 @@ NFX.sharedInstance().setMockServerEnabled(true)
 [NFX.sharedInstance setMockServerEnabled:YES];
 ```
 
-You can also configure it at runtime from the netfox settings view: turn on the "Mock Server" switch and type a full `http(s)://host[:port]` URL. The address is saved when you press Done, leave the field or close the settings view; an invalid address is rejected and highlighted. The configuration is stored in `UserDefaults`, so it survives app restarts.
+You can also configure it at runtime from the netfox settings view: turn on the "Mock Server" switch. The `http://localhost:3000` text in the field is only a placeholder until an address is saved - enabling the switch with no URL applies it as a real default (edit it to point at your own server). Enter a full `http(s)://host[:port]` URL; it is saved when you press Done, leave the field or close the settings view, and an invalid address is rejected and highlighted. The configuration is stored in `UserDefaults`, so it survives app restarts.
 
 ### Mock only specific URLs
 

@@ -79,6 +79,28 @@ extension NFXTests {
             #expect(makeServer(defaults: defaults).configuration.isEnabled)
         }
 
+        @Test
+        func validPersistedURLIsRestored() {
+            let defaults = environment.isolatedDefaults()
+            makeServer(defaults: defaults).setURLString("http://127.0.0.1:8080/mock")
+
+            let restored = makeServer(defaults: defaults)
+
+            #expect(restored.configuration.urlString == "http://127.0.0.1:8080/mock")
+            #expect(restored.configuration.baseURL?.absoluteString == "http://127.0.0.1:8080/mock")
+        }
+
+        @Test
+        func invalidPersistedURLIsNotRestored() {
+            let defaults = environment.isolatedDefaults()
+            defaults.set("localhost:3000", forKey: "com.netfox.mockServer.url")
+
+            let server = makeServer(defaults: defaults)
+
+            #expect(server.configuration.urlString == nil)
+            #expect(server.configuration.baseURL == nil)
+        }
+
         // MARK: - Redirect
 
         @Test

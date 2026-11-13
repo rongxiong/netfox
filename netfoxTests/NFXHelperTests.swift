@@ -167,6 +167,47 @@ extension NFXTests {
             #expect(NFXPath.pathURLToFile("a.log").lastPathComponent == "a.log")
         }
 
+        // MARK: - IP lookup
+
+        @Test
+        func ipLookupFallsBackWhenTheRequestFails() {
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet)
+
+            #expect(NFXDebugInfo.ipAddress(from: nil, response: nil, error: error) == "-")
+            #expect(NFXDebugInfo.ipAddress(from: nil, response: nil, error: nil) == "-")
+        }
+
+        @Test
+        func ipLookupFallsBackOnUnexpectedResponses() {
+            let ok = ipLookupResponse()
+            let payload = Data("{\"ip\":\"203.0.113.7\"}".utf8)
+            let error = NSError(domain: "test", code: 1)
+
+            #expect(NFXDebugInfo.ipAddress(from: Data("not json".utf8), response: ok, error: nil) == "-")
+            #expect(NFXDebugInfo.ipAddress(from: Data("[\"203.0.113.7\"]".utf8), response: ok, error: nil) == "-")
+            #expect(NFXDebugInfo.ipAddress(from: Data("{\"ip\":42}".utf8), response: ok, error: nil) == "-")
+            #expect(NFXDebugInfo.ipAddress(from: payload, response: ipLookupResponse(status: 503), error: nil) == "-")
+            #expect(NFXDebugInfo.ipAddress(from: payload, response: ok, error: error) == "-")
+        }
+
+        @Test
+        func ipLookupReturnsTheAddress() {
+            let payload = Data("{\"ip\":\"203.0.113.7\"}".utf8)
+
+            #expect(NFXDebugInfo.ipAddress(from: payload, response: ipLookupResponse(), error: nil) == "203.0.113.7")
+        }
+
+        // MARK: - Version
+
+        @Test
+        func libraryVersionIsDisplayableAndInSync() {
+            #expect(nfxVersion.isEmpty == false)
+            #expect(nfxVersion != "0")
+            #expect(nfxVersion.split(separator: ".").count >= 2)
+            // Mirrors netfox.podspec and MARKETING_VERSION in netfox.xcodeproj.
+            #expect(nfxVersion == "2.0.5")
+        }
+
         // MARK: - Publisher
 
         @Test
@@ -196,6 +237,13 @@ extension NFXTests {
         }
 
         // MARK: - Private
+
+        private func ipLookupResponse(status: Int = 200) -> HTTPURLResponse {
+            return HTTPURLResponse(url: URL(string: "https://api.ipify.org")!,
+                                   statusCode: status,
+                                   httpVersion: "HTTP/1.1",
+                                   headerFields: nil)!
+        }
 
         /// netfox hands the body over through a URLProtocol property, so the tests
         /// have to do the same.

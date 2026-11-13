@@ -122,6 +122,11 @@ public final class NFXStore: ObservableObject {
 /// Writable mirror of the toggles shown by the settings screen.
 public final class NFXSettingsStore: ObservableObject {
 
+    /// The address shown as the settings field's placeholder. It is applied for
+    /// real as soon as Mock Server is enabled without a configured URL, so the
+    /// user never has to retype the example just to make it take effect.
+    static let defaultMockServerURL = "http://localhost:3000"
+
     @Published var isLoggingEnabled: Bool
     @Published var isMockServerEnabled: Bool
     @Published var mockServerURL: String
@@ -131,6 +136,12 @@ public final class NFXSettingsStore: ObservableObject {
         isLoggingEnabled = NFX.sharedInstance().isEnabled()
         isMockServerEnabled = NFX.sharedInstance().isMockServerEnabled()
         mockServerURL = NFX.sharedInstance().getMockServerURLString() ?? ""
+
+        // Also repairs states persisted by older versions: the switch was on
+        // but only the placeholder (or an invalid URL) had ever been shown.
+        if isMockServerEnabled, mockServerURL.isEmpty {
+            applyDefaultMockServerURL()
+        }
     }
 
     func setLoggingEnabled(_ enabled: Bool) {
@@ -140,7 +151,15 @@ public final class NFXSettingsStore: ObservableObject {
 
     func setMockServerEnabled(_ enabled: Bool) {
         isMockServerEnabled = enabled
+        if enabled, mockServerURL.isEmpty {
+            applyDefaultMockServerURL()
+        }
         NFX.sharedInstance().setMockServerEnabled(enabled)
+    }
+
+    private func applyDefaultMockServerURL() {
+        mockServerURL = Self.defaultMockServerURL
+        commitMockServerURL()
     }
 
     func commitMockServerURL() {

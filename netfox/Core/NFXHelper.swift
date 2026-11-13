@@ -197,25 +197,36 @@ class NFXDebugInfo {
         #endif
     }
     
-    class func getNFXIP(_ completion:@escaping (_ result: String) -> Void) {
-        var req: NSMutableURLRequest
-        req = NSMutableURLRequest(url: URL(string: "https://api.ipify.org/?format=json")!)
+    class func getNFXIP(_ completion: @escaping (_ result: String) -> Void) {
+        guard let url = URL(string: "https://api.ipify.org/?format=json") else {
+            completion("-")
+            return
+        }
+
+        let req = NSMutableURLRequest(url: url)
         URLProtocol.setProperty(true, forKey: NFXProtocol.nfxInternalKey, in: req)
-        
-        let session = URLSession.shared
-        session.dataTask(with: req as URLRequest, completionHandler: { (data, response, error) in
-            do {
-                let rawJsonData = try JSONSerialization.jsonObject(with: data!, options: [.allowFragments])
-                if let ipAddress = (rawJsonData as AnyObject).value(forKey: "ip") {
-                    completion(ipAddress as! String)
-                } else {
-                    completion("-")
-                }
-            } catch {
-                completion("-")
-            }
-            
-        }) .resume()
+
+        URLSession.shared.dataTask(with: req as URLRequest) { data, response, error in
+            completion(NFXDebugInfo.ipAddress(from: data, response: response, error: error))
+        }.resume()
+    }
+
+    /// Extracts the IP from an ipify response. Network failures, non-2xx
+    /// responses and unexpected payloads all fall back to "-", so the info
+    /// screen can never crash while the device is offline or the service
+    /// returns something else (e.g. an HTML error page).
+    class func ipAddress(from data: Data?, response: URLResponse?, error: Error?) -> String {
+        guard error == nil,
+              let data = data,
+              let httpResponse = response as? HTTPURLResponse,
+              (200..<300).contains(httpResponse.statusCode),
+              let json = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+              let ipAddress = json["ip"] as? String,
+              ipAddress.isEmpty == false else {
+            return "-"
+        }
+
+        return ipAddress
     }
     
 }

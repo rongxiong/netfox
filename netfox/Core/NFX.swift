@@ -13,13 +13,26 @@ import Cocoa
 import UIKit
 #endif
 
-private func podPlistVersion() -> String? {
-    guard let path = Bundle(identifier: "com.kasketis.netfox-iOS")?.infoDictionary?["CFBundleShortVersionString"] as? String else { return nil }
-    return path
+/// netfox's marketing version. Keep in sync with `netfox.podspec` and the
+/// `MARKETING_VERSION` build setting of both framework targets.
+private let nfxSourceVersion = "2.0.5"
+
+/// Reads the version from a dedicated netfox framework bundle when one is
+/// linked. Source and SwiftPM integrations compile netfox into the host app,
+/// so no such bundle exists there and the version has to come from the source.
+private func frameworkVersion() -> String? {
+    for identifier in ["com.kasketis.netfox-iOS", "com.kasketis.netfox-OSX"] {
+        guard let version = Bundle(identifier: identifier)?
+                .infoDictionary?["CFBundleShortVersionString"] as? String,
+              version.isEmpty == false else {
+            continue
+        }
+        return version
+    }
+    return nil
 }
 
-// TODO: Carthage support
-let nfxVersion = podPlistVersion() ?? "0"
+let nfxVersion = frameworkVersion() ?? nfxSourceVersion
 
 @objc
 open class NFX: NSObject {
