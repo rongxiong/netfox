@@ -237,12 +237,31 @@ extension NFXTests {
         }
 
         @Test
-        func relativeMappingWithoutABaseURLIsIgnored() {
+        func relativeMappingAppliesOnceURLIsConfiguredLater() {
             let server = makeServer()
             server.setEnabled(true)
             server.setMappings(["api.example.com": "/users.json"])
 
-            #expect(server.configuration.mappings.isEmpty)
+            #expect(server.configuration.mappings.count == 1)
+            #expect(!server.shouldRedirect(request("https://api.example.com/v1/users")))
+
+            server.setURLString("http://127.0.0.1:8080")
+
+            #expect(server.redirectedRequest(for: request("https://api.example.com/v1/users"))?.url?.absoluteString
+                    == "http://127.0.0.1:8080/users.json")
+        }
+
+        @Test
+        func relativeMappingStopsWhenURLIsCleared() {
+            let server = makeServer()
+            server.setURLString("http://127.0.0.1:8080")
+            server.setEnabled(true)
+            server.setMappings(["api.example.com": "/users.json"])
+
+            server.setURLString(nil)
+
+            #expect(server.configuration.mappings.count == 1)
+            #expect(!server.shouldRedirect(request("https://api.example.com/v1/users")))
         }
 
         @Test

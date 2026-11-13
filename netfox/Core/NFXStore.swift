@@ -125,6 +125,7 @@ public final class NFXSettingsStore: ObservableObject {
     @Published var isLoggingEnabled: Bool
     @Published var isMockServerEnabled: Bool
     @Published var mockServerURL: String
+    @Published var isMockServerURLInvalid = false
 
     init() {
         isLoggingEnabled = NFX.sharedInstance().isEnabled()
@@ -143,7 +144,17 @@ public final class NFXSettingsStore: ObservableObject {
     }
 
     func commitMockServerURL() {
-        NFX.sharedInstance().setMockServerURL(mockServerURL)
-        mockServerURL = NFX.sharedInstance().getMockServerURLString() ?? mockServerURL
+        let input = mockServerURL
+        NFX.sharedInstance().setMockServerURL(input)
+
+        let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        let committed = NFX.sharedInstance().getMockServerURLString()
+
+        // setMockServerURL ignores malformed input. Keep the text the user typed
+        // and flag it instead of silently pretending the address is active.
+        isMockServerURLInvalid = trimmed.isEmpty == false && committed != trimmed
+        if isMockServerURLInvalid == false {
+            mockServerURL = committed ?? ""
+        }
     }
 }

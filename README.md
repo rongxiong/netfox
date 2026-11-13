@@ -193,7 +193,7 @@ NFX.sharedInstance().setMockServerEnabled(true)
 [NFX.sharedInstance setMockServerEnabled:YES];
 ```
 
-You can also configure it at runtime from the netfox settings view: turn on the "Mock Server" switch and type the server URL. The configuration is stored in `UserDefaults`, so it survives app restarts.
+You can also configure it at runtime from the netfox settings view: turn on the "Mock Server" switch and type a full `http(s)://host[:port]` URL. The address is saved when you press Done, leave the field or close the settings view; an invalid address is rejected and highlighted. The configuration is stored in `UserDefaults`, so it survives app restarts.
 
 ### Mock only specific URLs
 
@@ -221,7 +221,7 @@ NFX.sharedInstance().setMockServerMappings([
 - The original path and query are discarded for a mapped request - the value fully decides what is called.
 - While at least one mapping is set, **only** the requests whose URL contains one of the keys are mocked - every other request goes to the real server.
 - When several keys match, the **longest** one wins, so you can combine a broad key with a more specific override.
-- A value may also be an absolute `http(s)://…` URL when a single mapping has to point somewhere else entirely; relative paths need `setMockServerURL` to be set first, otherwise the entry is reported in the console and dropped.
+- A value may also be an absolute `http(s)://…` URL when a single mapping has to point somewhere else entirely. Relative paths are resolved when a request is intercepted, so mappings can be registered before the mock server URL is known (e.g. in code, with the URL entered later in the settings view); until a valid URL is set they simply do not redirect.
 - Pass an empty dictionary to go back to mocking every request with the mock server URL.
 - Mappings are code-only - they are not exposed in the settings view and are not persisted.
 - Requests that are not mocked are left completely untouched (netfox does not even join their loading chain).

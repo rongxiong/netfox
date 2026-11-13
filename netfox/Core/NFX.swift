@@ -220,6 +220,10 @@ open class NFX: NSObject {
     /// While at least one mapping is set, only the requests whose URL contains
     /// one of the keys are mocked. Pass an empty dictionary to fall back to
     /// mocking every request with the mock server URL.
+    ///
+    /// Mappings can be registered before the mock server URL is known - relative
+    /// paths are resolved against whatever URL is configured when a request is
+    /// intercepted, including a URL entered later in the settings view.
     @objc open func setMockServerMappings(_ mappings: [String: String]) {
         mockServer.setMappings(mappings)
     }

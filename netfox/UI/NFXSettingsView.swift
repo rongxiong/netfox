@@ -19,6 +19,7 @@ struct NFXSettingsView: View {
     @State private var showsClearConfirmation = false
     @State private var sharePayload: NFXSharePayload?
     @State private var sessionLogURL: URL?
+    @FocusState private var isMockURLFocused: Bool
 
     #if os(iOS)
     @State private var showsMail = false
@@ -43,7 +44,13 @@ struct NFXSettingsView: View {
             } header: {
                 Text("Mock Server")
             } footer: {
-                Text("Requests keep their path and query, only the host is replaced.")
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Requests keep their path and query, only the host is replaced.")
+                    if settings.isMockServerURLInvalid {
+                        Text("Use a full http(s)://host[:port] address - the URL above was not saved.")
+                            .foregroundStyle(Color.red)
+                    }
+                }
             }
 
             Section("Response Types") {
@@ -81,6 +88,7 @@ struct NFXSettingsView: View {
         }
         .nfxListStyle()
         .background(Color.nfxBackground)
+        .onDisappear { settings.commitMockServerURL() }
         .navigationTitle("Settings")
         .alert("Clear data?", isPresented: $showsClearConfirmation) {
             Button("Cancel", role: .cancel) { }
@@ -114,7 +122,13 @@ struct NFXSettingsView: View {
             .multilineTextAlignment(.trailing)
             .foregroundStyle(Color.nfxSecondaryText)
             .submitLabel(.done)
+            .focused($isMockURLFocused)
             .onSubmit { settings.commitMockServerURL() }
+            .onChange(of: isMockURLFocused) { focused in
+                if focused == false {
+                    settings.commitMockServerURL()
+                }
+            }
             .frame(minWidth: 160)
             .accessibilityIdentifier(NFXAccessibility.Settings.mockServerURL)
 

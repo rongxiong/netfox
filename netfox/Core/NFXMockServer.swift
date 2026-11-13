@@ -112,11 +112,14 @@ internal final class NFXMockServer {
     /// A value may also be a full absolute URL when a mapping has to point
     /// somewhere else entirely.
     ///
+    /// Relative values are resolved lazily, when a request is intercepted, so
+    /// registering mappings before the mock server URL is known is safe: they
+    /// simply start working as soon as the URL is configured (including from
+    /// the settings view).
+    ///
     /// As long as at least one mapping is configured, only the requests matching
     /// one of its keys are mocked - everything else hits the real server.
     func setMappings(_ mappings: [String: String]) {
-        let currentBaseURL = configuration.baseURL
-        
         let validated = mappings.filter { key, value in
             guard key.isEmpty == false else {
                 print("[NFX]: Ignored mock mapping with an empty key")
@@ -126,16 +129,17 @@ internal final class NFXMockServer {
                 print("[NFX]: Ignored mock mapping with an empty value for key \"\(key)\"")
                 return false
             }
-            guard NFXMockServer.isValidMockURL(value) || currentBaseURL != nil else {
-                print("[NFX]: Mock mapping \"\(key)\": \"\(value)\" is a path, but no mock server URL is set - call setMockServerURL first")
-                return false
-            }
             return true
         }
         
         lock.lock()
         self.mappings = validated
+        let hasBaseURL = baseURL != nil
         lock.unlock()
+
+        if hasBaseURL == false, validated.values.contains(where: { NFXMockServer.isValidMockURL($0) == false }) {
+            print("[NFX]: Relative mock mappings need a valid mock server URL (http(s)://host[:port]); they will apply as soon as one is set")
+        }
     }
     
     // MARK: - Redirecting
