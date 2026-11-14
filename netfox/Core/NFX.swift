@@ -15,7 +15,7 @@ import UIKit
 
 /// netfox's marketing version. Keep in sync with `netfox.podspec` and the
 /// `MARKETING_VERSION` build setting of both framework targets.
-private let nfxSourceVersion = "2.0.6"
+private let nfxSourceVersion = "2.0.7"
 
 /// Reads the version from a dedicated netfox framework bundle when one is
 /// linked. Source and SwiftPM integrations compile netfox into the host app,
