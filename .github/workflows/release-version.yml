@@ -1,0 +1,105 @@
+name: Release version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 2.0.6 or v2.0.6)'
+        required: true
+        type: string
+      mode:
+        description: 'commit pushes to the default branch, pr opens a pull request'
+        required: true
+        default: commit
+        type: choice
+        options:
+          - commit
+          - pr
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-version-${{ inputs.version || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
+      - name: Resolve version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          version="${INPUT_VERSION#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Expected a version like 2.0.6 or v2.0.6, got '$INPUT_VERSION'"
+            exit 1
+          fi
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Update version markers
+        run: python3 scripts/update_version.py --version "${{ steps.version.outputs.value }}"
+
+      - name: Verify every marker
+        run: python3 scripts/update_version.py --check --version "${{ steps.version.outputs.value }}"
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push to the default branch
+        if: steps.changes.outputs.changed == 'true' && inputs.mode != 'pr'
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          git add netfox.podspec netfox/Core/NFX.swift README.md \
+            netfox.xcodeproj/project.pbxproj netfoxTests/NFXHelperTests.swift
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "chore: bump netfox version to $VERSION"
+          git push origin "HEAD:$BRANCH"
+
+      - name: Open a pull request instead
+        if: steps.changes.outputs.changed == 'true' && inputs.mode == 'pr'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.value }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          branch="chore/bump-netfox-$VERSION-${GITHUB_RUN_ID}"
+          git checkout -b "$branch"
+          git add netfox.podspec netfox/Core/NFX.swift README.md \
+            netfox.xcodeproj/project.pbxproj netfoxTests/NFXHelperTests.swift
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "chore: bump netfox version to $VERSION"
+          git push -u origin "$branch"
+          gh pr create --base "$BASE_BRANCH" --head "$branch" \
+            --title "chore: bump netfox version to $VERSION" \
+            --body "Automated version sync from the Release version workflow."
+
+      - name: Note about tagging
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          echo "::notice::Version bumped to ${{ steps.version.outputs.value }}. No tag or GitHub Release is created here - tag the commit once it has landed on the default branch, before publishing to CocoaPods (see README)."
