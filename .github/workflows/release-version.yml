@@ -79,6 +79,37 @@ jobs:
               commit -m "chore: bump netfox version to $VERSION"
           git push origin "HEAD:$BRANCH"
 
+      - name: Create and push the version tag
+        if: steps.changes.outputs.changed == 'true' && inputs.mode != 'pr'
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then
+            echo "::notice::Tag $VERSION already exists; leaving it untouched."
+            exit 0
+          fi
+          git tag "$VERSION"
+          git push origin "refs/tags/$VERSION"
+          echo "Created tag $VERSION on $(git rev-parse --short HEAD)"
+
+      - name: Create the GitHub Release
+        if: steps.changes.outputs.changed == 'true' && inputs.mode != 'pr'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          set -euo pipefail
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "::notice::Release $VERSION already exists; leaving it untouched."
+            exit 0
+          fi
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --generate-notes \
+            --verify-tag
+          echo "Created GitHub Release $VERSION"
+
       - name: Open a pull request instead
         if: steps.changes.outputs.changed == 'true' && inputs.mode == 'pr'
         env:
@@ -101,5 +132,12 @@ jobs:
 
       - name: Note about tagging
         if: steps.changes.outputs.changed == 'true'
+        env:
+          MODE: ${{ inputs.mode }}
+          VERSION: ${{ steps.version.outputs.value }}
         run: |
-          echo "::notice::Version bumped to ${{ steps.version.outputs.value }}. No tag or GitHub Release is created here - tag the commit once it has landed on the default branch, before publishing to CocoaPods (see README)."
+          if [ "$MODE" = "pr" ]; then
+            echo "::notice::PR opened for $VERSION. No tag or Release created - after merging, tag the merge commit and create the Release manually (see README)."
+          else
+            echo "::notice::Version bumped to $VERSION; tag and GitHub Release are ready. CocoaPods publishing is still a separate step (see README)."
+          fi
