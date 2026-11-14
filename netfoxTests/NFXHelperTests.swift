@@ -205,7 +205,7 @@ extension NFXTests {
             #expect(nfxVersion != "0")
             #expect(nfxVersion.split(separator: ".").count >= 2)
             // Mirrors netfox.podspec and MARKETING_VERSION in netfox.xcodeproj.
-            #expect(nfxVersion == "2.0.5")
+            #expect(nfxVersion == "2.0.6")
         }
 
         // MARK: - Publisher
