@@ -24,9 +24,9 @@ internal struct NFXMockConfiguration {
 
 /// Redirects intercepted requests to a mock server.
 ///
-/// Only the scheme, host and port of a request are replaced - path, query,
-/// fragment, http method, headers and body are preserved, so a mock server can
-/// keep serving the very same endpoints.
+/// Base-URL redirects only replace scheme, host and port - path, query,
+/// fragment, http method, headers and body are preserved. URL mappings replace
+/// the path, but keep the original query merged into the mapped target.
 internal final class NFXMockServer {
 
     // MARK: - Constants
@@ -111,10 +111,13 @@ internal final class NFXMockServer {
     }
     
     /// Fuzzy, per-URL mappings. Each key is matched as a substring of the
-    /// request URL, and the matching value is the path served by the mock
-    /// server - e.g. "/users.json" - resolved against the mock server URL.
-    /// A value may also be a full absolute URL when a mapping has to point
-    /// somewhere else entirely.
+    /// request URL, and the matching value is the path (with optional query)
+    /// served by the mock server - e.g. "/users.json?state=mock" - resolved
+    /// against the mock server URL. A value may also be a full absolute URL
+    /// when a mapping has to point somewhere else entirely.
+    ///
+    /// The original request's query is merged into the mapped URL; a query
+    /// name present in the mapping value takes precedence.
     ///
     /// Relative values are resolved lazily, when a request is intercepted, so
     /// registering mappings before the mock server URL is known is safe: they
@@ -183,7 +186,8 @@ internal final class NFXMockServer {
                 // Mappings are configured but nothing matches - hit the real server.
                 return nil
             }
-            return mockedRequest(from: request, originalURL: originalURL, targetURL: mappedURL)
+            let targetURL = NFXMockServer.urlByMergingQuery(from: originalURL, into: mappedURL) ?? mappedURL
+            return mockedRequest(from: request, originalURL: originalURL, targetURL: targetURL)
         }
         
         guard let baseURL = configuration.baseURL else {
@@ -263,7 +267,28 @@ internal final class NFXMockServer {
         
         return components.url
     }
-    
+
+    /// Keeps the original query on a mapped request. Query names already set by
+    /// the mapping value win, so a fixture can force values like `state=mock`.
+    private static func urlByMergingQuery(from originalURL: URL, into mappedURL: URL) -> URL? {
+        guard let originalComponents = URLComponents(url: originalURL, resolvingAgainstBaseURL: false),
+              let originalQueryItems = originalComponents.queryItems,
+              originalQueryItems.isEmpty == false,
+              var mappedComponents = URLComponents(url: mappedURL, resolvingAgainstBaseURL: false) else {
+            return mappedURL
+        }
+
+        var mergedItems = mappedComponents.queryItems ?? []
+        let mappedNames = Set(mergedItems.map { $0.name })
+
+        for item in originalQueryItems where mappedNames.contains(item.name) == false {
+            mergedItems.append(item)
+        }
+
+        mappedComponents.queryItems = mergedItems.isEmpty ? nil : mergedItems
+        return mappedComponents.url
+    }
+
     /// Splits "/users.json?state=mock#top" into its path, query and fragment,
     /// tolerating a missing leading slash.
     private static func splitPathComponents(_ value: String) -> (path: String, query: String?, fragment: String?) {

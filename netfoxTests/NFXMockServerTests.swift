@@ -198,7 +198,7 @@ extension NFXTests {
 
             let redirected = server.redirectedRequest(for: request("https://api.example.com/v1/users?page=2"))
 
-            #expect(redirected?.url?.absoluteString == "http://127.0.0.1:8080/users.json")
+            #expect(redirected?.url?.absoluteString == "http://127.0.0.1:8080/users.json?page=2")
         }
 
         @Test
@@ -211,6 +211,41 @@ extension NFXTests {
             let redirected = server.redirectedRequest(for: request("https://api.example.com/v1/users"))
 
             #expect(redirected?.url?.absoluteString == "http://127.0.0.1:8080/mock/users.json?state=mock")
+        }
+
+        @Test
+        func mappingKeepsTheOriginalQuery() {
+            let server = makeServer()
+            server.setURLString("http://127.0.0.1:8080")
+            server.setEnabled(true)
+            server.setMappings(["api.example.com": "/users.json"])
+
+            let redirected = server.redirectedRequest(for: request("https://api.example.com/v1/users?page=2&sort=asc"))
+
+            #expect(redirected?.url?.absoluteString == "http://127.0.0.1:8080/users.json?page=2&sort=asc")
+        }
+
+        @Test
+        func mappingQueryTakesPrecedenceOverTheOriginalQuery() {
+            let server = makeServer()
+            server.setURLString("http://127.0.0.1:8080")
+            server.setEnabled(true)
+            server.setMappings(["api.example.com": "/users.json?state=mock"])
+
+            let redirected = server.redirectedRequest(for: request("https://api.example.com/v1/users?state=real&page=2"))
+
+            #expect(redirected?.url?.absoluteString == "http://127.0.0.1:8080/users.json?state=mock&page=2")
+        }
+
+        @Test
+        func absoluteMappingKeepsTheOriginalQuery() {
+            let server = makeServer()
+            server.setEnabled(true)
+            server.setMappings(["api.example.com": "https://other.example.com/fixtures/users.json?state=mock"])
+
+            let redirected = server.redirectedRequest(for: request("https://api.example.com/v1/users?page=2"))
+
+            #expect(redirected?.url?.absoluteString == "https://other.example.com/fixtures/users.json?state=mock&page=2")
         }
 
         @Test

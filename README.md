@@ -197,7 +197,7 @@ You can also configure it at runtime from the netfox settings view: turn on the 
 
 ### Mock only specific URLs
 
-Register a dictionary of mappings when you only want *some* requests to be mocked. Each key is matched as a **substring** (fuzzy match) of the request URL, and the matching value is just the **path** served by the mock server - it is resolved against the mock server URL, so you never repeat the host.
+Register a dictionary of mappings when you only want *some* requests to be mocked. Each key is matched as a **substring** (fuzzy match) of the request URL, and the matching value is the **path (with optional query)** served by the mock server - it is resolved against the mock server URL, so you never repeat the host.
 
 #### Swift
 ```swift
@@ -206,7 +206,7 @@ NFX.sharedInstance().setMockServerMappings([
     "api.github.com/users": "/users.json",
     "/v2/orders":           "/orders.json?state=empty"
 ])
-// https://api.github.com/users?page=2  ->  http://localhost:3000/users.json
+// https://api.github.com/users?page=2  ->  http://localhost:3000/users.json?page=2
 ```
 
 #### Objective-C
@@ -218,7 +218,8 @@ NFX.sharedInstance().setMockServerMappings([
 }];
 ```
 
-- The original path and query are discarded for a mapped request - the value fully decides what is called.
+- The original path is discarded for a mapped request - the value fully decides which path is called.
+- The original query is kept and merged with the mapping's query. When the same query name exists in both, the mapping's value wins (e.g. `/orders.json?state=empty` + `?page=2` calls `/orders.json?state=empty&page=2`).
 - While at least one mapping is set, **only** the requests whose URL contains one of the keys are mocked - every other request goes to the real server.
 - When several keys match, the **longest** one wins, so you can combine a broad key with a more specific override.
 - A value may also be an absolute `http(s)://…` URL when a single mapping has to point somewhere else entirely. Relative paths are resolved when a request is intercepted, so mappings can be registered before the mock server URL is known (e.g. in code, with the URL entered later in the settings view); until a valid URL is set they simply do not redirect.
